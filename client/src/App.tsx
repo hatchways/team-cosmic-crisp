@@ -19,18 +19,18 @@ function App(): JSX.Element {
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
         <SnackBarProvider>
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route exact path="/search" component={Search} />
-            <AuthProvider>
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
-              <ProtectedRoute exact path="/user/profile" component={UserProfile} />
-              <SocketProvider>
+          <AuthProvider>
+            <SocketProvider>
+              <Switch>
+                <Route exact path="/" component={LandingPage} />
+                <Route exact path="/search" component={Search} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={Signup} />
+                <ProtectedRoute exact path="/user/profile" component={UserProfile} />
                 <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-              </SocketProvider>
-            </AuthProvider>
-          </Switch>
+              </Switch>
+            </SocketProvider>
+          </AuthProvider>
         </SnackBarProvider>
       </BrowserRouter>
     </MuiThemeProvider>
