@@ -9,7 +9,7 @@ export default function Search(): JSX.Element {
     <Layout>
       <CssBaseline />
       <Grid container component="main" className={`${classes.root}`}>
-        <h1>Search page</h1>
+        <h1>Your Search Results</h1>
       </Grid>
     </Layout>
   );

@@ -9,7 +9,7 @@ import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import LandingPage from './pages/LandingPage/LandingPage';
-import Search from './pages/Search/Search';
+import Listings from './pages/Listings/Listings';
 
 import './App.css';
 import UserProfile from './pages/UserProfile/UserProfile';
@@ -23,11 +23,11 @@ function App(): JSX.Element {
             <SocketProvider>
               <Switch>
                 <Route exact path="/" component={LandingPage} />
-                <Route exact path="/search" component={Search} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
+                <ProtectedRoute exact path="/listings" component={Listings} />
                 <ProtectedRoute exact path="/user/profile" component={UserProfile} />
-                <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+                {/* <ProtectedRoute exact path="/dashboard" component={Dashboard} /> */}
               </Switch>
             </SocketProvider>
           </AuthProvider>
