@@ -1,7 +1,8 @@
 import { Redirect, Route } from 'react-router-dom';
-import { useAuth } from '../context/useAuthContext';
+import { useAuth } from '../../context/useAuthContext';
 
 interface ProtectedRouteProps {
+  // eslint-disable-next-line
   component: React.ComponentType<any>;
   exact?: boolean;
   path?: string;
