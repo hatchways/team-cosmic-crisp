@@ -14,7 +14,7 @@ exports.searchProfiles = asyncHandler(async (req,res,next) => {
           }
         });
       } catch (error) {
-        res.status(400);
+        res.status(500);
         throw new Error(error.message);
       }
 })
@@ -36,7 +36,7 @@ exports.createProfile = asyncHandler(async (req,res,next) => {
         });
         
     } catch (error) {
-        res.status(409);
+        res.status(500);
         throw new Error(error.message);
       }
 })
@@ -47,7 +47,7 @@ exports.searchProfile = asyncHandler(async (req,res,next) => {
   const {id} = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(404);
+    res.status(400);
     throw new Error("Invalid profile ID");
   }
   
@@ -59,7 +59,7 @@ exports.searchProfile = asyncHandler(async (req,res,next) => {
       }
     });
   } catch (error) {
-    res.status(400);
+    res.status(500);
     throw new Error(error.message);
   }
 
@@ -72,7 +72,7 @@ exports.updateProfile = asyncHandler(async (req,res,next) => {
     const profile = req.body;
     
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(404);
+      res.status(400);
       throw new Error("Invalid profile ID");
     }
     
@@ -84,7 +84,7 @@ exports.updateProfile = asyncHandler(async (req,res,next) => {
         }
       });
     } catch (error) {
-      res.status(409);
+      res.status(500);
       throw new Error(error.message);
     }
 })
