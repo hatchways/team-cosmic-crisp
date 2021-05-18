@@ -6,6 +6,7 @@ import { Button, IconButton, Grid, Menu, MenuItem } from '@material-ui/core';
 import Logo from '../../Images/logo.png';
 import { User } from '../../interface/User';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   user: User | null | undefined;
@@ -14,6 +15,7 @@ interface Props {
 
 export default function Navbar({ user, logout }: Props) {
   const classes = useStyles();
+  const history = useHistory();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -35,10 +37,20 @@ export default function Navbar({ user, logout }: Props) {
       <Button color="inherit" className={`${classes.btn} ${classes.sitterBtn}`} variant="text">
         become a sitter
       </Button>
-      <Button color="inherit" className={`${classes.btn} ${classes.loginBtn}`} variant="outlined">
+      <Button
+        color="inherit"
+        className={`${classes.btn} ${classes.loginBtn}`}
+        variant="outlined"
+        onClick={() => history.push('/login')}
+      >
         Login
       </Button>
-      <Button color="inherit" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
+      <Button
+        color="inherit"
+        className={`${classes.btn} ${classes.signupbtn}`}
+        variant="contained"
+        onClick={() => history.push('/signup')}
+      >
         signup
       </Button>
     </>
@@ -79,8 +91,7 @@ export default function Navbar({ user, logout }: Props) {
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={() => history.push('/user/profile')}>Profile</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </>
