@@ -5,7 +5,7 @@ const requestSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
    		ref: 'profile'
     },
-    setter: {
+    sitter: {
         type: mongoose.Schema.Types.ObjectId,
     	ref: 'profile'
     },
