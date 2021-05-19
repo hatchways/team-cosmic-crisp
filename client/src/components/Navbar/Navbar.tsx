@@ -7,6 +7,7 @@ import Logo from '../../Images/logo.png';
 import { User } from '../../interface/User';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface Props {
   user: User | null | undefined;
@@ -37,37 +38,31 @@ export default function Navbar({ user, logout }: Props) {
       <Button color="inherit" className={`${classes.btn} ${classes.sitterBtn}`} variant="text">
         become a sitter
       </Button>
-      <Button
-        color="inherit"
-        className={`${classes.btn} ${classes.loginBtn}`}
-        variant="outlined"
-        onClick={() => history.push('/login')}
-      >
-        Login
-      </Button>
-      <Button
-        color="inherit"
-        className={`${classes.btn} ${classes.signupbtn}`}
-        variant="contained"
-        onClick={() => history.push('/signup')}
-      >
-        signup
-      </Button>
+      <Link to="/login" className={classes.link}>
+        <Button color="inherit" className={`${classes.btn} ${classes.loginBtn}`} variant="outlined">
+          Login
+        </Button>
+      </Link>
+      <Link to="/signup" className={classes.link}>
+        <Button color="inherit" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
+          signup
+        </Button>
+      </Link>
     </>
   );
 
   const UserNav = () => (
-    <>
-      <ul className={classes.userNav}>
-        <li className={classes.userNavItem}>
-          Notifications <span className={classes.active} />
-        </li>
-        <li className={classes.userNavItem}>My Jobs</li>
-        <li className={classes.userNavItem}>
-          Messages <span className={classes.active} />
-        </li>
-      </ul>
-    </>
+    <Grid>
+      <Button variant="text" className={classes.userNavItem}>
+        Notifications <span className={classes.active} />
+      </Button>
+      <Button variant="text" className={classes.userNavItem}>
+        My Jobs
+      </Button>
+      <Button variant="text" className={classes.userNavItem}>
+        Messages <span className={classes.active} />
+      </Button>
+    </Grid>
   );
 
   return (

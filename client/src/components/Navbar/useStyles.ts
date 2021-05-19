@@ -8,12 +8,10 @@ const useStyles = makeStyles((theme) => ({
   },
   transparentNav: {
     backgroundColor: 'transparent',
+    boxShadow: 'none',
   },
   grow: {
     flexGrow: 1,
-  },
-  title: {
-    // display: 'none',
   },
   btn: {
     width: '9rem',
@@ -32,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
       background: '#fff',
     },
   },
+  link: {
+    textDecoration: 'none',
+  },
   loginBtn: {
     borderColor: theme.palette.primary.main,
     color: theme.palette.primary.main,
@@ -48,17 +49,11 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main,
     },
   },
-  userNav: {
-    listStyleType: 'none',
-    display: 'flex',
-    alignItems: 'center',
-  },
   userNavItem: {
     fontWeight: 'bold',
     fontSize: '1rem',
     margin: '0 0.8rem',
     '&:hover': {
-      cursor: 'pointer',
       textDecoration: 'underline',
     },
   },

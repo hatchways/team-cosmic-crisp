@@ -13,6 +13,7 @@ import Listings from './pages/Listings/Listings';
 
 import './App.css';
 import UserProfile from './pages/UserProfile/UserProfile';
+import Layout from './components/Layout/Layout';
 
 function App(): JSX.Element {
   return (
@@ -21,14 +22,15 @@ function App(): JSX.Element {
         <SnackBarProvider>
           <AuthProvider>
             <SocketProvider>
-              <Switch>
-                <Route exact path="/" component={LandingPage} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/signup" component={Signup} />
-                <ProtectedRoute exact path="/listings" component={Listings} />
-                <ProtectedRoute exact path="/user/profile" component={UserProfile} />
-                {/* <ProtectedRoute exact path="/dashboard" component={Dashboard} /> */}
-              </Switch>
+              <Layout>
+                <Switch>
+                  <Route exact path="/" component={LandingPage} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/signup" component={Signup} />
+                  <ProtectedRoute exact path="/listings" component={Listings} />
+                  <ProtectedRoute exact path="/user/profile" component={UserProfile} />
+                </Switch>
+              </Layout>
             </SocketProvider>
           </AuthProvider>
         </SnackBarProvider>
