@@ -11,10 +11,10 @@ import { Link } from 'react-router-dom';
 
 interface Props {
   user: User | null | undefined;
-  logout: () => void;
+  logout(): void;
 }
 
-export default function Navbar({ user, logout }: Props) {
+export default function Navbar({ user, logout }: Props): JSX.Element {
   const classes = useStyles();
   const history = useHistory();
 
@@ -69,7 +69,9 @@ export default function Navbar({ user, logout }: Props) {
     <Grid container>
       <AppBar position="static" className={`${classes.appBar} ${!user && classes.transparentNav}`}>
         <Toolbar>
-          <img src={Logo} alt="logo" />
+          <Link to="/" className={classes.link}>
+            <img src={Logo} alt="logo" />
+          </Link>
           <div className={classes.grow} />
           {user ? (
             <>

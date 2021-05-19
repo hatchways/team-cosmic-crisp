@@ -7,7 +7,6 @@ import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
 import ChatSideBanner from '../../components/ChatSideBanner/ChatSideBanner';
 import { useEffect } from 'react';
-import Layout from '../../components/Layout/Layout';
 
 export default function Dashboard(): JSX.Element {
   const classes = useStyles();
