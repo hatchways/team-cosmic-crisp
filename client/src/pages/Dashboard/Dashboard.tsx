@@ -28,11 +28,11 @@ export default function Dashboard(): JSX.Element {
   }
 
   return (
-    <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
-      <CssBaseline />
-      <Grid item className={classes.drawerWrapper}>
-        <ChatSideBanner loggedInUser={loggedInUser} />
+      <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
+        <CssBaseline />
+        <Grid item className={classes.drawerWrapper}>
+          <ChatSideBanner loggedInUser={loggedInUser} />
+        </Grid>
       </Grid>
-    </Grid>
   );
 }
