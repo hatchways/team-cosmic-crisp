@@ -9,6 +9,7 @@ import { SnackBarProvider } from './context/useSnackbarContext';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
+import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 
 import './App.css';
 import UserProfile from './pages/UserProfile/UserProfile';
@@ -24,6 +25,7 @@ function App(): JSX.Element {
               <Layout>
                 <Switch>
                   <Route exact path="/" component={LandingPage} />
+                  <Route exact path="/profile/:id" component={ProfileDetails} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <ProtectedRoute exact path="/listings" component={Listings} />
