@@ -29,6 +29,15 @@ interface Props {
 export default function Login({ handleSubmit }: Props): JSX.Element {
   const classes = useStyles();
 
+  const loginDemoUser = async (
+    setFeildValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void,
+    submitForm: (() => Promise<void>) & (() => Promise<any>),
+  ) => {
+    setFeildValue('email', 'guest@example.com');
+    setFeildValue('password', '123456');
+    submitForm();
+  };
+
   return (
     <Formik
       initialValues={{
@@ -44,7 +53,7 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
       })}
       onSubmit={handleSubmit}
     >
-      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
+      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting, setFieldValue, submitForm }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <Typography className={classes.label}>E-mail address</Typography>
           <TextField
@@ -89,6 +98,15 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
               {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
+            </Button>
+            <Button
+              size="large"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => loginDemoUser(setFieldValue, submitForm)}
+            >
+              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Demo Login'}
             </Button>
           </Box>
           {/* <div style={{ height: 95 }} /> */}
