@@ -28,8 +28,8 @@ function App(): JSX.Element {
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <ProtectedRoute exact path="/listings" component={Listings} />
-                  <ProtectedRoute exact path="/user/editprofile" component={EditProfile} />
-                  <ProtectedRoute exact path="/user/profilephoto" component={ProfilePhoto} />
+                  <ProtectedRoute exact path="/user/editProfile" component={EditProfile} />
+                  <ProtectedRoute exact path="/user/profilePhoto" component={ProfilePhoto} />
                 </Switch>
               </Layout>
             </SocketProvider>
