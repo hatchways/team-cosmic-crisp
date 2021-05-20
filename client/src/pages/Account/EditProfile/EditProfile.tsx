@@ -9,7 +9,7 @@ export default function EditProfile(): JSX.Element {
   return (
     <Box className={classes.mainContainer}>
       <CssBaseline />
-      <Box display="flex" maxWidth={925} className={classes.secondaryContainer}>
+      <Box display="flex" maxWidth={935} className={classes.secondaryContainer}>
         <SideBar />
         <Box flex={1}>
           <Paper elevation={5} className={classes.formContainer}>

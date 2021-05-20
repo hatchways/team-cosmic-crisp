@@ -7,17 +7,18 @@ import { useStyles } from './useStyles';
 export default function SideBar(): JSX.Element {
   const classes = useStyles();
   const { pathname } = useLocation();
-  const path = pathname.split('/')[2];
-  console.log(path === 'editprofile' ? 'classes.active' : '');
   return (
     <Box maxWidth={250} className={classes.sideBarContainer}>
       <List className={classes.sideBar}>
         <ListItem>
-          <Link to="/user/editprofile" className={`${classes.links} ${path === 'editprofile' ? classes.active : ''}`}>
+          <Link
+            to="/user/editProfile"
+            className={`${classes.links} ${pathname === '/user/editProfile' ? classes.active : ''}`}
+          >
             <ListItemText
               disableTypography
               primary={
-                <Typography variant="h6" className={classes.linkText}>
+                <Typography variant="body1" className={classes.linkText}>
                   Edit Profile
                 </Typography>
               }
@@ -25,11 +26,14 @@ export default function SideBar(): JSX.Element {
           </Link>
         </ListItem>
         <ListItem>
-          <Link to="/user/profilephoto" className={`${classes.links} ${path === 'profilephoto' ? classes.active : ''}`}>
+          <Link
+            to="/user/profilePhoto"
+            className={`${classes.links} ${pathname === '/user/profilePhoto' ? classes.active : ''}`}
+          >
             <ListItemText
               disableTypography
               primary={
-                <Typography variant="h6" className={classes.linkText}>
+                <Typography variant="body1" className={classes.linkText}>
                   Profile Photo
                 </Typography>
               }
@@ -37,11 +41,11 @@ export default function SideBar(): JSX.Element {
           </Link>
         </ListItem>
         <ListItem>
-          <Link to="/user/payment" className={`${classes.links} ${path === 'payment' ? classes.active : ''}`}>
+          <Link to="/user/payment" className={`${classes.links} ${pathname === '/user/payment' ? classes.active : ''}`}>
             <ListItemText
               disableTypography
               primary={
-                <Typography variant="h6" className={classes.linkText}>
+                <Typography variant="body1" className={classes.linkText}>
                   Payment
                 </Typography>
               }
@@ -49,11 +53,14 @@ export default function SideBar(): JSX.Element {
           </Link>
         </ListItem>
         <ListItem>
-          <Link to="/user/security" className={`${classes.links} ${path === 'security' ? classes.active : ''}`}>
+          <Link
+            to="/user/security"
+            className={`${classes.links} ${pathname === '/user/security' ? classes.active : ''}`}
+          >
             <ListItemText
               disableTypography
               primary={
-                <Typography variant="h6" className={classes.linkText}>
+                <Typography variant="body1" className={classes.linkText}>
                   Security
                 </Typography>
               }
@@ -61,11 +68,14 @@ export default function SideBar(): JSX.Element {
           </Link>
         </ListItem>
         <ListItem>
-          <Link to="/user/settings" className={`${classes.links} ${path === 'settings' ? classes.active : ''}`}>
+          <Link
+            to="/user/settings"
+            className={`${classes.links} ${pathname === '/user/settings' ? classes.active : ''}`}
+          >
             <ListItemText
               disableTypography
               primary={
-                <Typography variant="h6" className={classes.linkText}>
+                <Typography variant="body1" className={classes.linkText}>
                   Settings
                 </Typography>
               }

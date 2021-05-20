@@ -8,7 +8,8 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   linkText: {
-    fontWeight: 700,
+    fontWeight: 600,
+    fontSize: '1rem',
   },
   links: {
     textDecoration: 'none',

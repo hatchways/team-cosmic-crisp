@@ -88,7 +88,7 @@ export default function Navbar({ user, logout }: Props): JSX.Element {
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               >
-                <MenuItem onClick={() => history.push('/user/editprofile')}>Account</MenuItem>
+                <MenuItem onClick={() => history.push('/user/editProfile')}>Account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </>

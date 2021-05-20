@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
   formContainer: {
     minHeight: '75vh',
     width: '100%',
-    maxWidth: 675,
+    maxWidth: 685,
     background: '#ffffff',
     borderRadius: theme.shape.borderRadius,
-    padding: '2.25rem',
+    padding: '2.25rem 2.5rem',
   },
 }));
 

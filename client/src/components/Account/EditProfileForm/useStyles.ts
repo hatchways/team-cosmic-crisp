@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
   formTitle: {
     paddingTop: '1.5rem',
     paddingBottom: '3.5rem',
-    fontWeight: 700,
+    fontWeight: 600,
   },
   formLabel: {
     fontWeight: 700,
