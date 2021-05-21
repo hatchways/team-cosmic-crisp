@@ -49,6 +49,7 @@ export default function RequestForm({ price, rating }: Props): JSX.Element {
           <Grid item xs={4}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <TimePicker
+                autoOk
                 variant="inline"
                 inputVariant="outlined"
                 value={startTime}
