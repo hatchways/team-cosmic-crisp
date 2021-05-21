@@ -30,7 +30,8 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
   const classes = useStyles();
 
   const loginDemoUser = async (
-    setFeildValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void,
+    setFeildValue: (field: string, value: string, shouldValidate?: boolean | undefined) => void,
+    // eslint-disable-next-line
     submitForm: (() => Promise<void>) & (() => Promise<any>),
   ) => {
     setFeildValue('email', 'guest@example.com');
