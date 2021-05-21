@@ -7,9 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import register from '../../helpers/APICalls/register';
 import SignUpForm from './SignUpForm/SignUpForm';
-import AuthHeader from '../../components/AuthHeader/AuthHeader';
 import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
+import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 
 export default function Register(): JSX.Element {
   const classes = useStyles();
@@ -40,18 +41,25 @@ export default function Register(): JSX.Element {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} square>
+      <Grid item xs={12} elevation={6} component={Paper} square>
         <Box className={classes.authWrapper}>
-          <AuthHeader linkTo="/login" asideText="Already have an account?" btnText="Login" />
           <Box width="100%" maxWidth={450} p={3} alignSelf="center">
             <Grid container>
               <Grid item xs>
                 <Typography className={classes.welcome} component="h1" variant="h5">
-                  Create an account
+                  Sign up
                 </Typography>
               </Grid>
             </Grid>
             <SignUpForm handleSubmit={handleSubmit} />
+            <Grid className={classes.signupLinkContainer}>
+              <Typography className={classes.linkText}>{'Have an account?'}</Typography>
+              <Link to="/login" className={classes.signupLink}>
+                <Button variant="text" className={classes.signupBtn}>
+                  Login
+                </Button>
+              </Link>
+            </Grid>
           </Box>
           <Box p={1} alignSelf="center" />
         </Box>
