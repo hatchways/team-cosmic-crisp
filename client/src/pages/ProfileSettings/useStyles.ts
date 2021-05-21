@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  formContainer: {
+  paper: {
     minHeight: '75vh',
     width: '100%',
     maxWidth: 685,

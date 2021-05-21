@@ -10,9 +10,13 @@ const useStyles = makeStyles(() => ({
 interface Props {
   label: string;
   placeholder: string;
+  value: string;
+  onChange: (e: React.ChangeEvent) => void;
+  multiline?: boolean;
+  rows?: number;
 }
 
-export default function CustomTextField({ label, placeholder }: Props): JSX.Element {
+export default function CustomTextField({ label, placeholder, value, onChange, multiline, rows }: Props): JSX.Element {
   const classes = useStyles();
   return (
     <Grid item xs={12}>
@@ -23,7 +27,16 @@ export default function CustomTextField({ label, placeholder }: Props): JSX.Elem
           </Typography>
         </Grid>
         <Grid item xs={12} sm={8}>
-          <TextField label={placeholder} color="secondary" variant="outlined" fullWidth />
+          <TextField
+            label={placeholder}
+            onChange={onChange}
+            multiline={multiline}
+            rows={rows}
+            value={value}
+            color="secondary"
+            variant="outlined"
+            fullWidth
+          />
         </Grid>
       </Grid>
     </Grid>

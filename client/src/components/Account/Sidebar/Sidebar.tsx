@@ -1,8 +1,8 @@
-import { Box, List, ListItem, ListItemText, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Box, List } from '@material-ui/core';
 import { useLocation } from 'react-router';
 
 import { useStyles } from './useStyles';
+import CustomListItem from './CustomListItem';
 
 export default function SideBar(): JSX.Element {
   const classes = useStyles();
@@ -10,78 +10,11 @@ export default function SideBar(): JSX.Element {
   return (
     <Box maxWidth={250} className={classes.sideBarContainer}>
       <List className={classes.sideBar}>
-        <ListItem>
-          <Link
-            to="/user/editProfile"
-            className={`${classes.links} ${pathname === '/user/editProfile' ? classes.active : ''}`}
-          >
-            <ListItemText
-              disableTypography
-              primary={
-                <Typography variant="body1" className={classes.linkText}>
-                  Edit Profile
-                </Typography>
-              }
-            />
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link
-            to="/user/profilePhoto"
-            className={`${classes.links} ${pathname === '/user/profilePhoto' ? classes.active : ''}`}
-          >
-            <ListItemText
-              disableTypography
-              primary={
-                <Typography variant="body1" className={classes.linkText}>
-                  Profile Photo
-                </Typography>
-              }
-            />
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link to="/user/payment" className={`${classes.links} ${pathname === '/user/payment' ? classes.active : ''}`}>
-            <ListItemText
-              disableTypography
-              primary={
-                <Typography variant="body1" className={classes.linkText}>
-                  Payment
-                </Typography>
-              }
-            />
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link
-            to="/user/security"
-            className={`${classes.links} ${pathname === '/user/security' ? classes.active : ''}`}
-          >
-            <ListItemText
-              disableTypography
-              primary={
-                <Typography variant="body1" className={classes.linkText}>
-                  Security
-                </Typography>
-              }
-            />
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link
-            to="/user/settings"
-            className={`${classes.links} ${pathname === '/user/settings' ? classes.active : ''}`}
-          >
-            <ListItemText
-              disableTypography
-              primary={
-                <Typography variant="body1" className={classes.linkText}>
-                  Settings
-                </Typography>
-              }
-            />
-          </Link>
-        </ListItem>
+        <CustomListItem label="Edit Profile" actualPath={pathname} targetPath="/user/edit-profile" />
+        <CustomListItem label="Profile Photo" actualPath={pathname} targetPath="/user/profile-photo" />
+        <CustomListItem label="Payment" actualPath={pathname} targetPath="/user/payment" />
+        <CustomListItem label="Security" actualPath={pathname} targetPath="/user/security" />
+        <CustomListItem label="Settings" actualPath={pathname} targetPath="/user/settings" />
       </List>
     </Box>
   );
