@@ -56,7 +56,7 @@ exports.postRequest = asyncHandler(async (req, res, next) => {
 exports.updateRequest = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   try {
-    const request = await Request.findOneAndUpdate(id, { $set: req.body }, { new: true });
+    const request = await Request.findOneAndUpdate({ _id: id }, { $set: req.body }, { new: true });
     res.status(200).json({ request });
   } catch (error) {
     res.status(500);
