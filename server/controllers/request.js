@@ -56,10 +56,10 @@ exports.postRequest = asyncHandler(async (req, res, next) => {
 exports.updateRequest = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   //removing paid field for security reasons
-  req.body.paid = undefined;
+  delete req.body.paid;
   //fields only accessable by sitter
-  req.body.accepted = undefined;
-  req.body.declined = undefined;
+  delete req.body.accepted;
+  delete req.body.declined;
   try {
     const request = await Request.findOneAndUpdate({ _id: id }, { $set: req.body }, { new: true });
     res.status(200).json({ request });
@@ -81,6 +81,7 @@ exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
       request.accepted = accepted;
       request.declined = declined;
     }
+    await request.save();
     res.status(200).json({ request });
   } catch (error) {
     res.status(500);
