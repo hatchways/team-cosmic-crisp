@@ -16,9 +16,9 @@ export default function RequestForm({ price, rating }: Props): JSX.Element {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
   const [startDate, setStartDate] = useState<Date | null>(today);
-  const [startTime, setStartTime] = useState<Date | null>(new Date());
+  const [startTime, setStartTime] = useState<Date | null>(today);
   const [endDate, setEndDate] = useState<Date | null>(tomorrow);
-  const [endTime, setEndTime] = useState<Date | null>(new Date());
+  const [endTime, setEndTime] = useState<Date | null>(tomorrow);
   const classes = useStyles();
   return (
     <Paper elevation={6} className={classes.requestContainer}>
