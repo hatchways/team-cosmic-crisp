@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme) => ({
     padding: '0.5rem',
   },
   transparentNav: {
-    backgroundColor: 'transparent',
     boxShadow: 'none',
   },
   grow: {
@@ -44,10 +43,6 @@ const useStyles = makeStyles((theme) => ({
   signupbtn: {
     background: theme.palette.primary.main,
     color: '#fff',
-    '&:hover': {
-      background: '#fff',
-      color: theme.palette.primary.main,
-    },
   },
   userNavItem: {
     fontWeight: 'bold',
