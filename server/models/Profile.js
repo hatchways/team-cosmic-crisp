@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const profileSchema = new mongoose.Schema({
+    isDogSitter: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     firstName: {
         type: String,
         required: true
@@ -11,13 +16,18 @@ const profileSchema = new mongoose.Schema({
     },
     phoneNumber: Number,
     address: String,
+    city: String,
     description: String,
     availability: [
         {
             start: Date,
             end: Date,
         }
-    ],   
+    ],
+    price: Number,
+    profilePhoto: String,
+    coverPhoto: String,
+    gallery: [String],
 })
 
 module.exports = Profile = mongoose.model('profile', profileSchema);
