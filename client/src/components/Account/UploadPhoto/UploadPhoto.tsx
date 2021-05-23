@@ -1,13 +1,37 @@
-import { Box, Typography, Avatar, Grid, Button } from '@material-ui/core';
+import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+
+import React, { ChangeEventHandler, useRef, useState } from 'react';
 
 import useStyles from './useStyles';
 import profile_url from '../../../Images/b1f0e680702e811aa8ba333cb19c0e0ea95e8e31.png';
+import { isNull } from 'util';
+
 //this image here is just for mockup, will be updated in
 //the future when amazon s3 links are avialible
 
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
+  const inputFile = useRef<HTMLInputElement>(null);
+  const onButtonClick = () => {
+    if (inputFile.current !== null) {
+      inputFile.current.click();
+    }
+  };
+  const [imageUrl, setImageUrl] = useState<string>(profile_url);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    const reader = new FileReader();
+    e.target.files instanceof FileList ? reader.readAsDataURL(e.target.files[0]) : 'handle exception';
+
+    reader.onloadend = () => {
+      if (reader.result) {
+        setImageUrl(reader.result as string);
+      }
+    };
+  };
+
   return (
     <Box>
       <Typography variant="h4" align="center" className={classes.formTitle}>
@@ -15,7 +39,7 @@ export default function UploadPhoto(): JSX.Element {
       </Typography>
       <Grid container direction="column" alignItems="center" spacing={4}>
         <Grid item>
-          <Avatar alt="Profile picture" src={profile_url} className={classes.large} />
+          <Avatar alt="Profile picture" src={imageUrl} className={classes.large} />
         </Grid>
         <Grid item>
           <Typography align="center" color="secondary" className={classes.uploadMessage}>
@@ -23,8 +47,18 @@ export default function UploadPhoto(): JSX.Element {
           </Typography>
         </Grid>
         <Grid item>
-          <Button color="primary" variant="outlined" size="large">
+          <Button color="primary" variant="outlined" size="large" onClick={onButtonClick}>
             <Box px={2} py={1}>
+              <FormControl>
+                <input
+                  type="file"
+                  id="file"
+                  ref={inputFile}
+                  style={{ display: 'none' }}
+                  required
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleImageChange(e)}
+                />
+              </FormControl>
               Upload a file from your device
             </Box>
           </Button>
