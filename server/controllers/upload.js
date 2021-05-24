@@ -34,8 +34,10 @@ exports.uploadPhotos = asyncHandler((req,res,next)=>{
 				if(urlArray.length === files.length){
 					res.status(200)
 						.json({
-							message:'Photos have been successfully uploaded',
-							urlArray
+							success:{
+								message:'Photos have been successfully uploaded',
+								urlArray
+							}
 						})
 				}
 			} catch(err){

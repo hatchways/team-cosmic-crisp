@@ -2,14 +2,19 @@ import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 
-import React, { ChangeEventHandler, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { uploadPhoto } from '../../../helpers/APICalls/uploadPhoto';
 
 import useStyles from './useStyles';
 import profile_url from '../../../Images/b1f0e680702e811aa8ba333cb19c0e0ea95e8e31.png';
-import { isNull } from 'util';
 
 //this image here is just for mockup, will be updated in
 //the future when amazon s3 links are avialible
+
+interface Image {
+  preview: string;
+  raw: File;
+}
 
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
@@ -19,18 +24,28 @@ export default function UploadPhoto(): JSX.Element {
       inputFile.current.click();
     }
   };
-  const [imageUrl, setImageUrl] = useState<string>(profile_url);
+  const [image, setImage] = useState<Image>({ preview: profile_url, raw: '' as unknown as File });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     const reader = new FileReader();
-    e.target.files instanceof FileList ? reader.readAsDataURL(e.target.files[0]) : 'handle exception';
+    e.target.files instanceof FileList ? reader.readAsDataURL(e.target.files[0]) : 'no files found';
 
     reader.onloadend = () => {
       if (reader.result) {
-        setImageUrl(reader.result as string);
+        e.target.files instanceof FileList
+          ? setImage({ preview: reader.result as string, raw: e.target.files[0] })
+          : 'no files found';
       }
     };
+  };
+
+  const handleImageSave = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('photos', image.raw);
+    const result = await uploadPhoto(formData);
+    console.log(result.success?.urlArray[0]);
   };
 
   return (
@@ -40,7 +55,7 @@ export default function UploadPhoto(): JSX.Element {
       </Typography>
       <Grid container direction="column" alignItems="center" spacing={4}>
         <Grid item>
-          <Avatar alt="Profile picture" src={imageUrl} className={classes.large} />
+          <Avatar alt="Profile picture" src={image.preview} className={classes.large} />
         </Grid>
         <Grid item>
           <Typography align="center" color="secondary" className={classes.uploadMessage}>
@@ -68,7 +83,11 @@ export default function UploadPhoto(): JSX.Element {
               <Grid item>
                 <Grid container direction="row" justify="space-around">
                   <Grid>
-                    <Button color="secondary" startIcon={<SaveIcon style={{ color: 'black' }} />}>
+                    <Button
+                      onClick={(e: React.MouseEvent<HTMLButtonElement>): Promise<void> => handleImageSave(e)}
+                      color="secondary"
+                      startIcon={<SaveIcon style={{ color: 'black' }} />}
+                    >
                       Save Photo
                     </Button>
                   </Grid>
