@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
+import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
@@ -24,6 +25,7 @@ function App(): JSX.Element {
               <Layout>
                 <Switch>
                   <Route exact path="/" component={LandingPage} />
+                  <Route exact path="/profile/:id" component={ProfileDetails} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <ProtectedRoute exact path="/listings" component={Listings} />

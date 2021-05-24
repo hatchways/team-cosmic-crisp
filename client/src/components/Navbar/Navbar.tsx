@@ -44,7 +44,7 @@ export default function Navbar({ user, logout }: Props): JSX.Element {
         </Button>
       </Link>
       <Link to="/signup" className={classes.link}>
-        <Button color="inherit" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
+        <Button color="primary" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
           signup
         </Button>
       </Link>

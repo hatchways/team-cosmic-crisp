@@ -51,11 +51,10 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
+          <Typography className={classes.label}>Username</Typography>
           <TextField
             id="username"
-            label={<Typography className={classes.label}>Username</Typography>}
             fullWidth
-            margin="normal"
             InputLabelProps={{
               shrink: true,
             }}
@@ -69,12 +68,13 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             error={touched.username && Boolean(errors.username)}
             value={values.username}
             onChange={handleChange}
+            variant="outlined"
+            placeholder="choose username"
           />
+          <Typography className={classes.label}>E-mail address</Typography>
           <TextField
             id="email"
-            label={<Typography className={classes.label}>E-mail address</Typography>}
             fullWidth
-            margin="normal"
             InputLabelProps={{
               shrink: true,
             }}
@@ -87,12 +87,13 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             error={touched.email && Boolean(errors.email)}
             value={values.email}
             onChange={handleChange}
+            variant="outlined"
+            placeholder="Your email"
           />
+          <Typography className={classes.label}>Password</Typography>
           <TextField
             id="password"
-            label={<Typography className={classes.label}>Password</Typography>}
             fullWidth
-            margin="normal"
             InputLabelProps={{
               shrink: true,
             }}
@@ -105,6 +106,8 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             error={touched.password && Boolean(errors.password)}
             value={values.password}
             onChange={handleChange}
+            variant="outlined"
+            placeholder="Choose password"
           />
 
           <Box textAlign="center">

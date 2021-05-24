@@ -29,6 +29,16 @@ interface Props {
 export default function Login({ handleSubmit }: Props): JSX.Element {
   const classes = useStyles();
 
+  const loginDemoUser = async (
+    setFeildValue: (field: string, value: string, shouldValidate?: boolean | undefined) => void,
+    // eslint-disable-next-line
+    submitForm: (() => Promise<void>) & (() => Promise<any>),
+  ) => {
+    setFeildValue('email', 'guest@example.com');
+    setFeildValue('password', '123456');
+    submitForm();
+  };
+
   return (
     <Formik
       initialValues={{
@@ -44,13 +54,12 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
       })}
       onSubmit={handleSubmit}
     >
-      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
+      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting, setFieldValue, submitForm }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
+          <Typography className={classes.label}>E-mail address</Typography>
           <TextField
             id="email"
-            label={<Typography className={classes.label}>E-mail address</Typography>}
             fullWidth
-            margin="normal"
             InputLabelProps={{
               shrink: true,
             }}
@@ -64,12 +73,13 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             error={touched.email && Boolean(errors.email)}
             value={values.email}
             onChange={handleChange}
+            variant="outlined"
+            placeholder="Your email"
           />
+          <Typography className={classes.label}>Password</Typography>
           <TextField
             id="password"
-            label={<Typography className={classes.label}>Password</Typography>}
             fullWidth
-            margin="normal"
             InputLabelProps={{
               shrink: true,
             }}
@@ -83,13 +93,24 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             error={touched.password && Boolean(errors.password)}
             value={values.password}
             onChange={handleChange}
+            variant="outlined"
+            placeholder="Your password"
           />
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
               {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
             </Button>
+            <Button
+              size="large"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => loginDemoUser(setFieldValue, submitForm)}
+            >
+              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Demo Login'}
+            </Button>
           </Box>
-          <div style={{ height: 95 }} />
+          {/* <div style={{ height: 95 }} /> */}
         </form>
       )}
     </Formik>
