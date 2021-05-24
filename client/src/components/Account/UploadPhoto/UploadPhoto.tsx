@@ -1,5 +1,6 @@
 import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 
 import React, { ChangeEventHandler, useRef, useState } from 'react';
 
@@ -47,26 +48,39 @@ export default function UploadPhoto(): JSX.Element {
           </Typography>
         </Grid>
         <Grid item>
-          <Button color="primary" variant="outlined" size="large" onClick={onButtonClick}>
-            <Box px={2} py={1}>
-              <FormControl>
-                <input
-                  type="file"
-                  id="file"
-                  ref={inputFile}
-                  style={{ display: 'none' }}
-                  required
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleImageChange(e)}
-                />
-              </FormControl>
-              Upload a file from your device
-            </Box>
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button color="secondary" startIcon={<DeleteIcon style={{ color: 'black' }} />}>
-            Delete Photo
-          </Button>
+          <FormControl>
+            <Grid container direction="column" spacing={3}>
+              <Grid item>
+                <Button color="primary" variant="outlined" size="large" onClick={onButtonClick}>
+                  <Box px={2} py={1}>
+                    <input
+                      type="file"
+                      id="file"
+                      ref={inputFile}
+                      style={{ display: 'none' }}
+                      required
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleImageChange(e)}
+                    />
+                    Upload a file from your device
+                  </Box>
+                </Button>
+              </Grid>
+              <Grid item>
+                <Grid container direction="row" justify="space-around">
+                  <Grid>
+                    <Button color="secondary" startIcon={<SaveIcon style={{ color: 'black' }} />}>
+                      Save Photo
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button color="secondary" startIcon={<DeleteIcon style={{ color: 'black' }} />}>
+                      Delete Photo
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </FormControl>
         </Grid>
       </Grid>
     </Box>
