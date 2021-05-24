@@ -8,7 +8,6 @@ const connectDB = require("./db");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-var cors = require('cors')
 
 
 const authRouter = require("./routes/auth");
@@ -47,7 +46,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
-app.use("/api",cors(), uploadRouter);
+app.use("/api", uploadRouter);
 app.use("/profile", profileRouter);
 
 if (process.env.NODE_ENV === "production") {
