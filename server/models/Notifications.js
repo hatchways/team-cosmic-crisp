@@ -3,16 +3,23 @@ const mongoose = require("mongoose");
 const notificationsSchema = new mongoose.Schema({
   notifications: [
     {
-      isNewNotification: {
+      unread: {
         type: Boolean,
         default: true,
       },
+      type: {
+        type: String,
+        default: "message",
+      },
       title: String,
       body: String,
-      date: Date,
+      date: {
+        type: Date,
+        default: Math.floor(Date.now() / 1000),
+      },
       from: {
-        firstName: String,
-        lastName: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
       },
     },
   ],
