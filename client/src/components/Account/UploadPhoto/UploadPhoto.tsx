@@ -1,12 +1,10 @@
 import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
 
-import React, { ChangeEventHandler, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import useStyles from './useStyles';
 import profile_url from '../../../Images/b1f0e680702e811aa8ba333cb19c0e0ea95e8e31.png';
-import { isNull } from 'util';
 
 //this image here is just for mockup, will be updated in
 //the future when amazon s3 links are avialible
@@ -49,7 +47,7 @@ export default function UploadPhoto(): JSX.Element {
         </Grid>
         <Grid item>
           <FormControl>
-            <Grid container direction="column" spacing={3}>
+            <Grid container direction="column" spacing={3} alignItems="center">
               <Grid item>
                 <Button color="primary" variant="outlined" size="large" onClick={onButtonClick}>
                   <Box px={2} py={1}>
@@ -66,18 +64,9 @@ export default function UploadPhoto(): JSX.Element {
                 </Button>
               </Grid>
               <Grid item>
-                <Grid container direction="row" justify="space-around">
-                  <Grid>
-                    <Button color="secondary" startIcon={<SaveIcon style={{ color: 'black' }} />}>
-                      Save Photo
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button color="secondary" startIcon={<DeleteIcon style={{ color: 'black' }} />}>
-                      Delete Photo
-                    </Button>
-                  </Grid>
-                </Grid>
+                <Button color="secondary" startIcon={<DeleteIcon style={{ color: 'black' }} />}>
+                  Delete Photo
+                </Button>
               </Grid>
             </Grid>
           </FormControl>
