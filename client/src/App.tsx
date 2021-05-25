@@ -13,6 +13,7 @@ import Listings from './pages/Listings/Listings';
 import './App.css';
 import UserProfile from './pages/UserProfile/UserProfile';
 import Layout from './components/Layout/Layout';
+import Book from './pages/Book/book';
 
 function App(): JSX.Element {
   return (
@@ -26,6 +27,8 @@ function App(): JSX.Element {
                   <Route exact path="/" component={LandingPage} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
+                  <Route exact path="/signup" component={Signup} />
+                  <Route exact path="/book" component={Book} />
                   <ProtectedRoute exact path="/listings" component={Listings} />
                   <ProtectedRoute exact path="/user/profile" component={UserProfile} />
                 </Switch>
