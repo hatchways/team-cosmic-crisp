@@ -1,47 +1,50 @@
 const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 
+const User = require('../models/User');
 const Profile = require('../models/Profile');
 
-// @route GET /profile
+// @route GET /profiles
 //Search for all profiles
 exports.searchProfiles = asyncHandler(async (req,res,next) => {
-    try {
-        const profiles = await Profile.find();
-        res.status(200).json({
-          success: {
-            profiles
-          }
-        });
-      } catch (error) {
-        res.status(500);
-        throw new Error(error.message);
+  try {
+    const users = await User
+      .find({})
+      .populate({ path: "profile", match: { isDogSitter: { $eq: true }, price: {$exists: true}, city: {$exists: true}}})
+      .select("-password");
+    const userProfiles = users.filter(user => user.profile != null);
+    res.status(200).json({
+      success: {
+        users: userProfiles,
       }
-})
-
-// @route POST /profile
-//Create a new profile
-exports.createProfile = asyncHandler(async (req,res,next) => {
-    const profile = req.body;
-    const newProfile = new Profile({
-        ...profile
     });
-
-    try {
-        await newProfile.save();
-        res.status(201).json({
-          success: {
-            profile: newProfile
-          }
-        });
-        
-    } catch (error) {
-        res.status(500);
-        throw new Error(error.message);
-      }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
 })
 
-// @route GET /profile/:id
+// @route GET /profiles
+//Search for all profiles excluding current user
+exports.searchProtectedProfiles = asyncHandler(async (req,res,next) => {
+  try {
+    const users = await User
+      .find({_id : {$ne: req.user.id}})
+      .populate({ path: "profile", match: { isDogSitter: { $eq: true }, price: {$exists: true}, city: {$exists: true}}})
+      .select("-password");
+    const userProfiles = users.filter(user => user.profile != null);
+    res.status(200).json({
+      success: {
+        users: userProfiles,
+      }
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
+})
+
+// @route GET /profiles/:id
 //Search a single profile using ID
 exports.searchProfile = asyncHandler(async (req,res,next) => {
   const {id} = req.params;
@@ -65,26 +68,26 @@ exports.searchProfile = asyncHandler(async (req,res,next) => {
 
 })
 
-// @route PATCH /profile/:id
+// @route PATCH /profiles/:id
 //Update a single profile using ID
 exports.updateProfile = asyncHandler(async (req,res,next) => {
-    const {id} = req.params;
-    const profile = req.body;
-    
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(400);
-      throw new Error("Invalid profile ID");
-    }
-    
-    try {
-      const updatedProfile = await Profile.findByIdAndUpdate(id, profile, { new: true });
-      res.status(200).json({
-        success: {
-          profile: updatedProfile
-        }
-      });
-    } catch (error) {
-      res.status(500);
-      throw new Error(error.message);
-    }
+  const {id} = req.params;
+  const profile = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(400);
+    throw new Error("Invalid profile ID");
+  }
+  
+  try {
+    const updatedProfile = await Profile.findByIdAndUpdate(id, profile, { new: true });
+    res.status(200).json({
+      success: {
+        profile: updatedProfile
+      }
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
 })
