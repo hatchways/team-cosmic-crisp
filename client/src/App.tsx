@@ -14,7 +14,7 @@ import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
-import Book from './pages/Book/book';
+import Checkout from './pages/Checkout/Checkout';
 
 function App(): JSX.Element {
   return (
@@ -30,7 +30,7 @@ function App(): JSX.Element {
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <Route exact path="/signup" component={Signup} />
-                  <Route exact path="/book" component={Book} />
+                  <Route exact path="/checkout" component={Checkout} />
                   <ProtectedRoute exact path="/listings" component={Listings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
                 </Switch>
