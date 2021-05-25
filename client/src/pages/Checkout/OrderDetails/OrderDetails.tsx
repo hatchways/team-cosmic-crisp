@@ -17,16 +17,24 @@ interface Props {
   };
   startDate: Date | null;
   endDate: Date | null;
+  totalHours: number;
+  subTotal: number;
+  serviceFee: number;
   setStartDate: (date: MaterialUiPickersDate) => void;
   setEndDate: (date: MaterialUiPickersDate) => void;
+  checkout: () => void;
 }
 
 export default function OrderDetails({
   userProfile,
   startDate,
   endDate,
+  totalHours,
+  subTotal,
+  serviceFee,
   setStartDate,
   setEndDate,
+  checkout,
 }: Props): JSX.Element {
   const classes = useStyles();
 
@@ -103,17 +111,29 @@ export default function OrderDetails({
               <Typography variant="h6">Summary</Typography>
             </ListItem>
             <ListItem className={classes.listItem}>
-              <Typography component="legend">Subtotal</Typography> $18
+              <Typography component="legend">Total Hours</Typography> {totalHours}
             </ListItem>
             <ListItem className={classes.listItem}>
-              <Typography component="legend">Service Fee</Typography> $0.3
+              <Typography component="legend">Price</Typography> ${userProfile.price}/hr
+            </ListItem>
+            <ListItem className={classes.listItem}>
+              <Typography component="legend">Subtotal</Typography> ${subTotal}
+            </ListItem>
+            <ListItem className={classes.listItem}>
+              <Typography component="legend">Service Fee</Typography> ${serviceFee}
             </ListItem>
             <Divider />
             <ListItem className={classes.listItem}>
-              <Typography component="legend">Total</Typography> $18.3
+              <Typography component="legend">Total</Typography> ${serviceFee + subTotal}
             </ListItem>
             <ListItem>
-              <Button size="large" variant="outlined" color="primary" className={classes.checkoutBtn}>
+              <Button
+                size="large"
+                variant="outlined"
+                color="primary"
+                className={classes.checkoutBtn}
+                onClick={checkout}
+              >
                 Continue to Checkout
               </Button>
             </ListItem>

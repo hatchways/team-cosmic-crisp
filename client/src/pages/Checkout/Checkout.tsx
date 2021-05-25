@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useStyles from './useStyles';
 import { Paper, Typography, List, ListItem, ListItemText, Divider, Button, Avatar, Box } from '@material-ui/core';
 import OrderDetails from './OrderDetails/OrderDetails';
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
+import Checkout from './Checkout/Checkout';
 
-export default function Checkout(): JSX.Element {
+export default function Order(): JSX.Element {
   const classes = useStyles();
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
+  const [checkout, setCheckout] = useState<boolean>(false);
+  const [totalHours, setTotalHours] = useState<number>(0);
+  const [subTotal, setSubTotal] = useState<number>(0);
+  const [serviceFee, setServiceFee] = useState<number>(0);
 
   //sample sitter
   const userProfile = {
@@ -28,6 +32,17 @@ export default function Checkout(): JSX.Element {
     price: 18,
     rating: 4.35,
   };
+
+  useEffect(() => {
+    if (endDate && startDate) {
+      const hours = Math.abs(endDate.getTime() - startDate.getTime()) / 36e5;
+      if (hours > 0) {
+        setTotalHours(Math.round(hours * 100) / 100);
+      }
+    }
+    setSubTotal(totalHours * userProfile.price);
+    setServiceFee(Math.round(totalHours * userProfile.price * 3) / 100);
+  }, [startDate, endDate]);
   return (
     <>
       <CssBaseline />
@@ -41,13 +56,21 @@ export default function Checkout(): JSX.Element {
       >
         <Grid item md={8} sm={10} xs={12}>
           <Paper elevation={6} className={classes.paper}>
-            <OrderDetails
-              userProfile={userProfile}
-              startDate={startDate}
-              endDate={endDate}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
-            />
+            {checkout ? (
+              <Checkout />
+            ) : (
+              <OrderDetails
+                userProfile={userProfile}
+                startDate={startDate}
+                endDate={endDate}
+                totalHours={totalHours}
+                subTotal={subTotal}
+                serviceFee={serviceFee}
+                setStartDate={setStartDate}
+                setEndDate={setEndDate}
+                checkout={() => setCheckout(true)}
+              />
+            )}
           </Paper>
         </Grid>
       </Grid>
