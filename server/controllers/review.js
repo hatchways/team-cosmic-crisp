@@ -6,27 +6,27 @@ const Profile = require('../models/Profile');
 const Review = require('../models/Review');
 
 // @route GET/reviews/:id
-//Search for all reviews for single user
+// Get all reviews for a single user
 exports.searchReviews = asyncHandler(async (req,res,next) => {
-    // const {id} = req.params;
-
-    // if (!mongoose.Types.ObjectId.isValid(id)) {
-    //     res.status(400);
-    //     throw new Error("Invalid user ID");
-    //   }
-
-    try {
-        const sitterProfile = Profile.find({});
-        res.status(200);
-        res.json({
-            success: {
-              sitterProfile
-            }
-        })
-      } catch (error) {
-        res.status(500);
-        throw new Error(error.message);
+  const profileId = req.params.id;
+  
+  if (!mongoose.Types.ObjectId.isValid(profileId)) {
+    res.status(400);
+    throw new Error("Invalid user ID");
+  }
+  
+  try {
+    const sitterProfile = await Profile.findById(profileId).populate('reviews');
+    res.status(200);
+    res.json({
+      success: {
+        reviews: sitterProfile.reviews,
       }
+    })
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
 })
 
 // @route POST/reviews/:id
@@ -35,6 +35,11 @@ exports.createReview = asyncHandler(async (req,res,next) => {
   const userId = req.user.id;
   const sitterId = req.params.id;
   const review = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    res.status(400);
+    throw new Error("Invalid user ID");
+  }
 
   try {
     const user = await User.findById(userId).populate('profile');
@@ -45,6 +50,7 @@ exports.createReview = asyncHandler(async (req,res,next) => {
       creator: {
         firstName: user.profile.firstName,
         lastName: user.profile.lastName,
+        profilePhoto: user.profile.profilePhoto,
       }
     });
 

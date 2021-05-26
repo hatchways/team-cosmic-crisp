@@ -11,6 +11,7 @@ const reviewSchema = new mongoose.Schema({
     creator: {
         firstName: String,
         lastName: String,
+        profilePhoto: String,
     },
     createdAt: {
         type: Date,
