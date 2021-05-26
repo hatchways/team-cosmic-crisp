@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Typography, TextField } from '@material-ui/core';
 
 import useStyles from './useStyles';
 import CustomTextField from './CustomTextField';
@@ -15,12 +15,15 @@ export default function EditProfileForm(): JSX.Element {
     address: '',
     description: '',
   });
+  const [showPhoneInput, setShowPhoneInput] = useState(false);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
     property: string,
   ): void => {
     setProfile({ ...profile, [property]: e.target.value });
   };
+
+  const toggleInput = () => setShowPhoneInput(!showPhoneInput);
 
   return (
     <Box>
@@ -60,15 +63,18 @@ export default function EditProfileForm(): JSX.Element {
                   PHONE NUMBER
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={4} className={`${showPhoneInput && classes.shouldNotDisplay}`}>
                 <Typography align="left" variant="body1" className={classes.phoneNumber}>
                   No Phone number entered
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4}>
-                <Button color="primary" variant="outlined" size="large">
+              <Grid item xs={12} sm={4} className={`${showPhoneInput && classes.shouldNotDisplay}`}>
+                <Button color="primary" variant="outlined" size="large" onClick={toggleInput}>
                   Add a phone number
                 </Button>
+              </Grid>
+              <Grid item xs={12} sm={8} className={`${!showPhoneInput && classes.shouldNotDisplay}`}>
+                <TextField label="Phone Number" value="" color="secondary" variant="outlined" fullWidth />
               </Grid>
             </Grid>
           </Grid>
@@ -78,7 +84,7 @@ export default function EditProfileForm(): JSX.Element {
             }
             value={profile.address}
             label="WHERE YOU LIVE"
-            placeholder="Address"
+            placeholder="Joe"
           />
           <CustomTextField
             onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
