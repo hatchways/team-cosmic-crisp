@@ -1,9 +1,9 @@
-import { Button, FormGroup, Grid, List, ListItem, TextField, Typography } from '@material-ui/core';
-import { FormEvent, FormEventHandler, useState } from 'react';
+import { Button, Grid, TextField, Typography } from '@material-ui/core';
+import { FormEvent, useState } from 'react';
 import useStyles from './useStyles';
 import Radio from '@material-ui/core/Radio';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import { PaymentMethod, StripeError } from '@stripe/stripe-js';
+import { PaymentMethod } from '@stripe/stripe-js';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import { CircularProgress } from '@material-ui/core';
 
@@ -29,7 +29,6 @@ export default function Payment({ userProfile, hours }: Props): JSX.Element {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState<boolean>(false);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | undefined>(undefined);
   const [billingDetails, setBillingDetails] = useState<{ email: string; phone: string; name: string }>({
     email: '',
     phone: '',
@@ -132,12 +131,12 @@ export default function Payment({ userProfile, hours }: Props): JSX.Element {
 
   const resetForm = () => {
     setProcessing(false);
-    setPaymentMethod(undefined);
     setBillingDetails({
       email: '',
       phone: '',
       name: '',
     });
+    elements?.getElement('card')?.clear();
   };
 
   return (
@@ -189,8 +188,8 @@ export default function Payment({ userProfile, hours }: Props): JSX.Element {
                   onChange={(e) => setBillingDetails({ ...billingDetails, phone: e.target.value })}
                 />
                 <CardElement options={CARD_OPTIONS} className={classes.cardElement} />
-                <Button type="submit" variant="outlined" className={classes.submitBtn} size="large" color="primary">
-                  {processing ? <CircularProgress style={{ color: 'primary' }} /> : 'Confirm & Pay'}
+                <Button type="submit" variant="contained" className={classes.submitBtn} size="large" color="primary">
+                  {processing ? <CircularProgress style={{ color: 'white' }} /> : 'Confirm & Pay'}
                 </Button>
               </form>
             )}

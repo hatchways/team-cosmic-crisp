@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useStyles from './useStyles';
-import { Paper, Typography, List, ListItem, ListItemText, Divider, Button, Avatar, Box } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import OrderDetails from './OrderDetails/OrderDetails';
 import Payment from './Payment/Payment';
 
@@ -45,7 +45,7 @@ export default function Order(): JSX.Element {
     }
     setSubTotal(totalHours * userProfile.price);
     setServiceFee(Math.round(totalHours * userProfile.price * 3) / 100);
-  }, [startDate, endDate]);
+  }, [startDate, endDate, totalHours]);
   return (
     <>
       <CssBaseline />

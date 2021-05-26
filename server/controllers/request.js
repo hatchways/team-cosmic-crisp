@@ -96,11 +96,20 @@ exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
 // @access Private
 exports.payRequest = asyncHandler(async (req, res, next) => {
   const { sitter, hours, payment_method_id, payment_intent_id } = req.body;
+  const requestId = req.params.id;
   let intent;
+
   if (!sitter) {
     res.status(400);
     throw new Error('No sitter provided');
   }
+
+  const request = Request.findById(requestId);
+  if (!requestId || !request) {
+    res.status(400);
+    throw new Error('nvalid Request');
+  }
+
   if (payment_method_id) {
     //getting sitter profile for pricing
     const sitterProfile = await Profile.findById(sitter);
@@ -109,8 +118,8 @@ exports.payRequest = asyncHandler(async (req, res, next) => {
       throw new Error('No sitter found');
     }
 
-    //amount in pennies
-    const totalAmount = hours * sitterProfile.price * 100;
+    //amount in pennies with service fee (3%)
+    const totalAmount = hours * sitterProfile.price * 100 * 1.03;
 
     //creating payment Intent
     intent = await stripe.paymentIntents.create({
