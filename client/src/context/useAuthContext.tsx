@@ -13,25 +13,30 @@ import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
 import searchProfilesAPI from '../helpers/APICalls/searchProfiles';
 import searchProtectedProfilesAPI from '../helpers/APICalls/searchProtectedProfiles';
+import { boolean } from 'yup';
 
 interface IAuthContext {
   loggedInUser: User | null | undefined;
   userProfiles: User[];
   profileDetails: Profile | null | undefined;
+  loading: boolean;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
   updateUserProfilesContext: (data: UserProfileApiDataSuccess) => void;
   updateProfileDetailsContext: (data: ProfileDetailsApiDataSuccess) => void;
   logout: () => void;
+  setLoading: (value: boolean) => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
   userProfiles: [],
   profileDetails: undefined,
+  loading: true,
   updateLoginContext: () => null,
   updateUserProfilesContext: () => null,
   updateProfileDetailsContext: () => null,
   logout: () => null,
+  setLoading: () => boolean,
 });
 
 export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
@@ -39,7 +44,9 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const [userProfiles, setUserProfiles] = useState<User[]>([]);
   const [profileDetails, setProfileDetails] = useState<Profile | null | undefined>();
+  const [loading, setLoading] = useState<boolean>(true);
   const history = useHistory();
+  console.log('Render');
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
@@ -53,12 +60,16 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     (data: UserProfileApiDataSuccess) => {
       setUserProfiles(data.users);
     },
-    [loggedInUser],
+    [history],
   );
 
-  const updateProfileDetailsContext = useCallback((data: ProfileDetailsApiDataSuccess) => {
-    setProfileDetails(data.profile);
-  }, []);
+  const updateProfileDetailsContext = useCallback(
+    (data: ProfileDetailsApiDataSuccess) => {
+      setProfileDetails(data.profile);
+      setLoading(false);
+    },
+    [history],
+  );
 
   const logout = useCallback(async () => {
     // needed to remove token cookie
@@ -72,17 +83,21 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
 
   useEffect(() => {
     const fetchUserProfiles = async () => {
+      setLoading(true);
       await searchProfilesAPI().then((data: UserProfileApiData) => {
         if (data.success) {
           updateUserProfilesContext(data.success);
+          setLoading(false);
         }
       });
     };
 
     const fetchProtectedProfiles = async () => {
+      setLoading(true);
       await searchProtectedProfilesAPI().then((data: UserProfileApiData) => {
         if (data.success) {
           updateUserProfilesContext(data.success);
+          setLoading(false);
         }
       });
     };
@@ -109,10 +124,12 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   return (
     <AuthContext.Provider
       value={{
+        loggedInUser,
         userProfiles,
         profileDetails,
+        loading,
+        setLoading,
         updateProfileDetailsContext,
-        loggedInUser,
         updateLoginContext,
         updateUserProfilesContext,
         logout,

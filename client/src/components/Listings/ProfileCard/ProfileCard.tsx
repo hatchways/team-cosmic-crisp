@@ -13,14 +13,18 @@ interface Props {
 }
 
 export default function ProfileCard({ user }: Props): JSX.Element {
-  const { updateProfileDetailsContext } = useAuth();
+  const { updateProfileDetailsContext, setLoading } = useAuth();
   const { profile } = user;
   const classes = useStyles();
 
   const getProfileDetails = (id: string) => {
+    setLoading(true);
     searchProfileDetails(id).then((data) => {
       if (data.success) {
         updateProfileDetailsContext(data.success);
+      } else if (data.error) {
+        setLoading(false);
+        console.log(data.error);
       }
     });
   };

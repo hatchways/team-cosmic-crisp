@@ -2,9 +2,12 @@ import { Grid, Grow } from '@material-ui/core';
 
 import { useAuth } from '../../../context/useAuthContext';
 import ProfileCard from '../ProfileCard/ProfileCard';
+import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 
 export default function ProfileList(): JSX.Element {
-  const { userProfiles } = useAuth();
+  const { userProfiles, loading } = useAuth();
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <Grow in={true}>

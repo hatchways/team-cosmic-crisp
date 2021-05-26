@@ -4,10 +4,14 @@ import useStyles from './useStyles';
 import { useAuth } from '../../context/useAuthContext';
 import About from '../../components/ProfileDetails/About/About';
 import RequestForm from '../../components/ProfileDetails/RequestForm/RequestForm';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 export default function ProfileDetails(): JSX.Element {
-  const { profileDetails } = useAuth();
+  const { profileDetails, loading } = useAuth();
   const classes = useStyles();
+
+  if (loading) return <LoadingSpinner />;
+
   return (
     <Box display="flex" justifyContent="center" className={classes.mainContainer}>
       <CssBaseline />
