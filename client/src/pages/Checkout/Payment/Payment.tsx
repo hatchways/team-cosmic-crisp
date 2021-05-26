@@ -4,14 +4,16 @@ import useStyles from './useStyles';
 import Radio from '@material-ui/core/Radio';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { PaymentMethod, StripeError } from '@stripe/stripe-js';
+import { useSnackBar } from '../../../context/useSnackbarContext';
+import { CircularProgress } from '@material-ui/core';
 
 export default function OrderDetails({}): JSX.Element {
   const classes = useStyles();
+  const { updateSnackBarMessage } = useSnackBar();
   const [paymentType, setPaymentType] = useState<string>('card');
 
   const stripe = useStripe();
   const elements = useElements();
-  const [error, setError] = useState<StripeError | undefined>(undefined);
   const [processing, setProcessing] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | undefined>(undefined);
   const [billingDetails, setBillingDetails] = useState<{ email: string; phone: string; name: string }>({
@@ -49,6 +51,10 @@ export default function OrderDetails({}): JSX.Element {
     if (!stripe || !elements) {
       return;
     }
+    if (!billingDetails.name || !billingDetails.email) {
+      updateSnackBarMessage('Please enter proper name and email');
+      return;
+    }
     setProcessing(true);
     const cardElement = elements.getElement('card');
     if (cardElement) {
@@ -58,7 +64,7 @@ export default function OrderDetails({}): JSX.Element {
         billing_details: billingDetails,
       });
       if (payload.error) {
-        setError(payload.error);
+        updateSnackBarMessage(payload.error.message || 'Something went wrong Please try again');
       } else {
         setPaymentMethod(payload.paymentMethod);
       }
@@ -67,7 +73,6 @@ export default function OrderDetails({}): JSX.Element {
   };
 
   const reset = () => {
-    setError(undefined);
     setProcessing(false);
     setPaymentMethod(undefined);
     setBillingDetails({
@@ -105,6 +110,7 @@ export default function OrderDetails({}): JSX.Element {
                   variant="outlined"
                   className={classes.input}
                   onChange={(e) => setBillingDetails({ ...billingDetails, name: e.target.value })}
+                  required
                 />
                 <TextField
                   fullWidth
@@ -114,6 +120,7 @@ export default function OrderDetails({}): JSX.Element {
                   type="email"
                   className={classes.input}
                   onChange={(e) => setBillingDetails({ ...billingDetails, email: e.target.value })}
+                  required
                 />
                 <TextField
                   fullWidth
@@ -125,7 +132,7 @@ export default function OrderDetails({}): JSX.Element {
                 />
                 <CardElement options={CARD_OPTIONS} className={classes.cardElement} />
                 <Button type="submit" variant="outlined" className={classes.submitBtn} size="large" color="primary">
-                  Confirm &amp; Pay
+                  {processing ? <CircularProgress style={{ color: 'white' }} /> : 'Confirm & Pay'}
                 </Button>
               </form>
             )}

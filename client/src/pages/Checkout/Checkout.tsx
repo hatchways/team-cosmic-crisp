@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import useStyles from './useStyles';
 import { Paper, Typography, List, ListItem, ListItemText, Divider, Button, Avatar, Box } from '@material-ui/core';
 import OrderDetails from './OrderDetails/OrderDetails';
-import Checkout from './Checkout/Checkout';
+import Payment from './Payment/Payment';
 
 export default function Order(): JSX.Element {
   const classes = useStyles();
@@ -57,7 +57,7 @@ export default function Order(): JSX.Element {
         <Grid item md={8} sm={10} xs={12}>
           <Paper elevation={6} className={classes.paper}>
             {checkout ? (
-              <Checkout />
+              <Payment />
             ) : (
               <OrderDetails
                 userProfile={userProfile}

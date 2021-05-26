@@ -16,7 +16,7 @@ import './App.css';
 import Layout from './components/Layout/Layout';
 import Checkout from './pages/Checkout/Checkout';
 import { loadStripe } from '@stripe/stripe-js';
-import { CardElement, useElements, Elements, useStripe } from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
 const stripePromise = loadStripe(
   'pk_test_51Ite41ETXh1tPNGoqqdONIoPnTfqTTKF7AXARKRrMqmqDzL6jP0dpaD2jQgCVf1NpnId9ZHTC5cTiQZiTlLSHUU100Md0Rj9EK',

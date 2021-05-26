@@ -134,7 +134,7 @@ export default function OrderDetails({
                 className={classes.checkoutBtn}
                 onClick={checkout}
               >
-                Continue to Checkout
+                Continue to Payment
               </Button>
             </ListItem>
           </List>
