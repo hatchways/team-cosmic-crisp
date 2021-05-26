@@ -1,5 +1,6 @@
 import { Grid, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 
 const useStyles = makeStyles(() => ({
   formLabel: {
@@ -11,7 +12,7 @@ interface Props {
   label: string;
   placeholder: string;
   value: string;
-  onChange: (e: React.ChangeEvent) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
   multiline?: boolean;
   rows?: number;
 }
