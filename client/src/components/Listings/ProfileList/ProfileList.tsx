@@ -1,13 +1,17 @@
 import { Grid, Grow } from '@material-ui/core';
 
 import { useAuth } from '../../../context/useAuthContext';
+import { useSnackBar } from '../../../context/useSnackbarContext';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 
 export default function ProfileList(): JSX.Element {
-  const { userProfiles, loading } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
+  const { userProfiles, loading, errorMsg } = useAuth();
 
   if (loading) return <LoadingSpinner />;
+
+  if (errorMsg) updateSnackBarMessage(errorMsg);
 
   return (
     <Grow in={true}>

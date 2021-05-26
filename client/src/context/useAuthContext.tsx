@@ -20,6 +20,7 @@ interface IAuthContext {
   userProfiles: User[];
   profileDetails: Profile | null | undefined;
   loading: boolean;
+  errorMsg: string;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
   updateUserProfilesContext: (data: UserProfileApiDataSuccess) => void;
   updateProfileDetailsContext: (data: ProfileDetailsApiDataSuccess) => void;
@@ -32,6 +33,7 @@ export const AuthContext = createContext<IAuthContext>({
   userProfiles: [],
   profileDetails: undefined,
   loading: true,
+  errorMsg: '',
   updateLoginContext: () => null,
   updateUserProfilesContext: () => null,
   updateProfileDetailsContext: () => null,
@@ -45,8 +47,8 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [userProfiles, setUserProfiles] = useState<User[]>([]);
   const [profileDetails, setProfileDetails] = useState<Profile | null | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [errorMsg, setErrorMsg] = useState<string>('');
   const history = useHistory();
-  console.log('Render');
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
@@ -86,9 +88,12 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       setLoading(true);
       await searchProfilesAPI().then((data: UserProfileApiData) => {
         if (data.success) {
+          setErrorMsg('');
           updateUserProfilesContext(data.success);
-          setLoading(false);
+        } else if (data.error) {
+          setErrorMsg(data.error.message);
         }
+        setLoading(false);
       });
     };
 
@@ -98,7 +103,10 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         if (data.success) {
           updateUserProfilesContext(data.success);
           setLoading(false);
+        } else if (data.error) {
+          setErrorMsg(data.error.message);
         }
+        setLoading(false);
       });
     };
 
@@ -128,6 +136,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         userProfiles,
         profileDetails,
         loading,
+        errorMsg,
         setLoading,
         updateProfileDetailsContext,
         updateLoginContext,

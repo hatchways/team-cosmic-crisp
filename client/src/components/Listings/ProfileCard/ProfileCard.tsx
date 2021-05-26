@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { User } from '../../../interface/User';
 import { useAuth } from '../../../context/useAuthContext';
+import { useSnackBar } from '../../../context/useSnackbarContext';
 import searchProfileDetails from '../../../helpers/APICalls/searchProfileDetails';
 import useStyles from './useStyles';
 
@@ -14,6 +15,7 @@ interface Props {
 
 export default function ProfileCard({ user }: Props): JSX.Element {
   const { updateProfileDetailsContext, setLoading } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
   const { profile } = user;
   const classes = useStyles();
 
@@ -24,7 +26,7 @@ export default function ProfileCard({ user }: Props): JSX.Element {
         updateProfileDetailsContext(data.success);
       } else if (data.error) {
         setLoading(false);
-        console.log(data.error);
+        updateSnackBarMessage(data.error.message);
       }
     });
   };
