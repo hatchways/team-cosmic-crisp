@@ -15,7 +15,7 @@ const notificationsSchema = new mongoose.Schema({
       body: String,
       date: {
         type: Date,
-        default: Math.floor(Date.now() / 1000),
+        default: Date.now,
       },
       from: {
         type: mongoose.Schema.Types.ObjectId,
