@@ -10,7 +10,6 @@ exports.errorHandler = (err, req, res, next) => {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-  console.log(err);
   res.status(statusCode);
   res.json({ error: { message: err.message } });
 };
