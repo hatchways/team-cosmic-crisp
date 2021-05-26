@@ -103,7 +103,7 @@ export default function EditProfileForm(): JSX.Element {
                   No Phone number entered
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4} className={`${showPhoneInput ? classes.shouldNotDisplay : ''}`}>
+              <Grid item xs={12} sm={4} className={`${showPhoneInput && classes.shouldNotDisplay}`}>
                 <Button color="primary" variant="outlined" size="large" onClick={toggleInput}>
                   Add a phone number
                 </Button>
