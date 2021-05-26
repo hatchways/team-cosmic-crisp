@@ -8,8 +8,11 @@ import Payment from './Payment/Payment';
 
 export default function Order(): JSX.Element {
   const classes = useStyles();
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  const [startDate, setStartDate] = useState<Date | null>(yesterday);
+  const [endDate, setEndDate] = useState<Date | null>(today);
   const [checkout, setCheckout] = useState<boolean>(false);
   const [totalHours, setTotalHours] = useState<number>(0);
   const [subTotal, setSubTotal] = useState<number>(0);
@@ -17,7 +20,7 @@ export default function Order(): JSX.Element {
 
   //sample sitter
   const userProfile = {
-    id: 123,
+    id: '60ad22032c5adf3bccd916f8',
     firstName: 'John',
     lastName: 'Wick',
     coverPhoto: 'https://i.pinimg.com/originals/61/0e/87/610e87b0783cd8dfa511f567cfc1b31e.jpg',
@@ -57,7 +60,7 @@ export default function Order(): JSX.Element {
         <Grid item md={8} sm={10} xs={12}>
           <Paper elevation={6} className={classes.paper}>
             {checkout ? (
-              <Payment />
+              <Payment userProfile={userProfile} hours={totalHours} />
             ) : (
               <OrderDetails
                 userProfile={userProfile}

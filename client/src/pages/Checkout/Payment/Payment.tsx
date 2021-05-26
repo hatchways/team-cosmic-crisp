@@ -7,7 +7,21 @@ import { PaymentMethod, StripeError } from '@stripe/stripe-js';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import { CircularProgress } from '@material-ui/core';
 
-export default function OrderDetails({}): JSX.Element {
+interface Props {
+  userProfile: {
+    id: string;
+  };
+  hours: number;
+}
+
+type Responce = {
+  error?: { message: string };
+  success?: boolean;
+  requires_action?: boolean;
+  payment_intent_client_secret?: string;
+};
+
+export default function Payment({ userProfile, hours }: Props): JSX.Element {
   const classes = useStyles();
   const { updateSnackBarMessage } = useSnackBar();
   const [paymentType, setPaymentType] = useState<string>('card');
@@ -66,13 +80,57 @@ export default function OrderDetails({}): JSX.Element {
       if (payload.error) {
         updateSnackBarMessage(payload.error.message || 'Something went wrong Please try again');
       } else {
-        setPaymentMethod(payload.paymentMethod);
+        await stripePaymentMethodHandler(payload.paymentMethod);
       }
     }
     setProcessing(false);
   };
 
-  const reset = () => {
+  const stripePaymentMethodHandler = async (paymentMethod: PaymentMethod) => {
+    const res = await fetch('/requests/:id/pay', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        payment_method_id: paymentMethod.id,
+        sitter: userProfile.id,
+        hours,
+      }),
+    });
+    const paymentResponse = await res.json();
+
+    // Handle server response
+    handleServerResponse(paymentResponse);
+  };
+
+  const handleServerResponse = async (response: Responce) => {
+    if (response.error) {
+      updateSnackBarMessage(response.error.message);
+    } else if (response.requires_action && stripe && response.payment_intent_client_secret) {
+      // Use Stripe.js to handle the required card action
+      const { error: errorAction, paymentIntent } = await stripe.handleCardAction(
+        response.payment_intent_client_secret,
+      );
+
+      if (errorAction) {
+        updateSnackBarMessage('Someting went wrong please try again');
+        // updateSnackBarMessage(errorAction);
+      } else if (paymentIntent) {
+        // The card action has been handled
+        // The PaymentIntent can be confirmed again on the server
+        const serverResponse = await fetch('/requests/:id/pay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ payment_intent_id: paymentIntent.id }),
+        });
+        handleServerResponse(await serverResponse.json());
+      }
+    } else {
+      updateSnackBarMessage('Payment success');
+      resetForm();
+    }
+  };
+
+  const resetForm = () => {
     setProcessing(false);
     setPaymentMethod(undefined);
     setBillingDetails({
@@ -132,7 +190,7 @@ export default function OrderDetails({}): JSX.Element {
                 />
                 <CardElement options={CARD_OPTIONS} className={classes.cardElement} />
                 <Button type="submit" variant="outlined" className={classes.submitBtn} size="large" color="primary">
-                  {processing ? <CircularProgress style={{ color: 'white' }} /> : 'Confirm & Pay'}
+                  {processing ? <CircularProgress style={{ color: 'primary' }} /> : 'Confirm & Pay'}
                 </Button>
               </form>
             )}
