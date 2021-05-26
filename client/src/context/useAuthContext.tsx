@@ -4,7 +4,6 @@ import {
   AuthApiData,
   AuthApiDataSuccess,
   UserProfileApiData,
-  UserProfileApiDataSuccess,
   SitterProfilesApiData,
   SitterProfilesApiDataSuccess,
 } from '../interface/AuthApiData';
@@ -23,7 +22,7 @@ interface IAuthContext {
   loading: boolean;
   errorMsg: string;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
-  updateLoggedInUserDetails: (data: UserProfileApiDataSuccess) => void;
+  updateLoggedInUserDetails: (data: UserProfileApiData) => void;
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
   logout: () => void;
   setLoading: (value: boolean) => void;
@@ -69,8 +68,10 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   );
 
   const updateLoggedInUserDetails = useCallback(
-    (data: UserProfileApiDataSuccess) => {
-      setLoggedInUserDetails(data.profile);
+    (data: UserProfileApiData) => {
+      if (data.success !== undefined) {
+        setLoggedInUserDetails(data.success.profile);
+      }
     },
     [history],
   );
@@ -79,7 +80,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     (id: string) => {
       getUserProfileDetailsAPI(id).then((data: UserProfileApiData) => {
         if (data.success) {
-          updateLoggedInUserDetails(data.success);
+          updateLoggedInUserDetails(data);
         } else if (data.error) {
           setLoggedInUserDetails(null);
         }

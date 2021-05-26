@@ -11,6 +11,7 @@ export const mockProfile: Profile = {
       end: new Date(),
     },
   ],
+  email: 'bob@gmail.com',
   price: 20,
   city: 'New York',
   gallery: [''],
