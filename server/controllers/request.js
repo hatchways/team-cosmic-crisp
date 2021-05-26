@@ -104,10 +104,10 @@ exports.payRequest = asyncHandler(async (req, res, next) => {
     throw new Error('No sitter provided');
   }
 
-  const request = Request.findById(requestId);
+  const request = await Request.findById(requestId);
   if (!requestId || !request) {
     res.status(400);
-    throw new Error('nvalid Request');
+    throw new Error('Invalid Request');
   }
 
   if (payment_method_id) {
@@ -143,6 +143,8 @@ exports.payRequest = asyncHandler(async (req, res, next) => {
   } else if (intent.status === 'succeeded') {
     // The payment didn’t need any additional actions and completed!
     // Handle post-payment fulfillment
+    request.paid = true;
+    await request.save();
     res.json({
       success: true,
     });

@@ -12,6 +12,7 @@ interface Props {
     id: string;
   };
   hours: number;
+  requestId: string;
 }
 
 type Responce = {
@@ -21,7 +22,7 @@ type Responce = {
   payment_intent_client_secret?: string;
 };
 
-export default function Payment({ userProfile, hours }: Props): JSX.Element {
+export default function Payment({ userProfile, hours, requestId }: Props): JSX.Element {
   const classes = useStyles();
   const { updateSnackBarMessage } = useSnackBar();
   const [paymentType, setPaymentType] = useState<string>('card');
@@ -86,7 +87,7 @@ export default function Payment({ userProfile, hours }: Props): JSX.Element {
   };
 
   const stripePaymentMethodHandler = async (paymentMethod: PaymentMethod) => {
-    const res = await fetch('/requests/:id/pay', {
+    const res = await fetch(`/requests/${requestId}/pay`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -116,7 +117,7 @@ export default function Payment({ userProfile, hours }: Props): JSX.Element {
       } else if (paymentIntent) {
         // The card action has been handled
         // The PaymentIntent can be confirmed again on the server
-        const serverResponse = await fetch('/requests/:id/pay', {
+        const serverResponse = await fetch(`/requests/${requestId}/pay`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ payment_intent_id: paymentIntent.id }),
