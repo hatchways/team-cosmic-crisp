@@ -82,17 +82,17 @@ export default function EditProfileForm(): JSX.Element {
                   phone number
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4} className={`${showPhoneInput && classes.shouldNotDisplay}`}>
+              <Grid item xs={12} sm={4} className={`${showPhoneInput ? classes.shouldNotDisplay : ''}`}>
                 <Typography align="left" variant="body1" className={classes.phoneNumber}>
                   No Phone number entered
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4} className={`${showPhoneInput && classes.shouldNotDisplay}`}>
+              <Grid item xs={12} sm={4} className={`${showPhoneInput ? classes.shouldNotDisplay : ''}`}>
                 <Button color="primary" variant="outlined" size="large" onClick={toggleInput}>
                   Add a phone number
                 </Button>
               </Grid>
-              <Grid item xs={12} sm={8} className={`${!showPhoneInput && classes.shouldNotDisplay}`}>
+              <Grid item xs={12} sm={8} className={`${!showPhoneInput ? classes.shouldNotDisplay : ''}`}>
                 <Grow in={showPhoneInput}>
                   <TextField
                     label="Phone Number"
