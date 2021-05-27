@@ -7,7 +7,7 @@ const Review = require('../models/Review');
 
 // @route GET/reviews/:id
 // Get all reviews for a single user
-exports.searchReviews = asyncHandler(async (req,res,next) => {
+exports.getReviews = asyncHandler(async (req,res,next) => {
   const profileId = req.params.id;
   
   if (!mongoose.Types.ObjectId.isValid(profileId)) {
