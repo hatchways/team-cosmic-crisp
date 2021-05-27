@@ -5,18 +5,21 @@ import useStyles from './useStyles';
 import CustomTextField from './CustomTextField';
 
 import React, { useState } from 'react';
+import { useAuth } from '../../../context/useAuthContext';
 
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
+  const { loggedInUser } = useAuth();
   const [profile, setProfile] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    address: '',
-    description: '',
+    firstName: loggedInUser?.profile.firstName,
+    lastName: loggedInUser?.profile.lastName,
+    email: loggedInUser?.email,
+    phoneNumber: loggedInUser?.profile.phoneNumber,
+    address: loggedInUser?.profile.address,
+    description: loggedInUser?.profile.description,
   });
-  const [showPhoneInput, setShowPhoneInput] = useState(false);
+  console.log(profile?.phoneNumber ? 'is true' : 'is false');
+  const [showPhoneInput, setShowPhoneInput] = useState(profile?.phoneNumber ? true : false);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
     property: string,
@@ -26,7 +29,9 @@ export default function EditProfileForm(): JSX.Element {
 
   const toggleInput = () => setShowPhoneInput(!showPhoneInput);
 
-  const handleSaveProfile = () => null;
+  const handleSaveProfile = () => {
+    console.log('user is ', loggedInUser);
+  };
 
   return (
     <Box>
@@ -39,7 +44,7 @@ export default function EditProfileForm(): JSX.Element {
             onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
               handleChange(e, 'firstName')
             }
-            value={profile.firstName}
+            value={profile.firstName ? profile.firstName : ''}
             label="FIRST NAME"
             placeholder="First Name"
           />
@@ -47,7 +52,7 @@ export default function EditProfileForm(): JSX.Element {
             onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
               handleChange(e, 'lastName')
             }
-            value={profile.lastName}
+            value={profile.lastName ? profile.lastName : ''}
             label="LAST NAME"
             placeholder="Last Name"
           />
@@ -55,7 +60,7 @@ export default function EditProfileForm(): JSX.Element {
             onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
               handleChange(e, 'email')
             }
-            value={profile.email}
+            value={profile.email ? profile.email : ''}
             label="EMAIL ADDRESS"
             placeholder="user@gmail.com"
           />
@@ -80,10 +85,13 @@ export default function EditProfileForm(): JSX.Element {
                 <Grow in={showPhoneInput}>
                   <TextField
                     label="Phone Number"
-                    value={profile.phoneNumber}
+                    value={profile.phoneNumber ? profile.phoneNumber : ''}
                     color="secondary"
                     variant="outlined"
                     fullWidth
+                    onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+                      handleChange(e, 'phoneNumber')
+                    }
                   />
                 </Grow>
               </Grid>
@@ -93,15 +101,15 @@ export default function EditProfileForm(): JSX.Element {
             onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
               handleChange(e, 'address')
             }
-            value={profile.address}
+            value={profile.address ? profile.address : ''}
             label="WHERE YOU LIVE"
-            placeholder="Joe"
+            placeholder="Address"
           />
           <CustomTextField
             onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
               handleChange(e, 'description')
             }
-            value={profile.description}
+            value={profile.description ? profile.description : ''}
             multiline={true}
             rows={5}
             label="DESCRIBE YOURSELF"

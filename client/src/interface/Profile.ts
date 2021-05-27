@@ -15,6 +15,6 @@ export interface Profile {
   profilePhoto?: string;
   coverPhoto?: string;
   description?: string;
-  phoneNumber?: Number;
-  address?: String;
+  phoneNumber?: string;
+  address?: string;
 }
