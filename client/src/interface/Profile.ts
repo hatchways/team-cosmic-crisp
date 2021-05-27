@@ -18,3 +18,12 @@ export interface Profile {
   phoneNumber?: string;
   address?: string;
 }
+
+export interface OwnerFormProfile {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  address?: string;
+  description?: string;
+}

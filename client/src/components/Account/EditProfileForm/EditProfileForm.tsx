@@ -6,11 +6,16 @@ import CustomTextField from './CustomTextField';
 
 import React, { useState } from 'react';
 import { useAuth } from '../../../context/useAuthContext';
+import { useSnackBar } from '../../../context/useSnackbarContext';
+
+import updateProfile from '../../../helpers/APICalls/updateProfile';
+import { OwnerFormProfile } from '../../../interface/Profile';
 
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
   const { loggedInUser } = useAuth();
-  const [profile, setProfile] = useState({
+  const { updateSnackBarMessage } = useSnackBar();
+  const [profile, setProfile] = useState<OwnerFormProfile>({
     firstName: loggedInUser?.profile.firstName,
     lastName: loggedInUser?.profile.lastName,
     email: loggedInUser?.email,
@@ -18,7 +23,7 @@ export default function EditProfileForm(): JSX.Element {
     address: loggedInUser?.profile.address,
     description: loggedInUser?.profile.description,
   });
-  console.log(profile?.phoneNumber ? 'is true' : 'is false');
+
   const [showPhoneInput, setShowPhoneInput] = useState(profile?.phoneNumber ? true : false);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
@@ -29,8 +34,14 @@ export default function EditProfileForm(): JSX.Element {
 
   const toggleInput = () => setShowPhoneInput(!showPhoneInput);
 
-  const handleSaveProfile = () => {
-    console.log('user is ', loggedInUser);
+  const handleSaveProfile = async () => {
+    const id = loggedInUser ? loggedInUser?.profile._id : '';
+    try {
+      await updateProfile(id, profile);
+      updateSnackBarMessage('Profie updated');
+    } catch (error) {
+      updateSnackBarMessage(`Error updating user profile ${error}`);
+    }
   };
 
   return (
