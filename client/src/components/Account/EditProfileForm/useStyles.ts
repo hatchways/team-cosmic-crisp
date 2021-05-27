@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { NONAME } from 'node:dns';
 
 const useStyles = makeStyles((theme) => ({
   formTitle: {
@@ -9,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formLabel: {
     fontWeight: 700,
+    textTransform: 'uppercase',
   },
   phoneNumber: {
     fontStyle: 'italic',

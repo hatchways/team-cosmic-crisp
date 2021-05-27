@@ -5,6 +5,7 @@ import React from 'react';
 const useStyles = makeStyles(() => ({
   formLabel: {
     fontWeight: 700,
+    textTransform: 'uppercase',
   },
 }));
 

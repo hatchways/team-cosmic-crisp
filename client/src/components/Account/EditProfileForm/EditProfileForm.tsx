@@ -56,7 +56,7 @@ export default function EditProfileForm(): JSX.Element {
               handleChange(e, 'firstName')
             }
             value={profile.firstName ? profile.firstName : ''}
-            label="FIRST NAME"
+            label="first name"
             placeholder="First Name"
           />
           <CustomTextField
@@ -64,7 +64,7 @@ export default function EditProfileForm(): JSX.Element {
               handleChange(e, 'lastName')
             }
             value={profile.lastName ? profile.lastName : ''}
-            label="LAST NAME"
+            label="last name"
             placeholder="Last Name"
           />
           <CustomTextField
@@ -72,14 +72,14 @@ export default function EditProfileForm(): JSX.Element {
               handleChange(e, 'email')
             }
             value={profile.email ? profile.email : ''}
-            label="EMAIL ADDRESS"
+            label="email address"
             placeholder="user@gmail.com"
           />
           <Grid item xs={12}>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={12} sm={3}>
                 <Typography variant="body1" align="right" className={classes.formLabel}>
-                  PHONE NUMBER
+                  phone number
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={4} className={`${showPhoneInput && classes.shouldNotDisplay}`}>
@@ -113,7 +113,7 @@ export default function EditProfileForm(): JSX.Element {
               handleChange(e, 'address')
             }
             value={profile.address ? profile.address : ''}
-            label="WHERE YOU LIVE"
+            label="where you live"
             placeholder="Address"
           />
           <CustomTextField
@@ -123,7 +123,7 @@ export default function EditProfileForm(): JSX.Element {
             value={profile.description ? profile.description : ''}
             multiline={true}
             rows={5}
-            label="DESCRIBE YOURSELF"
+            label="describe yourself"
             placeholder="About you"
           />
         </Grid>
