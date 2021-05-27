@@ -1,12 +1,14 @@
-const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
+
 const generateToken = require("../utils/generateToken");
+const User = require("../models/User");
+const Profile = require('../models/Profile');
 
 // @route POST /auth/register
 // @desc Register user
 // @access Public
 exports.registerUser = asyncHandler(async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   const emailExists = await User.findOne({ email });
 
@@ -15,19 +17,18 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     throw new Error("A user with that email already exists");
   }
 
-  const usernameExists = await User.findOne({ username });
-
-  if (usernameExists) {
-    res.status(400);
-    throw new Error("A user with that username already exists");
-  }
+  const profile = new Profile({
+    firstName,
+    lastName
+  })
 
   const user = await User.create({
-    username,
     email,
-    password
+    password,
+    profile: profile._id
   });
-
+  const newProfile = await profile.save();
+  
   if (user) {
     const token = generateToken(user._id);
     const secondsInWeek = 604800;
@@ -41,9 +42,10 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
       success: {
         user: {
           id: user._id,
-          username: user.username,
-          email: user.email
-        }
+          email: user.email,
+          registerDate: user.registerDate,
+          profile: newProfile,
+        },
       }
     });
   } else {
@@ -58,7 +60,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 exports.loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate('profile');
 
   if (user && (await user.matchPassword(password))) {
     const token = generateToken(user._id);
@@ -70,12 +72,13 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     });
 
     res.status(200).json({
-      success: {
+      success: {  
         user: {
           id: user._id,
-          username: user.username,
-          email: user.email
-        }
+          email: user.email,
+          registerDate: user.registerDate,
+          profile: user.profile,
+        },
       }
     });
   } else {
@@ -88,7 +91,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 // @desc Get user data with valid token
 // @access Private
 exports.loadUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).populate('profile');
 
   if (!user) {
     res.status(401);
@@ -99,8 +102,9 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
     success: {
       user: {
         id: user._id,
-        username: user.username,
-        email: user.email
+        email: user.email,
+        registerDate: user.registerDate,
+        profile: user.profile,
       }
     }
   });

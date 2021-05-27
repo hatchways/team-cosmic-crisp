@@ -1,9 +1,12 @@
+import { Profile } from './Profile';
+
 export interface User {
-	email: string;
-	username: string;
+  _id: string;
+  email: string;
+  profile: Profile;
 }
 
 export interface SearchUsersApiData {
-	users?: User[];
-	error?: { message: string };
+  users?: User[];
+  error?: { message: string };
 }
