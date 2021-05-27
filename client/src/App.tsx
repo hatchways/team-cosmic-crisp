@@ -11,6 +11,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
+import Messages from './pages/Messages/Messages';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
@@ -42,6 +43,7 @@ function App(): JSX.Element {
                   <Route exact path="/signup" component={Signup} />
                   <Route exact path="/checkout" component={CheckoutContainer} />
                   <ProtectedRoute exact path="/listings" component={Listings} />
+                  <ProtectedRoute exact path="/messages" component={Messages} />
                   <Route exact path="/listings" component={Listings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
                 </Switch>
