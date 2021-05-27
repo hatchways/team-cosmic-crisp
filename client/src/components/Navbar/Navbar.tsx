@@ -17,7 +17,6 @@ interface Props {
 export default function Navbar({ user, logout }: Props): JSX.Element {
   const classes = useStyles();
   const history = useHistory();
-  console.log('render');
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
