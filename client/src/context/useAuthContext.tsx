@@ -12,7 +12,6 @@ import { Profile } from '../interface/Profile';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
 import searchProfilesAPI from '../helpers/APICalls/searchProfiles';
-import searchProtectedProfilesAPI from '../helpers/APICalls/searchProtectedProfiles';
 import { boolean } from 'yup';
 
 interface IAuthContext {
@@ -96,21 +95,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         setLoading(false);
       });
     };
-
-    const fetchProtectedProfiles = async () => {
-      setLoading(true);
-      await searchProtectedProfilesAPI().then((data: UserProfileApiData) => {
-        if (data.success) {
-          updateUserProfilesContext(data.success);
-          setLoading(false);
-        } else if (data.error) {
-          setErrorMsg(data.error.message);
-        }
-        setLoading(false);
-      });
-    };
-
-    loggedInUser ? fetchProtectedProfiles() : fetchUserProfiles();
+    fetchUserProfiles();
   }, [loggedInUser]);
 
   // use our cookies to check if we can login straight away

@@ -16,8 +16,8 @@ export default function ProfileList(): JSX.Element {
   return (
     <Grow in={true}>
       <Grid container spacing={8}>
-        {userProfiles.map((userProfile, index) => (
-          <Grid item xs={12} sm={4} key={index}>
+        {userProfiles.map((userProfile) => (
+          <Grid item xs={12} sm={4} key={userProfile._id}>
             <ProfileCard user={userProfile} />
           </Grid>
         ))}
