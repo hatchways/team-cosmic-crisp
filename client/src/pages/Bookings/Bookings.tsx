@@ -57,13 +57,8 @@ export default function Bookings(): JSX.Element {
 
   const changeBooking = (oldBooking: Request, newBooking: Request) => {
     let allBookings = [...bookings];
-    allBookings = allBookings.map((booking) => {
-      if (booking._id === newBooking._id) {
-        return newBooking;
-      }
-      return booking;
-    });
-    setBookings([...allBookings]);
+    allBookings = allBookings.map((booking) => (booking._id === newBooking._id ? newBooking : booking));
+    setBookings(allBookings);
   };
 
   return (
