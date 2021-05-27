@@ -9,6 +9,7 @@ const Request = require('../models/Request');
 exports.getRequests = asyncHandler(async (req, res, next) => {
   try {
     const requests = await Request.find({ $or: [{ user: req.user.id }, { sitter: req.user.id }] })
+      .sort({ start: 'asc' })
       .populate('sitter', '-password')
       .populate('user', '-password');
 

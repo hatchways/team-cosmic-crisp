@@ -30,6 +30,7 @@ export default function ProfileCard({ user }: Props): JSX.Element {
       }
     });
   };
+  if (!profile) return <></>;
   return (
     <Link to={`/profile/${profile._id}`} onClick={() => getProfileDetails(profile._id)} className={classes.link}>
       <Card raised={true} className={classes.profileCard}>
