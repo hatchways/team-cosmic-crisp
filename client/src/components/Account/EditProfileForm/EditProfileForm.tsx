@@ -1,4 +1,5 @@
 import { Box, Button, Grid, Typography, TextField } from '@material-ui/core';
+import Grow from '@material-ui/core/Grow';
 
 import useStyles from './useStyles';
 import CustomTextField from './CustomTextField';
@@ -24,6 +25,8 @@ export default function EditProfileForm(): JSX.Element {
   };
 
   const toggleInput = () => setShowPhoneInput(!showPhoneInput);
+
+  const handleSaveProfile = () => null;
 
   return (
     <Box>
@@ -74,7 +77,15 @@ export default function EditProfileForm(): JSX.Element {
                 </Button>
               </Grid>
               <Grid item xs={12} sm={8} className={`${!showPhoneInput && classes.shouldNotDisplay}`}>
-                <TextField label="Phone Number" value="" color="secondary" variant="outlined" fullWidth />
+                <Grow in={showPhoneInput}>
+                  <TextField
+                    label="Phone Number"
+                    value={profile.phoneNumber}
+                    color="secondary"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grow>
               </Grid>
             </Grid>
           </Grid>
@@ -98,7 +109,13 @@ export default function EditProfileForm(): JSX.Element {
           />
         </Grid>
         <Box textAlign="center">
-          <Button color="primary" variant="contained" size="large" className={classes.button}>
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            className={classes.button}
+            onClick={handleSaveProfile}
+          >
             SAVE
           </Button>
         </Box>
