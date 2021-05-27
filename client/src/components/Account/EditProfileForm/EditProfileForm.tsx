@@ -11,10 +11,14 @@ import { useSnackBar } from '../../../context/useSnackbarContext';
 import updateProfile from '../../../helpers/APICalls/updateProfile';
 import { OwnerFormProfile } from '../../../interface/Profile';
 
+import { useHistory } from 'react-router-dom';
+
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
   const { loggedInUser } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
+  const history = useHistory();
+
   const [profile, setProfile] = useState<OwnerFormProfile>({
     firstName: loggedInUser?.profile.firstName,
     lastName: loggedInUser?.profile.lastName,
@@ -39,6 +43,10 @@ export default function EditProfileForm(): JSX.Element {
     try {
       await updateProfile(id, profile);
       updateSnackBarMessage('Profie updated');
+      setTimeout(() => {
+        history.go(0);
+        //refresh the page after 1 second
+      }, 1000);
     } catch (error) {
       updateSnackBarMessage(`Error updating user profile ${error}`);
     }
