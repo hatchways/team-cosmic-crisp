@@ -9,15 +9,8 @@ const Request = require('../models/Request');
 exports.getRequests = asyncHandler(async (req, res, next) => {
   try {
     const requests = await Request.find({ $or: [{ user: req.user.id }, { sitter: req.user.id }] })
-      .sort({ start: 'asc' })
-      .populate('sitter', '-password')
-      .populate('user', '-password');
-
-    requests.map((request) => {
-      if (request.user._id.toString() === req.user.id) request.user = undefined;
-      else request.sitter = undefined;
-      return request;
-    });
+      .sort({ start: 'desc' })
+      .populate('sitter', '-password');
 
     res.status(200).json({ requests });
   } catch (error) {

@@ -24,6 +24,7 @@ export default function Bookings(): JSX.Element {
     setLoading(true);
     getRequests().then((data) => {
       if (data.requests) setBookings(data.requests);
+      console.log(data.requests);
     });
     setLoading(false);
   }, []);

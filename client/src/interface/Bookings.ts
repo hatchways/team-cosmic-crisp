@@ -1,9 +1,10 @@
+import { Profile } from './Profile';
 import { User } from './User';
 
 export interface Request {
   _id: string;
   user?: User;
-  sitter?: User;
+  sitter?: Profile;
   start: Date;
   end: Date;
   accepted: boolean;

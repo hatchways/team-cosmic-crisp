@@ -14,7 +14,7 @@ interface Props {
 export default function Bookings({ bookingDetails }: Props): JSX.Element {
   const classes = useStyles();
   if (!bookingDetails) return <></>;
-  const { start, accepted, declined } = bookingDetails;
+  const { start, accepted, declined, sitter } = bookingDetails;
   return (
     <>
       <CssBaseline />
@@ -34,9 +34,9 @@ export default function Bookings({ bookingDetails }: Props): JSX.Element {
           className={classes.bookingDetails}
         >
           <Grid container alignItems="center" className={classes.sitterDetailsContainer}>
-            <AvatarDisplay />
+            <AvatarDisplay src={sitter?.profilePhoto} />
             <Typography component="span" className={classes.sitterName}>
-              Sitter Name
+              {`${sitter?.firstName} ${sitter?.lastName}`}
             </Typography>
           </Grid>
           <Button size="large" disabled className={classes.button}>

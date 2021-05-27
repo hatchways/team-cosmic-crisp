@@ -28,6 +28,7 @@ export default function RequestForm({ profile }: Props): JSX.Element {
     if (profile) {
       postRequest(profile?._id, startDate, endDate).then((data) => {
         setSuccess(true);
+        console.log(data);
       });
     }
     setLoading(false);
