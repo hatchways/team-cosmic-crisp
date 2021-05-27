@@ -10,13 +10,15 @@ import { CircularProgress } from '@material-ui/core';
 interface Props {
   handleSubmit: (
     {
-      username,
+      firstName,
+      lastName,
       email,
       password,
     }: {
       email: string;
       password: string;
-      username: string;
+      firstName: string;
+      lastName: string;
     },
     {
       setStatus,
@@ -24,7 +26,8 @@ interface Props {
     }: FormikHelpers<{
       email: string;
       password: string;
-      username: string;
+      firstName: string;
+      lastName: string;
     }>,
   ) => void;
 }
@@ -37,10 +40,12 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
       initialValues={{
         email: '',
         password: '',
-        username: '',
+        firstName: '',
+        lastName: '',
       }}
       validationSchema={Yup.object().shape({
-        username: Yup.string().required('Username is required').max(40, 'Username is too long'),
+        firstName: Yup.string().required('First name is required'),
+        lastName: Yup.string().required('Last name is required'),
         email: Yup.string().required('Email is required').email('Email is not valid'),
         password: Yup.string()
           .required('Password is required')
@@ -51,9 +56,10 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
-          <Typography className={classes.label}>Username</Typography>
+          <Typography className={classes.label}>First Name</Typography>
           <TextField
-            id="username"
+            id="firstName"
+            color="secondary"
             fullWidth
             InputLabelProps={{
               shrink: true,
@@ -61,19 +67,41 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             InputProps={{
               classes: { input: classes.inputs },
             }}
-            name="username"
-            autoComplete="username"
+            name="firstName"
+            autoComplete="firstName"
             autoFocus
-            helperText={touched.username ? errors.username : ''}
-            error={touched.username && Boolean(errors.username)}
-            value={values.username}
+            helperText={touched.firstName ? errors.firstName : ''}
+            error={touched.firstName && Boolean(errors.firstName)}
+            value={values.firstName}
             onChange={handleChange}
             variant="outlined"
-            placeholder="choose username"
+            placeholder="Your first name"
+          />
+          <Typography className={classes.label}>Last Name</Typography>
+          <TextField
+            id="lastName"
+            color="secondary"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              classes: { input: classes.inputs },
+            }}
+            name="lastName"
+            autoComplete="lastName"
+            autoFocus
+            helperText={touched.lastName ? errors.lastName : ''}
+            error={touched.lastName && Boolean(errors.lastName)}
+            value={values.lastName}
+            onChange={handleChange}
+            variant="outlined"
+            placeholder="Your last name"
           />
           <Typography className={classes.label}>E-mail address</Typography>
           <TextField
             id="email"
+            color="secondary"
             fullWidth
             InputLabelProps={{
               shrink: true,
@@ -93,6 +121,7 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
           <Typography className={classes.label}>Password</Typography>
           <TextField
             id="password"
+            color="secondary"
             fullWidth
             InputLabelProps={{
               shrink: true,

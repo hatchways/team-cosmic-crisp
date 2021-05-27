@@ -1,6 +1,5 @@
 import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
 
 import React, { useRef, useState } from 'react';
 import { uploadPhoto } from '../../../helpers/APICalls/uploadPhoto';
@@ -64,7 +63,7 @@ export default function UploadPhoto(): JSX.Element {
         </Grid>
         <Grid item>
           <FormControl>
-            <Grid container direction="column" spacing={3}>
+            <Grid container direction="column" spacing={3} alignItems="center">
               <Grid item>
                 <Button color="primary" variant="outlined" size="large" onClick={onButtonClick}>
                   <Box px={2} py={1}>
@@ -81,22 +80,9 @@ export default function UploadPhoto(): JSX.Element {
                 </Button>
               </Grid>
               <Grid item>
-                <Grid container direction="row" justify="space-around">
-                  <Grid>
-                    <Button
-                      onClick={(e: React.MouseEvent<HTMLButtonElement>): Promise<void> => handleImageSave(e)}
-                      color="secondary"
-                      startIcon={<SaveIcon style={{ color: 'black' }} />}
-                    >
-                      Save Photo
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button color="secondary" startIcon={<DeleteIcon style={{ color: 'black' }} />}>
-                      Delete Photo
-                    </Button>
-                  </Grid>
-                </Grid>
+                <Button color="secondary" startIcon={<DeleteIcon style={{ color: 'black' }} />}>
+                  Delete Photo
+                </Button>
               </Grid>
             </Grid>
           </FormControl>

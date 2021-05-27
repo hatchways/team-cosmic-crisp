@@ -1,0 +1,20 @@
+export interface Profile {
+  _id: string;
+  isDogSitter: boolean;
+  firstName: string;
+  lastName: string;
+  availability: [
+    {
+      start: Date;
+      end: Date;
+    },
+  ];
+  price: number;
+  city: string;
+  gallery: [string];
+  profilePhoto?: string;
+  coverPhoto?: string;
+  description?: string;
+  phoneNumber?: Number;
+  address?: String;
+}

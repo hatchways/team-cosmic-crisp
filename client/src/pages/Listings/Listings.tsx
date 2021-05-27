@@ -1,15 +1,23 @@
-import Grid from '@material-ui/core/Grid';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import useStyles from './useStyles';
+import { Box, CssBaseline, Typography } from '@material-ui/core';
 
-export default function Search(): JSX.Element {
+import useStyles from './useStyles';
+import ProfileSearch from '../../components/Listings/ProfileSearch/ProfileSearch';
+import ProfileList from '../../components/Listings/ProfileList/ProfileList';
+
+export default function Listings(): JSX.Element {
   const classes = useStyles();
   return (
-    <>
+    <Box display="flex" justifyContent="center" className={classes.mainContainer}>
       <CssBaseline />
-      <Grid container component="main" className={`${classes.root}`}>
-        <h1>Your Search Results</h1>
-      </Grid>
-    </>
+      <Box flex={1} maxWidth={1500}>
+        <Typography variant="h3" align="center" className={classes.title}>
+          Your search results
+        </Typography>
+        <ProfileSearch />
+        <Box className={classes.profilesContainer}>
+          <ProfileList />
+        </Box>
+      </Box>
+    </Box>
   );
 }
