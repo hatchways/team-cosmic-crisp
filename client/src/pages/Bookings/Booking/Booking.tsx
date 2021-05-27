@@ -14,7 +14,7 @@ interface Props {
 export default function Bookings({ bookingDetails }: Props): JSX.Element {
   const classes = useStyles();
   if (!bookingDetails) return <></>;
-  const { start, end } = bookingDetails;
+  const { start, accepted, declined } = bookingDetails;
   return (
     <>
       <CssBaseline />
@@ -40,7 +40,7 @@ export default function Bookings({ bookingDetails }: Props): JSX.Element {
             </Typography>
           </Grid>
           <Button size="large" disabled className={classes.button}>
-            Accepted
+            {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
           </Button>
         </Grid>
       </Paper>

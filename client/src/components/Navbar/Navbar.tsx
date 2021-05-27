@@ -74,7 +74,7 @@ export default function Navbar({ user, logout }: Props): JSX.Element {
     <Grid container>
       <AppBar position="static" className={`${classes.appBar} ${!user && classes.transparentNav}`}>
         <Toolbar>
-          <Link to="/" className={classes.link}>
+          <Link to="/listings" className={classes.link}>
             <img src={Logo} alt="logo" />
           </Link>
           <div className={classes.grow} />

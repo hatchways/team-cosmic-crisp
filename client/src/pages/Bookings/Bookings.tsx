@@ -5,12 +5,14 @@ import useStyles from './useStyles';
 import Booking from './Booking/Booking';
 import { Paper, Typography } from '@material-ui/core';
 import { Request } from '../../interface/Bookings';
+import BookingCalendar from './Calendar/Calendar';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
 export default function Bookings(): JSX.Element {
   const classes = useStyles();
   const bookings = [
     {
-      accepted: false,
+      accepted: true,
       declined: false,
       paid: true,
       _id: '60a7f6713407a107aeda5b46',
@@ -28,7 +30,7 @@ export default function Bookings(): JSX.Element {
     },
     {
       accepted: false,
-      declined: false,
+      declined: true,
       paid: true,
       _id: '60a7f6713407a107aeda5b461',
       start: new Date('2021-05-31T00:00:00.000Z'),
@@ -44,7 +46,7 @@ export default function Bookings(): JSX.Element {
       },
     },
     {
-      accepted: false,
+      accepted: true,
       declined: false,
       paid: true,
       _id: '60a7f6713407a107aeda5b462',
@@ -122,7 +124,7 @@ export default function Bookings(): JSX.Element {
     <>
       <CssBaseline />
       <Grid container component="main" justify="space-around" className={`${classes.root}`}>
-        <Grid item md={4} className={classes.bookings}>
+        <Grid item md={4} sm={5} xs={8} className={classes.bookings}>
           <Paper elevation={6} className={classes.paper}>
             {compareDates(selectedDate, today) === 0 ? (
               <>
@@ -136,11 +138,18 @@ export default function Bookings(): JSX.Element {
                 <Typography component="span" variant="subtitle2">
                   BOOKINGS ON SELECTED DATE:
                 </Typography>
-                <Booking bookingDetails={nextBooking} />
+                {selectedDateBookings.length === 0 && (
+                  <Typography component="p" variant="h6">
+                    No Bookings on selected Date
+                  </Typography>
+                )}
+                {selectedDateBookings.map((booking) => (
+                  <Booking key={booking._id} bookingDetails={booking} />
+                ))}
               </>
             )}
           </Paper>
-          <Paper elevation={6} className={classes.paper}>
+          <Paper elevation={6} className={`${classes.paper}`}>
             <Grid>
               <Typography component="span" variant="subtitle2">
                 CURRENT BOOKINGS:
@@ -160,10 +169,8 @@ export default function Bookings(): JSX.Element {
             </Grid>
           </Paper>
         </Grid>
-        <Grid item md={4}>
-          {bookings.map((booking) => (
-            <Booking key={booking._id} bookingDetails={booking} />
-          ))}
+        <Grid item md={4} sm={5} xs={8}>
+          <BookingCalendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
         </Grid>
       </Grid>
     </>

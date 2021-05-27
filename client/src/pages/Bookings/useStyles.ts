@@ -6,6 +6,7 @@ const useStyles = makeStyles(() => ({
   paper: {
     padding: '2rem 1rem',
     margin: '1rem 0',
+    border: 'none',
   },
   nextBooking: {},
   pastBookings: {
