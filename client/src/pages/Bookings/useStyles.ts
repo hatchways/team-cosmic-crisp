@@ -8,7 +8,10 @@ const useStyles = makeStyles(() => ({
     margin: '1rem 0',
     border: 'none',
   },
-  nextBooking: {},
+  currentBookings: {
+    maxHeight: '60vh',
+    overflowY: 'auto',
+  },
   pastBookings: {
     marginTop: '1rem',
   },

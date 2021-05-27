@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Box, Button, Fade, Grid, Paper, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, Fade, Grid, Paper, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Rating from '@material-ui/lab/Rating';
 import DateFnsUtils from '@date-io/date-fns';
+import { Link } from 'react-router-dom';
 
 import { Profile } from '../../../interface/Profile';
 import useStyles from './useStyles';
+import { postRequest } from '../../../helpers/APICalls/bookings';
 
 export interface Props {
   profile: Profile | null | undefined;
@@ -15,11 +17,22 @@ export default function RequestForm({ profile }: Props): JSX.Element {
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const [startDate, setStartDate] = useState<Date | null>(today);
-  const [startTime, setStartTime] = useState<Date | null>(today);
-  const [endDate, setEndDate] = useState<Date | null>(tomorrow);
-  const [endTime, setEndTime] = useState<Date | null>(tomorrow);
+  const [startDate, setStartDate] = useState<Date>(today);
+  const [endDate, setEndDate] = useState<Date>(tomorrow);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
   const classes = useStyles();
+
+  const handleSubmit = () => {
+    setLoading(true);
+    if (profile) {
+      postRequest(profile?._id, startDate, endDate).then((data) => {
+        setSuccess(true);
+      });
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       {profile && (
@@ -46,7 +59,7 @@ export default function RequestForm({ profile }: Props): JSX.Element {
                       format="MM/dd/yyyy"
                       value={startDate}
                       InputAdornmentProps={{ position: 'start' }}
-                      onChange={(date) => setStartDate(date)}
+                      onChange={(date) => date && setStartDate(date)}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
@@ -57,8 +70,8 @@ export default function RequestForm({ profile }: Props): JSX.Element {
                       color="secondary"
                       variant="inline"
                       inputVariant="outlined"
-                      value={startTime}
-                      onChange={(time) => setStartTime(time)}
+                      value={startDate}
+                      onChange={(time) => time && setStartDate(time)}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
@@ -77,7 +90,7 @@ export default function RequestForm({ profile }: Props): JSX.Element {
                       format="MM/dd/yyyy"
                       value={endDate}
                       InputAdornmentProps={{ position: 'start' }}
-                      onChange={(date) => setEndDate(date)}
+                      onChange={(date) => date && setEndDate(date)}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
@@ -88,16 +101,40 @@ export default function RequestForm({ profile }: Props): JSX.Element {
                       color="secondary"
                       variant="inline"
                       inputVariant="outlined"
-                      value={endTime}
-                      onChange={(time) => setEndTime(time)}
+                      value={endDate}
+                      onChange={(time) => time && setEndDate(time)}
                     />
                   </MuiPickersUtilsProvider>
                 </Grid>
               </Grid>
               <Box textAlign="center">
-                <Button variant="contained" color="primary" className={classes.submitBtn}>
-                  Send Request
-                </Button>
+                {!success ? (
+                  <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
+                    {loading ? <CircularProgress /> : 'Send Request'}
+                  </Button>
+                ) : (
+                  <>
+                    {success && (
+                      <Typography component="span" variant="subtitle1">
+                        Request sent click pay now to continue
+                      </Typography>
+                    )}
+                    <Link
+                      to={{
+                        pathname: '/checkout',
+                        state: {
+                          sitter: profile._id,
+                          startDate,
+                          endDate,
+                        },
+                      }}
+                    >
+                      <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
+                        Pay now
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </Box>
             </Box>
           </Paper>

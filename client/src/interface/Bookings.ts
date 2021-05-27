@@ -10,3 +10,9 @@ export interface Request {
   declined: boolean;
   paid: boolean;
 }
+
+export interface RequestAPIData {
+  requests?: Request[];
+  request?: Request;
+  error?: { message: string };
+}
