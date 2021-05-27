@@ -46,8 +46,8 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/profiles", profileRouter);
 app.use("/api", uploadRouter);
-app.use("/profile", profileRouter);
 app.use("/requests", requestRouter);
 
 if (process.env.NODE_ENV === "production") {
