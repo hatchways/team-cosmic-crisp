@@ -37,7 +37,7 @@ export default function Payment({ userProfile, hours, requestId }: Props): JSX.E
   });
 
   const CARD_OPTIONS = {
-    iconStyle: 'solid',
+    iconStyle: 'solid' as const,
     style: {
       base: {
         iconColor: '#F04040',
