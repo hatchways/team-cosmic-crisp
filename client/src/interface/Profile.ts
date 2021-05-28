@@ -15,6 +15,16 @@ export interface Profile {
   profilePhoto?: string;
   coverPhoto?: string;
   description?: string;
-  phoneNumber?: Number;
-  address?: String;
+  phoneNumber?: number;
+  address?: string;
+}
+
+export interface OwnerFormProfile {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  address?: string;
+  description?: string;
+  profilePhoto?: string;
 }

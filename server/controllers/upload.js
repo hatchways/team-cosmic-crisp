@@ -1,14 +1,14 @@
 const aws = require('aws-sdk');
 const asyncHandler = require("express-async-handler");
 
-exports.uploadPhotos = asyncHandler((req,res,next)=>{
-
-	aws.config.setPromisesDependency();
+aws.config.setPromisesDependency();
 	aws.config.update({
 		accessKeyId: process.env.ACCESS_KEY_ID,
 		secretAccessKey: process.env.SECRET_ACCESS_KEY,
 		region: process.env.REGION
 	});
+
+exports.uploadPhotos = asyncHandler((req,res,next)=>{
 
 	const files = req.files;
 	const urlArray = [];
@@ -41,8 +41,39 @@ exports.uploadPhotos = asyncHandler((req,res,next)=>{
 						})
 				}
 			} catch(err){
-				console.log('Error occured while trying to upload to S3 bucket', err);
+				res.status(400);
+				throw new Error('Error occured during uploading')
 			}
 		})
 	}
+})
+
+exports.deletePhotos = asyncHandler(async (req,res,next)=>{
+	const {urls} = req.body;
+	const arr = []
+	if (urls.length>0){
+		urls.forEach(url=>{
+			let key = url.split('/').pop()
+			arr.push({Key:key})
+		})	
+	}
+
+	const s3 = new aws.S3();
+	const params = {
+		Bucket: process.env.BUCKET_NAME,
+		Delete: {Objects:arr}
+	}
+	try{
+		const data = await s3.deleteObjects(params).promise();
+		res.status(200)
+			.json({
+				success:{
+					message:'Successfully deleted image',
+					data:data
+				}});
+	} catch(error){
+		res.status(400);
+		throw new Error('Error when delete images');
+	}
+	
 })

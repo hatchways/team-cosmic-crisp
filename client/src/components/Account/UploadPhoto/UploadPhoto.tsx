@@ -1,11 +1,15 @@
 import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { uploadPhoto } from '../../../helpers/APICalls/uploadPhoto';
 
+import { useAuth } from '../../../context/useAuthContext';
+import updateProfile from '../../../helpers/APICalls/updateProfile';
+import { useSnackBar } from '../../../context/useSnackbarContext';
+
 import useStyles from './useStyles';
-import profile_url from '../../../Images/b1f0e680702e811aa8ba333cb19c0e0ea95e8e31.png';
+import temp_photo from '../../../Images/temporary-profile-placeholder.jpeg';
 
 //this image here is just for mockup, will be updated in
 //the future when amazon s3 links are avialible
@@ -18,11 +22,16 @@ interface Image {
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
   const inputFile = useRef<HTMLInputElement>(null);
+  const { loggedInUser } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
+
   const onButtonClick = () => {
     if (inputFile.current !== null) {
       inputFile.current.click();
     }
   };
+  const profile_url =
+    loggedInUser && loggedInUser.profile.profilePhoto ? loggedInUser.profile.profilePhoto : temp_photo;
   const [image, setImage] = useState<Image>({ preview: profile_url, raw: '' as unknown as File });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -38,14 +47,34 @@ export default function UploadPhoto(): JSX.Element {
       }
     };
   };
+  useEffect(() => {
+    async function uploadImage() {
+      const formData = new FormData();
+      formData.append('photos', image.raw);
+      let profileUrl: string | undefined = '';
+      try {
+        const result = await uploadPhoto(formData);
+        profileUrl = result?.success?.urlArray[0];
+      } catch (error) {
+        console.log('error occured', error);
+      }
+      const id = loggedInUser ? loggedInUser?.profile._id : '';
+      try {
+        await updateProfile(id, { profilePhoto: profileUrl });
+        updateSnackBarMessage('Image updated');
+      } catch (error) {
+        updateSnackBarMessage(`Error updating user profile ${error}`);
+      }
+    }
+    uploadImage();
+  }, [image]);
 
-  const handleImageSave = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('photos', image.raw);
-    const result = await uploadPhoto(formData);
-    console.log(result.success?.urlArray[0]);
-  };
+  // const handleDeletePhoto = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  //   e.preventDefault();
+  //   try {
+
+  //   }
+  // };
 
   return (
     <Box>
@@ -80,7 +109,11 @@ export default function UploadPhoto(): JSX.Element {
                 </Button>
               </Grid>
               <Grid item>
-                <Button color="secondary" startIcon={<DeleteIcon style={{ color: 'black' }} />}>
+                <Button
+                  color="secondary"
+                  // onClick={handleDeletePhoto}
+                  startIcon={<DeleteIcon style={{ color: 'black' }} />}
+                >
                   Delete Photo
                 </Button>
               </Grid>

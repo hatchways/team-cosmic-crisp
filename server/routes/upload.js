@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const {uploadPhotos} = require('../controllers/upload');
+const {deletePhotos} = require('../controllers/upload')
 
 
 const storage = multer.memoryStorage({
@@ -19,5 +20,7 @@ const multipleUpload = multer({storage:storage})
 router.route('/upload').post(
 	multipleUpload, uploadPhotos
 );
+
+router.route('/upload/:id').delete(deletePhotos)
 
 module.exports = router;
