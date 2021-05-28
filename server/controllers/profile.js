@@ -7,17 +7,20 @@ const Profile = require('../models/Profile');
 // @route GET/profiles
 //Search for all profiles
 exports.searchProfiles = asyncHandler(async (req,res,next) => {
-  let query;
-  (req.user) ? query = {_id : {$ne: req.user.id}} : query = {};
+  let query = {};
   try {
-    const users = await User
-      .find(query)
-      .populate({ path: "profile", match: { isDogSitter: { $eq: true }, price: {$exists: true}, city: {$exists: true}}})
-      .select("-password");
-    const userProfiles = users.filter(user => user.profile != null);
+    if (req.user) {
+      const user = await User.findById(req.user.id);
+      query = {_id : {$ne: user.profile}}
+    }
+
+    const profiles = await Profile
+      .aggregate([
+        { $match: { isDogSitter: true , price: {$exists: true}, city: {$exists: true} }}
+      ])
     res.status(200).json({
       success: {
-        users: userProfiles,
+        users: profiles,
       }
     });
   } catch (error) {
@@ -28,7 +31,7 @@ exports.searchProfiles = asyncHandler(async (req,res,next) => {
 
 // @route GET /profiles/:id
 //Search a single profile using ID
-exports.searchProfile = asyncHandler(async (req,res,next) => {
+exports.getProfile = asyncHandler(async (req,res,next) => {
   const {id} = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {

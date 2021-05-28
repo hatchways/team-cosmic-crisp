@@ -1,9 +1,7 @@
-import { Profile } from './Profile';
-
 export interface User {
   _id: string;
   email: string;
-  profile?: Profile;
+  profile: string;
 }
 
 export interface SearchUsersApiData {

@@ -7,13 +7,13 @@ export interface AuthApiDataSuccess {
   token: string;
 }
 
-export interface UserProfileApiDataSuccess {
+export interface SitterProfilesApiDataSuccess {
   message: string;
-  users: User[];
+  users: Profile[];
   token: string;
 }
 
-export interface ProfileDetailsApiDataSuccess {
+export interface UserProfileApiDataSuccess {
   message: string;
   profile: Profile;
   token: string;
@@ -24,12 +24,12 @@ export interface AuthApiData {
   success?: AuthApiDataSuccess;
 }
 
+export interface SitterProfilesApiData {
+  error?: { message: string };
+  success?: SitterProfilesApiDataSuccess;
+}
+
 export interface UserProfileApiData {
   error?: { message: string };
   success?: UserProfileApiDataSuccess;
-}
-
-export interface ProfileDetailsApiData {
-  error?: { message: string };
-  success?: ProfileDetailsApiDataSuccess;
 }

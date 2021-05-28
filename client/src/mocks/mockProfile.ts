@@ -15,3 +15,5 @@ export const mockProfile: Profile = {
   city: 'New York',
   gallery: [''],
 };
+
+export const mockProfiles: Profile[] = [mockProfile];
