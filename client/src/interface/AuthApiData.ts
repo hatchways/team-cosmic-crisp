@@ -9,7 +9,7 @@ export interface AuthApiDataSuccess {
 
 export interface SitterProfilesApiDataSuccess {
   message: string;
-  users: Profile[];
+  profiles: Profile[];
   token: string;
 }
 

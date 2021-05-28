@@ -27,6 +27,7 @@ interface IAuthContext {
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
   logout: () => void;
   setLoading: (value: boolean) => void;
+  getUserProfileDetails: (id: string) => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -40,6 +41,7 @@ export const AuthContext = createContext<IAuthContext>({
   updateSitterProfilesContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
+  getUserProfileDetails: () => null,
 });
 
 export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
@@ -61,7 +63,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
 
   const updateSitterProfilesContext = useCallback(
     (data: SitterProfilesApiDataSuccess) => {
-      setSitterProfiles(data.users);
+      setSitterProfiles(data.profiles);
     },
     [history],
   );
@@ -143,6 +145,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         updateLoginContext,
         updateSitterProfilesContext,
         logout,
+        getUserProfileDetails,
       }}
     >
       {children}

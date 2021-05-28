@@ -7,20 +7,23 @@ const Profile = require('../models/Profile');
 // @route GET/profiles
 //Search for all profiles
 exports.searchProfiles = asyncHandler(async (req,res,next) => {
-  let query = {};
-  try {
-    if (req.user) {
-      const user = await User.findById(req.user.id);
-      query = {_id : {$ne: user.profile}}
-    }
+  let sitterProfiles;
 
-    const profiles = await Profile
-      .aggregate([
+  try {
+    const profiles = await Profile.aggregate([
         { $match: { isDogSitter: true , price: {$exists: true}, city: {$exists: true} }}
       ])
+
+    if (req.user) {
+      const currentUser = await User.findById(req.user.id);
+      sitterProfiles = profiles.filter((profile) => !(currentUser.profile.equals(profile._id)));
+    } else {
+      sitterProfiles = profiles;
+    }      
+
     res.status(200).json({
       success: {
-        users: profiles,
+        profiles: sitterProfiles,
       }
     });
   } catch (error) {
