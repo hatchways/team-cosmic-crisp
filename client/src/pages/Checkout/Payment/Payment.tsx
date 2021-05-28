@@ -13,16 +13,19 @@ interface Props {
   };
   hours: number;
   requestId: string;
+  start?: Date | null;
+  end?: Date | null;
 }
 
 type Responce = {
   error?: { message: string };
   success?: boolean;
+
   requires_action?: boolean;
   payment_intent_client_secret?: string;
 };
 
-export default function Payment({ userProfile, hours, requestId }: Props): JSX.Element {
+export default function Payment({ userProfile, hours, requestId, start, end }: Props): JSX.Element {
   const classes = useStyles();
   const { updateSnackBarMessage } = useSnackBar();
   const [paymentType, setPaymentType] = useState<string>('card');
@@ -94,6 +97,8 @@ export default function Payment({ userProfile, hours, requestId }: Props): JSX.E
         payment_method_id: paymentMethod.id,
         sitter: userProfile.id,
         hours,
+        start,
+        end,
       }),
     });
     const paymentResponse = await res.json();
@@ -120,7 +125,7 @@ export default function Payment({ userProfile, hours, requestId }: Props): JSX.E
         const serverResponse = await fetch(`/requests/${requestId}/pay`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ payment_intent_id: paymentIntent.id }),
+          body: JSON.stringify({ payment_intent_id: paymentIntent.id, start, end }),
         });
         handleServerResponse(await serverResponse.json());
       }

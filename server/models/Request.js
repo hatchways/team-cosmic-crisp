@@ -23,6 +23,9 @@ const requestSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  payDetails: {
+    paidAt: Date,
+  },
 });
 
 module.exports = Request = mongoose.model('request', requestSchema);

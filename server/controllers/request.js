@@ -95,7 +95,7 @@ exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
 // @desc Pay and confirm accepted request
 // @access Private
 exports.payRequest = asyncHandler(async (req, res, next) => {
-  const { sitter, hours, payment_method_id, payment_intent_id } = req.body;
+  const { sitter, start, end, hours, payment_method_id, payment_intent_id } = req.body;
   const requestId = req.params.id;
   let intent;
 
@@ -144,6 +144,11 @@ exports.payRequest = asyncHandler(async (req, res, next) => {
     // The payment didn’t need any additional actions and completed!
     // Handle post-payment fulfillment
     request.paid = true;
+    request.start = start;
+    request.end = end;
+    request.payDetails = {
+      paidAt: new Date(),
+    };
     await request.save();
     res.json({
       success: true,
