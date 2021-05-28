@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const {uploadPhotos} = require('../controllers/upload');
-const {deletePhotos} = require('../controllers/upload')
+const {uploadPhotos} = require('../controllers/photo');
+const {deletePhotos} = require('../controllers/photo')
 
 
 const storage = multer.memoryStorage({
@@ -17,10 +17,10 @@ const FOLDER_NAME = 'photos';
 const multipleUpload = multer({storage:storage})
 	.array(FOLDER_NAME,MAX_PHOTO_SIZE);
 
-router.route('/upload').post(
+router.route('/photo').post(
 	multipleUpload, uploadPhotos
 );
 
-router.route('/upload/:id').delete(deletePhotos)
+router.route('/photo/:id').delete(deletePhotos)
 
 module.exports = router;

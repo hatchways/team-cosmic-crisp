@@ -6,7 +6,7 @@ export async function uploadPhoto(formData: FormData): Promise<UploadApiData> {
     method: 'POST',
     body: formData,
   };
-  return await fetch(`/api/upload`, fetchOptions)
+  return await fetch(`/api/photo`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
