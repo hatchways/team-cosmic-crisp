@@ -34,13 +34,14 @@ export default function UploadPhoto(): JSX.Element {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     const reader = new FileReader();
-    e.target.files instanceof FileList ? reader.readAsDataURL(e.target.files[0]) : 'no files found';
+    if (!(e.target.files instanceof FileList)) return;
+
+    reader.readAsDataURL(e.target.files[0]);
 
     reader.onloadend = () => {
       if (reader.result) {
-        e.target.files instanceof FileList
-          ? setImage({ preview: reader.result as string, raw: e.target.files[0] })
-          : 'no files found';
+        if (!(e.target.files instanceof FileList)) return;
+        setImage({ preview: reader.result as string, raw: e.target.files[0] });
       }
     };
   };
