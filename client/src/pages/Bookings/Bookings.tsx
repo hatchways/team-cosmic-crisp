@@ -24,7 +24,6 @@ export default function Bookings(): JSX.Element {
     setLoading(true);
     getRequests().then((data) => {
       if (data.requests) setBookings(data.requests);
-      console.log(data.requests);
     });
     setLoading(false);
   }, []);
@@ -85,13 +84,19 @@ export default function Bookings(): JSX.Element {
             </Paper>
           ) : (
             <>
-              <Paper elevation={6} className={classes.paper}>
+              <Paper elevation={6} className={`${classes.paper} ${classes.currentBookings}`}>
                 {moment(selectedDate).isSame(today, 'day') ? (
                   <>
                     <Typography component="span" variant="subtitle2">
                       YOUR NEXT BOOKING:
                     </Typography>
-                    <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
+                    {nextBooking ? (
+                      <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
+                    ) : (
+                      <Typography component="div" variant="h6">
+                        No Bookings Found
+                      </Typography>
+                    )}
                   </>
                 ) : (
                   <>

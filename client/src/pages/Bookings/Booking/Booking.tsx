@@ -7,6 +7,7 @@ import { Button, Paper, Typography } from '@material-ui/core';
 import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { acceptRequest, declineRequest } from '../../../helpers/APICalls/bookings';
+import moment from 'moment';
 
 interface Props {
   bookingDetails: Request | undefined;
@@ -55,7 +56,7 @@ export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.
           <Button size="large" disabled className={classes.button}>
             {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
           </Button>
-          {user === undefined && (
+          {user === undefined && moment(start).isSameOrAfter(new Date()) && (
             <>
               {!accepted && (
                 <Button className={`${classes.button} ${classes.accept}`} onClick={() => handleClick('accept')}>
