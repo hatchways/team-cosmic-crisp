@@ -31,6 +31,12 @@ const useStyles = makeStyles(() => ({
   button: {
     textTransform: 'uppercase',
   },
+  accept: {
+    color: 'green',
+  },
+  decline: {
+    color: 'red',
+  },
 }));
 
 export default useStyles;
