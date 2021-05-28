@@ -21,6 +21,6 @@ router.route('/photo').post(
 	multipleUpload, uploadPhotos
 );
 
-router.route('/photo/:id').delete(deletePhotos)
+router.route('/photo').delete(deletePhotos)
 
 module.exports = router;

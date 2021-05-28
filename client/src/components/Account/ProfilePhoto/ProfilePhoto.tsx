@@ -2,7 +2,7 @@ import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { uploadPhoto } from '../../../helpers/APICalls/uploadPhoto';
+import { uploadPhoto, deletePhotos } from '../../../helpers/APICalls/updatePhotos';
 
 import { useAuth } from '../../../context/useAuthContext';
 import updateProfile from '../../../helpers/APICalls/updateProfile';
@@ -10,9 +10,6 @@ import { useSnackBar } from '../../../context/useSnackbarContext';
 
 import useStyles from './useStyles';
 import temp_photo from '../../../Images/temporary-profile-placeholder.jpeg';
-
-//this image here is just for mockup, will be updated in
-//the future when amazon s3 links are avialible
 
 interface Image {
   preview: string;
@@ -56,7 +53,7 @@ export default function UploadPhoto(): JSX.Element {
         const result = await uploadPhoto(formData);
         profileUrl = result?.success?.urlArray[0];
       } catch (error) {
-        console.log('error occured', error);
+        updateSnackBarMessage(`Error uploading images, ${error}`);
       }
       const id = loggedInUser ? loggedInUser?.profile._id : '';
       try {
@@ -69,12 +66,19 @@ export default function UploadPhoto(): JSX.Element {
     uploadImage();
   }, [image]);
 
-  // const handleDeletePhoto = (e: React.MouseEvent<HTMLButtonElement>): void => {
-  //   e.preventDefault();
-  //   try {
-
-  //   }
-  // };
+  const handleDeletePhoto = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+    e.preventDefault();
+    try {
+      const imageUrl: string =
+        loggedInUser && loggedInUser.profile.profilePhoto ? loggedInUser.profile.profilePhoto : '';
+      const id = loggedInUser ? loggedInUser.profile._id : '';
+      await deletePhotos([imageUrl]);
+      await updateProfile(id, { profilePhoto: undefined });
+      updateSnackBarMessage('Profile photo deleted');
+    } catch (error) {
+      updateSnackBarMessage(`Error deleting profile photo ${error}`);
+    }
+  };
 
   return (
     <Box>
@@ -111,7 +115,7 @@ export default function UploadPhoto(): JSX.Element {
               <Grid item>
                 <Button
                   color="secondary"
-                  // onClick={handleDeletePhoto}
+                  onClick={handleDeletePhoto}
                   startIcon={<DeleteIcon style={{ color: 'black' }} />}
                 >
                   Delete Photo
