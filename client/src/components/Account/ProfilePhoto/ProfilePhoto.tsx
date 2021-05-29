@@ -1,7 +1,7 @@
 import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { uploadPhoto, deletePhotos } from '../../../helpers/APICalls/updatePhotos';
 
 import { useAuth } from '../../../context/useAuthContext';
@@ -9,7 +9,6 @@ import updateProfile from '../../../helpers/APICalls/updateProfile';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 
 import useStyles from './useStyles';
-import temp_photo from '../../../Images/temporary-profile-placeholder.jpeg';
 
 interface Image {
   preview: string;
@@ -19,7 +18,7 @@ interface Image {
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
   const inputFile = useRef<HTMLInputElement>(null);
-  const { loggedInUser } = useAuth();
+  const { loggedInUserDetails, updateLoggedInUserDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
 
   const onButtonClick = () => {
@@ -27,9 +26,8 @@ export default function UploadPhoto(): JSX.Element {
       inputFile.current.click();
     }
   };
-  const profile_url =
-    loggedInUser && loggedInUser.profile.profilePhoto ? loggedInUser.profile.profilePhoto : temp_photo;
-  const [image, setImage] = useState<Image>({ preview: profile_url, raw: '' as unknown as File });
+  const [image, setImage] = useState<Image>({ preview: '', raw: '' as unknown as File });
+  const [s3Url, setS3Url] = useState<string | undefined>(undefined);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
@@ -46,36 +44,61 @@ export default function UploadPhoto(): JSX.Element {
     };
   };
   useEffect(() => {
-    async function uploadImage() {
-      const formData = new FormData();
-      formData.append('photos', image.raw);
-      let profileUrl: string | undefined = '';
-      try {
-        const result = await uploadPhoto(formData);
-        profileUrl = result?.success?.urlArray[0];
-      } catch (error) {
-        updateSnackBarMessage(`Error uploading images, ${error}`);
-      }
-      const id = loggedInUser ? loggedInUser?.profile._id : '';
-      try {
-        await updateProfile(id, { profilePhoto: profileUrl });
-        updateSnackBarMessage('Image updated');
-      } catch (error) {
-        updateSnackBarMessage(`Error updating user profile ${error}`);
-      }
+    if (loggedInUserDetails !== undefined && loggedInUserDetails?.profilePhoto !== undefined) {
+      setImage({ ...image, preview: loggedInUserDetails.profilePhoto });
     }
-    uploadImage();
+  }, [loggedInUserDetails]);
+
+  //handleUpdateImage function will only re-run if image changes
+  const handleUpdateImage = useCallback(async () => {
+    console.log('update runs');
+    const formData = new FormData();
+    formData.append('photos', image.raw);
+    try {
+      const result = await uploadPhoto(formData);
+      console.log('result is ', result);
+      const profileUrl = result?.success?.urlArray[0];
+      profileUrl && setS3Url(profileUrl);
+    } catch (error) {
+      updateSnackBarMessage(`Error uploading images, ${error}`);
+    }
   }, [image]);
+  //check whether handleUpdateImage changes, if it changes, re-run
+  useEffect(() => {
+    handleUpdateImage();
+  }, [handleUpdateImage]);
+
+  //handleUpdateUserProfile function will only re-run if s3Url changes
+  const handleUpdateUserProfile = useCallback(async () => {
+    console.log('handle update runs');
+    const id = loggedInUserDetails ? loggedInUserDetails._id : '';
+    try {
+      if (s3Url !== undefined) {
+        const res = await updateProfile(id, { profilePhoto: s3Url });
+        updateLoggedInUserDetails(res);
+        updateSnackBarMessage('Image updated');
+      }
+    } catch (error) {
+      updateSnackBarMessage(`Error updating user profile ${error}`);
+    }
+  }, [s3Url]);
+  //check whether handleUpdateImage changes, if it changes, re-run
+  useEffect(() => {
+    handleUpdateUserProfile();
+  }, [handleUpdateUserProfile]);
 
   const handleDeletePhoto = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault();
     try {
       const imageUrl: string =
-        loggedInUser && loggedInUser.profile.profilePhoto ? loggedInUser.profile.profilePhoto : '';
-      const id = loggedInUser ? loggedInUser.profile._id : '';
+        loggedInUserDetails && loggedInUserDetails.profilePhoto ? loggedInUserDetails.profilePhoto : '';
       await deletePhotos([imageUrl]);
-      await updateProfile(id, { profilePhoto: undefined });
-      updateSnackBarMessage('Profile photo deleted');
+      setS3Url('');
+      setImage({ preview: '', raw: '' as unknown as File });
+      const id = loggedInUserDetails ? loggedInUserDetails._id : '';
+      const res = await updateProfile(id, { profilePhoto: undefined });
+      updateLoggedInUserDetails(res);
+      updateSnackBarMessage('Image deleted');
     } catch (error) {
       updateSnackBarMessage(`Error deleting profile photo ${error}`);
     }
