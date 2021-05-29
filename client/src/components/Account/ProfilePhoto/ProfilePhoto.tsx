@@ -51,12 +51,10 @@ export default function UploadPhoto(): JSX.Element {
 
   //handleUpdateImage function will only re-run if image changes
   const handleUpdateImage = useCallback(async () => {
-    console.log('update runs');
     const formData = new FormData();
     formData.append('photos', image.raw);
     try {
       const result = await uploadPhoto(formData);
-      console.log('result is ', result);
       const profileUrl = result?.success?.urlArray[0];
       profileUrl && setS3Url(profileUrl);
     } catch (error) {
@@ -70,7 +68,6 @@ export default function UploadPhoto(): JSX.Element {
 
   //handleUpdateUserProfile function will only re-run if s3Url changes
   const handleUpdateUserProfile = useCallback(async () => {
-    console.log('handle update runs');
     const id = loggedInUserDetails ? loggedInUserDetails._id : '';
     try {
       if (s3Url !== undefined) {

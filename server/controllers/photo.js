@@ -49,11 +49,9 @@ exports.uploadPhotos = asyncHandler((req,res,next)=>{
 })
 
 exports.deletePhotos = asyncHandler(async (req,res,next)=>{
-	console.log('delete route reahced');
-	console.log('the request body is ', req.body)
+
 	const {urls} = req.body;
 	const arr = []
-	// console.log('url issssss ', url);
 	if (urls && urls.length>0){
 		urls.forEach(url=>{
 			let key = url.split('/').pop()

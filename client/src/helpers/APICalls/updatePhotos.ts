@@ -14,7 +14,6 @@ export async function uploadPhoto(formData: FormData): Promise<UploadApiData> {
 }
 
 export async function deletePhotos(urls: string[]): Promise<DeletePhotoApiData> {
-  console.log('the url is in fech request', urls);
   const fetchOptions: FetchPhotoOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
