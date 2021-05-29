@@ -50,39 +50,37 @@ export default function UploadPhoto(): JSX.Element {
   }, [loggedInUserDetails]);
 
   //handleUpdateImage function will only re-run if image changes
-  const handleUpdateImage = useCallback(async () => {
-    const formData = new FormData();
-    formData.append('photos', image.raw);
-    try {
-      const result = await uploadPhoto(formData);
-      const profileUrl = result?.success?.urlArray[0];
-      profileUrl && setS3Url(profileUrl);
-    } catch (error) {
-      updateSnackBarMessage(`Error uploading images, ${error}`);
-    }
-  }, [image]);
-  //check whether handleUpdateImage changes, if it changes, re-run
   useEffect(() => {
+    async function handleUpdateImage() {
+      const formData = new FormData();
+      formData.append('photos', image.raw);
+      try {
+        const result = await uploadPhoto(formData);
+        const profileUrl = result?.success?.urlArray[0];
+        profileUrl && setS3Url(profileUrl);
+      } catch (error) {
+        updateSnackBarMessage(`Error uploading images, ${error}`);
+      }
+    }
     handleUpdateImage();
-  }, [handleUpdateImage]);
+  }, [image]);
 
   //handleUpdateUserProfile function will only re-run if s3Url changes
-  const handleUpdateUserProfile = useCallback(async () => {
-    const id = loggedInUserDetails ? loggedInUserDetails._id : '';
-    try {
-      if (s3Url !== undefined) {
-        const res = await updateProfile(id, { profilePhoto: s3Url });
-        updateLoggedInUserDetails(res);
-        updateSnackBarMessage('Image updated');
-      }
-    } catch (error) {
-      updateSnackBarMessage(`Error updating user profile ${error}`);
-    }
-  }, [s3Url]);
-  //check whether handleUpdateImage changes, if it changes, re-run
   useEffect(() => {
-    handleUpdateUserProfile();
-  }, [handleUpdateUserProfile]);
+    async function handleUpdateUserprofile() {
+      const id = loggedInUserDetails ? loggedInUserDetails._id : '';
+      try {
+        if (s3Url !== undefined) {
+          const res = await updateProfile(id, { profilePhoto: s3Url });
+          updateLoggedInUserDetails(res);
+          updateSnackBarMessage('Image updated');
+        }
+      } catch (error) {
+        updateSnackBarMessage(`Error updating user profile ${error}`);
+      }
+    }
+    handleUpdateUserprofile();
+  }, [s3Url]);
 
   const handleDeletePhoto = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault();
