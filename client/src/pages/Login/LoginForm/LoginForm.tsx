@@ -34,7 +34,7 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
     // eslint-disable-next-line
     submitForm: (() => Promise<void>) & (() => Promise<any>),
   ) => {
-    setFeildValue('email', 'guest@example.com');
+    setFeildValue('email', 'johnwick@gmail.com');
     setFeildValue('password', '123456');
     submitForm();
   };
