@@ -3,7 +3,6 @@ import { FetchOptions } from '../../interface/FetchOptions';
 import { OwnerFormProfile } from '../../interface/Profile';
 
 const updateProfiles = async (profileId: string, profile: OwnerFormProfile): Promise<UserProfileApiData> => {
-  console.log('profile is ', profile);
   const fetchOptions: FetchOptions = {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },

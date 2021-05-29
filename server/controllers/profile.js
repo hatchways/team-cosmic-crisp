@@ -61,7 +61,6 @@ exports.getProfile = asyncHandler(async (req,res,next) => {
 exports.updateProfile = asyncHandler(async (req,res,next) => {
   const {id} = req.params;
   const profile = req.body;
-  console.log('profile in server is ', profile);
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(400);
@@ -70,7 +69,6 @@ exports.updateProfile = asyncHandler(async (req,res,next) => {
   
   try {
     const updatedProfile = await Profile.findByIdAndUpdate(id, profile, { new: true });
-    console.log('updated Profile is ', updatedProfile);
     res.status(200).json({
       success: {
         profile: updatedProfile
