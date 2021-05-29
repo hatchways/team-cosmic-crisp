@@ -14,6 +14,7 @@ import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
+import Bookings from './pages/Bookings/Bookings';
 
 function App(): JSX.Element {
   return (
@@ -29,6 +30,7 @@ function App(): JSX.Element {
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <Route exact path="/listings" component={Listings} />
+                  <Route exact path="/bookings" component={Bookings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
                 </Switch>
               </Layout>

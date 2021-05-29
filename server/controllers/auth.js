@@ -19,7 +19,8 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 
   const profile = new Profile({
     firstName,
-    lastName
+    lastName,
+    email
   })
 
   const user = await User.create({
@@ -44,7 +45,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
           id: user._id,
           email: user.email,
           registerDate: user.registerDate,
-          profile: newProfile,
+          profile: newProfile._id,
         },
       }
     });
@@ -77,7 +78,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
           id: user._id,
           email: user.email,
           registerDate: user.registerDate,
-          profile: user.profile,
+          profile: user.profile._id,
         },
       }
     });
@@ -104,7 +105,7 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
         id: user._id,
         email: user.email,
         registerDate: user.registerDate,
-        profile: user.profile,
+        profile: user.profile._id,
       }
     }
   });

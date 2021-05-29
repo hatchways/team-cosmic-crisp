@@ -9,13 +9,14 @@ export interface Profile {
       end: Date;
     },
   ];
+  email?: string;
   price: number;
   city: string;
   gallery: [string];
   profilePhoto?: string;
   coverPhoto?: string;
   description?: string;
-  phoneNumber?: number;
+  phoneNumber?: string;
   address?: string;
 }
 

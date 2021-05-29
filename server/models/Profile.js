@@ -14,6 +14,7 @@ const profileSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    email: String,
     phoneNumber: Number,
     address: String,
     city: String,

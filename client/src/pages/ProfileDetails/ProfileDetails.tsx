@@ -1,4 +1,5 @@
 import { Box, CssBaseline, Grid } from '@material-ui/core';
+import { useParams } from 'react-router';
 
 import useStyles from './useStyles';
 import { useAuth } from '../../context/useAuthContext';
@@ -7,7 +8,9 @@ import RequestForm from '../../components/ProfileDetails/RequestForm/RequestForm
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 export default function ProfileDetails(): JSX.Element {
-  const { profileDetails, loading } = useAuth();
+  const { id } = useParams<{ id?: string }>();
+  const { sitterProfiles, loading } = useAuth();
+  const sitterProfile = sitterProfiles.filter((sitter) => sitter._id === id)[0];
   const classes = useStyles();
 
   if (loading) return <LoadingSpinner />;
@@ -18,10 +21,10 @@ export default function ProfileDetails(): JSX.Element {
       <Box maxWidth={1500}>
         <Grid container spacing={6} className={classes.mainGrid}>
           <Grid item xs={12} sm={12} md={8}>
-            <About profile={profileDetails} />
+            <About sitter={sitterProfile} />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <RequestForm profile={profileDetails} />
+            <RequestForm sitter={sitterProfile} />
           </Grid>
         </Grid>
       </Box>

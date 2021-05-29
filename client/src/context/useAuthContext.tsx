@@ -4,47 +4,50 @@ import {
   AuthApiData,
   AuthApiDataSuccess,
   UserProfileApiData,
-  UserProfileApiDataSuccess,
-  ProfileDetailsApiDataSuccess,
+  SitterProfilesApiData,
+  SitterProfilesApiDataSuccess,
 } from '../interface/AuthApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/Profile';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
-import searchProfilesAPI from '../helpers/APICalls/searchProfiles';
+import searchSitterProfilesAPI from '../helpers/APICalls/searchProfiles';
+import getUserProfileDetailsAPI from '../helpers/APICalls/getUserProfileDetails';
 import { boolean } from 'yup';
 
 interface IAuthContext {
   loggedInUser: User | null | undefined;
-  userProfiles: User[];
-  profileDetails: Profile | null | undefined;
+  loggedInUserDetails: Profile | null | undefined;
+  sitterProfiles: Profile[];
   loading: boolean;
   errorMsg: string;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
-  updateUserProfilesContext: (data: UserProfileApiDataSuccess) => void;
-  updateProfileDetailsContext: (data: ProfileDetailsApiDataSuccess) => void;
+  updateLoggedInUserDetails: (data: UserProfileApiData) => void;
+  updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
   logout: () => void;
   setLoading: (value: boolean) => void;
+  getUserProfileDetails: (id: string) => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
-  userProfiles: [],
-  profileDetails: undefined,
+  loggedInUserDetails: undefined,
+  sitterProfiles: [],
   loading: true,
   errorMsg: '',
   updateLoginContext: () => null,
-  updateUserProfilesContext: () => null,
-  updateProfileDetailsContext: () => null,
+  updateLoggedInUserDetails: () => null,
+  updateSitterProfilesContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
+  getUserProfileDetails: () => null,
 });
 
 export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   // default undefined before loading, once loaded provide user or null if logged out
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
-  const [userProfiles, setUserProfiles] = useState<User[]>([]);
-  const [profileDetails, setProfileDetails] = useState<Profile | null | undefined>();
+  const [loggedInUserDetails, setLoggedInUserDetails] = useState<Profile | null | undefined>();
+  const [sitterProfiles, setSitterProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const history = useHistory();
@@ -57,17 +60,31 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     [history],
   );
 
-  const updateUserProfilesContext = useCallback(
-    (data: UserProfileApiDataSuccess) => {
-      setUserProfiles(data.users);
+  const updateSitterProfilesContext = useCallback(
+    (data: SitterProfilesApiDataSuccess) => {
+      setSitterProfiles(data.profiles);
     },
     [history],
   );
 
-  const updateProfileDetailsContext = useCallback(
-    (data: ProfileDetailsApiDataSuccess) => {
-      setProfileDetails(data.profile);
-      setLoading(false);
+  const updateLoggedInUserDetails = useCallback(
+    (data: UserProfileApiData) => {
+      if (data.success !== undefined) {
+        setLoggedInUserDetails(data.success.profile);
+      }
+    },
+    [history],
+  );
+
+  const getUserProfileDetails = useCallback(
+    (id: string) => {
+      getUserProfileDetailsAPI(id).then((data: UserProfileApiData) => {
+        if (data.success) {
+          updateLoggedInUserDetails(data);
+        } else if (data.error) {
+          setLoggedInUserDetails(null);
+        }
+      });
     },
     [history],
   );
@@ -78,24 +95,25 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       .then(() => {
         history.push('/login');
         setLoggedInUser(null);
+        setLoggedInUserDetails(null);
       })
       .catch((error) => console.error(error));
   }, [history]);
 
   useEffect(() => {
-    const fetchUserProfiles = async () => {
+    const fetchSitterProfiles = async () => {
       setLoading(true);
-      await searchProfilesAPI().then((data: UserProfileApiData) => {
+      await searchSitterProfilesAPI().then((data: SitterProfilesApiData) => {
         if (data.success) {
           setErrorMsg('');
-          updateUserProfilesContext(data.success);
+          updateSitterProfilesContext(data.success);
         } else if (data.error) {
           setErrorMsg(data.error.message);
         }
         setLoading(false);
       });
     };
-    fetchUserProfiles();
+    fetchSitterProfiles();
   }, [loggedInUser]);
 
   // use our cookies to check if we can login straight away
@@ -103,6 +121,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     const checkLoginWithCookies = async () => {
       await loginWithCookies().then((data: AuthApiData) => {
         if (data.success) {
+          getUserProfileDetails(data.success.user.profile);
           updateLoginContext(data.success);
           history.push('/listings');
         } else {
@@ -118,15 +137,16 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     <AuthContext.Provider
       value={{
         loggedInUser,
-        userProfiles,
-        profileDetails,
+        loggedInUserDetails,
+        sitterProfiles,
         loading,
         errorMsg,
         setLoading,
-        updateProfileDetailsContext,
+        updateLoggedInUserDetails,
         updateLoginContext,
-        updateUserProfilesContext,
+        updateSitterProfilesContext,
         logout,
+        getUserProfileDetails,
       }}
     >
       {children}

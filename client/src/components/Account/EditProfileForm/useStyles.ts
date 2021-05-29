@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formLabel: {
     fontWeight: 700,
+    textTransform: 'uppercase',
   },
   phoneNumber: {
     fontStyle: 'italic',
@@ -18,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '1.75rem',
     minWidth: '8.5rem',
     borderRadius: theme.shape.borderRadius,
+  },
+  shouldNotDisplay: {
+    display: 'none',
   },
 }));
 
