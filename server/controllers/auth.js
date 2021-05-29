@@ -19,7 +19,8 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 
   const profile = new Profile({
     firstName,
-    lastName
+    lastName,
+    email
   })
 
   const user = await User.create({

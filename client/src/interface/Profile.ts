@@ -9,6 +9,7 @@ export interface Profile {
       end: Date;
     },
   ];
+  email?: string;
   price: number;
   city: string;
   gallery: [string];

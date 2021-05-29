@@ -4,31 +4,42 @@ import Grow from '@material-ui/core/Grow';
 import useStyles from './useStyles';
 import CustomTextField from './CustomTextField';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/useAuthContext';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 
 import updateProfile from '../../../helpers/APICalls/updateProfile';
 import { OwnerFormProfile } from '../../../interface/Profile';
 
-import { useHistory } from 'react-router-dom';
-
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
-  const { loggedInUser } = useAuth();
+  const { loggedInUserDetails, updateLoggedInUserDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
-  const history = useHistory();
 
   const [profile, setProfile] = useState<OwnerFormProfile>({
-    firstName: loggedInUser?.profile.firstName,
-    lastName: loggedInUser?.profile.lastName,
-    email: loggedInUser?.email,
-    phoneNumber: loggedInUser?.profile.phoneNumber,
-    address: loggedInUser?.profile.address,
-    description: loggedInUser?.profile.description,
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    description: '',
   });
+  useEffect(() => {
+    if (loggedInUserDetails !== undefined) {
+      setProfile({
+        ...profile,
+        firstName: loggedInUserDetails?.firstName,
+        lastName: loggedInUserDetails?.lastName,
+        email: loggedInUserDetails?.email,
+        phoneNumber: loggedInUserDetails?.phoneNumber,
+        address: loggedInUserDetails?.address,
+        description: loggedInUserDetails?.description,
+      });
+    }
+  }, [loggedInUserDetails]);
 
-  const [showPhoneInput, setShowPhoneInput] = useState(profile?.phoneNumber ? true : false);
+  const [showPhoneInput, setShowPhoneInput] = useState(!profile?.phoneNumber ? true : false);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
     property: string,
@@ -39,14 +50,11 @@ export default function EditProfileForm(): JSX.Element {
   const toggleInput = () => setShowPhoneInput(!showPhoneInput);
 
   const handleSaveProfile = async () => {
-    const id = loggedInUser ? loggedInUser?.profile._id : '';
+    const id = loggedInUserDetails ? loggedInUserDetails._id : '';
     try {
-      await updateProfile(id, profile);
+      const res = await updateProfile(id, profile);
+      updateLoggedInUserDetails(res);
       updateSnackBarMessage('Profie updated');
-      setTimeout(() => {
-        history.go(0);
-        //refresh the page after 1 second
-      }, 1000);
     } catch (error) {
       updateSnackBarMessage(`Error updating user profile ${error}`);
     }
@@ -60,7 +68,7 @@ export default function EditProfileForm(): JSX.Element {
       <form>
         <Grid container spacing={3}>
           <CustomTextField
-            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>): void =>
               handleChange(e, 'firstName')
             }
             value={profile.firstName ? profile.firstName : ''}
