@@ -23,4 +23,6 @@ export interface OwnerFormProfile {
   phoneNumber?: string;
   address?: string;
   description?: string;
+  availability?: string[];
+  isAvailable?: boolean;
 }

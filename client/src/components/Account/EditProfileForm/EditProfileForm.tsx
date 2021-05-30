@@ -14,7 +14,7 @@ import { OwnerFormProfile } from '../../../interface/Profile';
 
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
-  const { loggedInUserDetails, loggedInUser, updateLoggedInUserDetails } = useAuth();
+  const { loggedInUserDetails, updateLoggedInUserDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
 
   const [profile, setProfile] = useState<OwnerFormProfile>({
@@ -24,6 +24,8 @@ export default function EditProfileForm(): JSX.Element {
     phoneNumber: '',
     address: '',
     description: '',
+    isAvailable: false,
+    availability: [],
   });
   useEffect(() => {
     if (loggedInUserDetails !== undefined) {
@@ -35,6 +37,8 @@ export default function EditProfileForm(): JSX.Element {
         phoneNumber: loggedInUserDetails?.phoneNumber,
         address: loggedInUserDetails?.address,
         description: loggedInUserDetails?.description,
+        isAvailable: loggedInUserDetails?.isAvailable,
+        availability: loggedInUserDetails?.availability,
       });
     }
   }, [loggedInUserDetails]);
@@ -44,8 +48,26 @@ export default function EditProfileForm(): JSX.Element {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
     property: string,
+    value?: string,
   ): void => {
-    setProfile({ ...profile, [property]: e.target.value });
+    switch (property) {
+      case 'isAvailable':
+        setProfile({ ...profile, isAvailable: !profile.isAvailable });
+        break;
+      case 'availability': {
+        if (value && profile.availability) {
+          setProfile({
+            ...profile,
+            availability: profile.availability?.includes(value)
+              ? profile.availability.filter((day) => day !== value)
+              : [...profile?.availability, value],
+          });
+        }
+        break;
+      }
+      default:
+        setProfile({ ...profile, [property]: e.target.value });
+    }
   };
 
   const toggleInput = () => setShowPhoneInput(!showPhoneInput);
@@ -68,14 +90,7 @@ export default function EditProfileForm(): JSX.Element {
       </Typography>
       <form>
         <Grid container spacing={3}>
-          {loggedInUserDetails !== null && loggedInUserDetails !== undefined && loggedInUserDetails.isDogSitter && (
-            <Availability
-              loggedInUserDetails={loggedInUserDetails}
-              handleChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>): void =>
-                handleChange(e, 'availibility')
-              }
-            />
-          )}
+          {loggedInUserDetails?.isDogSitter && <Availability profile={profile} handleChange={handleChange} />}
           <CustomTextField
             onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>): void =>
               handleChange(e, 'firstName')
