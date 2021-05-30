@@ -5,12 +5,8 @@ export const mockProfile: Profile = {
   isDogSitter: true,
   firstName: 'Bob',
   lastName: 'Cat',
-  availability: [
-    {
-      start: new Date(),
-      end: new Date(),
-    },
-  ],
+  availability: ['mon', 'tues'],
+  isAvailable: true,
   price: 20,
   city: 'New York',
   gallery: [''],

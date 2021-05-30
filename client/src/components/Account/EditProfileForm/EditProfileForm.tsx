@@ -1,11 +1,14 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
-
 import useStyles from './useStyles';
 import CustomTextField from './CustomTextField';
+import { useAuth } from '../../../context/useAuthContext';
+import Availability from './Availability';
 
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
   const handleChange = () => null;
+  const { loggedInUser } = useAuth();
+
   return (
     <Box>
       <Typography variant="h4" align="center" className={classes.formTitle}>
@@ -13,6 +16,9 @@ export default function EditProfileForm(): JSX.Element {
       </Typography>
       <form>
         <Grid container spacing={3}>
+          {loggedInUser !== undefined && loggedInUser?.profile !== undefined && loggedInUser?.profile?.isDogSitter && (
+            <Availability loggedInUser={loggedInUser} handleChange={handleChange} />
+          )}
           <CustomTextField onChange={handleChange} value="" label="FIRST NAME" placeholder="First Name" />
           <CustomTextField onChange={handleChange} value="" label="LAST NAME" placeholder="Last Name" />
           <CustomTextField onChange={handleChange} value="" label="EMAIL ADDRESS" placeholder="user@gmail.com" />
