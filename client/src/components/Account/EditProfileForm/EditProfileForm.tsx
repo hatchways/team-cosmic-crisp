@@ -1,13 +1,65 @@
-import { Box, Button, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Typography, TextField } from '@material-ui/core';
+import Grow from '@material-ui/core/Grow';
+
 import useStyles from './useStyles';
 import CustomTextField from './CustomTextField';
 import { useAuth } from '../../../context/useAuthContext';
 import Availability from './Availability';
 
+import React, { useState, useEffect } from 'react';
+import { useSnackBar } from '../../../context/useSnackbarContext';
+
+import updateProfile from '../../../helpers/APICalls/updateProfile';
+import { OwnerFormProfile } from '../../../interface/Profile';
+
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
-  const handleChange = () => null;
-  const { loggedInUser } = useAuth();
+  const { loggedInUserDetails, loggedInUser, updateLoggedInUserDetails } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
+
+  const [profile, setProfile] = useState<OwnerFormProfile>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    description: '',
+  });
+  useEffect(() => {
+    if (loggedInUserDetails !== undefined) {
+      setProfile({
+        ...profile,
+        firstName: loggedInUserDetails?.firstName,
+        lastName: loggedInUserDetails?.lastName,
+        email: loggedInUserDetails?.email,
+        phoneNumber: loggedInUserDetails?.phoneNumber,
+        address: loggedInUserDetails?.address,
+        description: loggedInUserDetails?.description,
+      });
+    }
+  }, [loggedInUserDetails]);
+
+  const [showPhoneInput, setShowPhoneInput] = useState(!profile?.phoneNumber ? true : false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+    property: string,
+  ): void => {
+    setProfile({ ...profile, [property]: e.target.value });
+  };
+
+  const toggleInput = () => setShowPhoneInput(!showPhoneInput);
+
+  const handleSaveProfile = async () => {
+    const id = loggedInUserDetails ? loggedInUserDetails._id : '';
+    try {
+      const res = await updateProfile(id, profile);
+      updateLoggedInUserDetails(res);
+      updateSnackBarMessage('Profie updated');
+    } catch (error) {
+      updateSnackBarMessage(`Error updating user profile ${error}`);
+    }
+  };
 
   return (
     <Box>
@@ -16,43 +68,98 @@ export default function EditProfileForm(): JSX.Element {
       </Typography>
       <form>
         <Grid container spacing={3}>
-          {loggedInUser !== undefined && loggedInUser?.profile !== undefined && loggedInUser?.profile?.isDogSitter && (
-            <Availability loggedInUser={loggedInUser} handleChange={handleChange} />
+          {loggedInUserDetails !== null && loggedInUserDetails !== undefined && loggedInUserDetails.isDogSitter && (
+            <Availability
+              loggedInUserDetails={loggedInUserDetails}
+              handleChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>): void =>
+                handleChange(e, 'availibility')
+              }
+            />
           )}
-          <CustomTextField onChange={handleChange} value="" label="FIRST NAME" placeholder="First Name" />
-          <CustomTextField onChange={handleChange} value="" label="LAST NAME" placeholder="Last Name" />
-          <CustomTextField onChange={handleChange} value="" label="EMAIL ADDRESS" placeholder="user@gmail.com" />
+          <CustomTextField
+            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>): void =>
+              handleChange(e, 'firstName')
+            }
+            value={profile.firstName ? profile.firstName : ''}
+            label="first name"
+            placeholder="First Name"
+          />
+          <CustomTextField
+            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+              handleChange(e, 'lastName')
+            }
+            value={profile.lastName ? profile.lastName : ''}
+            label="last name"
+            placeholder="Last Name"
+          />
+          <CustomTextField
+            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+              handleChange(e, 'email')
+            }
+            value={profile.email ? profile.email : ''}
+            label="email address"
+            placeholder="user@gmail.com"
+          />
           <Grid item xs={12}>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={12} sm={3}>
                 <Typography variant="body1" align="right" className={classes.formLabel}>
-                  PHONE NUMBER
+                  phone number
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={4} className={`${showPhoneInput ? classes.shouldNotDisplay : ''}`}>
                 <Typography align="left" variant="body1" className={classes.phoneNumber}>
                   No Phone number entered
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4}>
-                <Button color="primary" variant="outlined" size="large">
+              <Grid item xs={12} sm={4} className={`${showPhoneInput ? classes.shouldNotDisplay : ''}`}>
+                <Button color="primary" variant="outlined" size="large" onClick={toggleInput}>
                   Add a phone number
                 </Button>
               </Grid>
+              <Grid item xs={12} sm={8} className={`${!showPhoneInput ? classes.shouldNotDisplay : ''}`}>
+                <Grow in={showPhoneInput}>
+                  <TextField
+                    label="Phone Number"
+                    value={profile.phoneNumber ? profile.phoneNumber : ''}
+                    color="secondary"
+                    variant="outlined"
+                    fullWidth
+                    onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+                      handleChange(e, 'phoneNumber')
+                    }
+                  />
+                </Grow>
+              </Grid>
             </Grid>
           </Grid>
-          <CustomTextField onChange={handleChange} value="" label="WHERE YOU LIVE" placeholder="Address" />
           <CustomTextField
-            onChange={handleChange}
-            value=""
+            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+              handleChange(e, 'address')
+            }
+            value={profile.address ? profile.address : ''}
+            label="where you live"
+            placeholder="Address"
+          />
+          <CustomTextField
+            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+              handleChange(e, 'description')
+            }
+            value={profile.description ? profile.description : ''}
             multiline={true}
             rows={5}
-            label="DESCRIBE YOURSELF"
+            label="describe yourself"
             placeholder="About you"
           />
         </Grid>
         <Box textAlign="center">
-          <Button color="primary" variant="contained" size="large" className={classes.button}>
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            className={classes.button}
+            onClick={handleSaveProfile}
+          >
             SAVE
           </Button>
         </Box>
