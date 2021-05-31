@@ -7,7 +7,7 @@ import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 
 export default function ProfileList(): JSX.Element {
   const { updateSnackBarMessage } = useSnackBar();
-  const { userProfiles, loading, errorMsg } = useAuth();
+  const { sitterProfiles, loading, errorMsg } = useAuth();
 
   if (loading) return <LoadingSpinner />;
 
@@ -16,9 +16,9 @@ export default function ProfileList(): JSX.Element {
   return (
     <Grow in={true}>
       <Grid container spacing={8}>
-        {userProfiles.map((userProfile) => (
-          <Grid item xs={12} sm={4} key={userProfile._id}>
-            {userProfile && userProfile.profile !== undefined && <ProfileCard profile={userProfile.profile} />}
+        {sitterProfiles.map((sitterProfile) => (
+          <Grid item xs={12} sm={4} key={sitterProfile._id}>
+            <ProfileCard sitter={sitterProfile} />
           </Grid>
         ))}
       </Grid>

@@ -10,10 +10,10 @@ import useStyles from './useStyles';
 import { postRequest } from '../../../helpers/APICalls/bookings';
 
 export interface Props {
-  profile: Profile | null | undefined;
+  sitter: Profile | null | undefined;
 }
 
-export default function RequestForm({ profile }: Props): JSX.Element {
+export default function RequestForm({ sitter }: Props): JSX.Element {
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -25,8 +25,8 @@ export default function RequestForm({ profile }: Props): JSX.Element {
 
   const handleSubmit = () => {
     setLoading(true);
-    if (profile) {
-      postRequest(profile?._id, startDate, endDate).then(() => {
+    if (sitter) {
+      postRequest(sitter._id, startDate, endDate).then(() => {
         setSuccess(true);
       });
     }
@@ -35,12 +35,12 @@ export default function RequestForm({ profile }: Props): JSX.Element {
 
   return (
     <>
-      {profile && (
+      {sitter && (
         <Fade in={true}>
           <Paper elevation={6} className={classes.requestContainer}>
             <Box textAlign="center">
               <Typography align="center" variant="body1" className={classes.price}>
-                ${profile.price}/hr
+                ${sitter.price}/hr
               </Typography>
               <Rating value={4.5} precision={0.5} readOnly />
             </Box>
@@ -123,7 +123,7 @@ export default function RequestForm({ profile }: Props): JSX.Element {
                       to={{
                         pathname: '/checkout',
                         state: {
-                          sitter: profile._id,
+                          sitter: sitter._id,
                           startDate,
                           endDate,
                         },
