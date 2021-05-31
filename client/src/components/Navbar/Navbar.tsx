@@ -7,7 +7,7 @@ import Logo from '../../Images/logo.png';
 import { User } from '../../interface/User';
 import { Profile } from '../../interface/Profile';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 interface Props {
@@ -19,6 +19,7 @@ interface Props {
 export default function Navbar({ user, profile, logout }: Props): JSX.Element {
   const classes = useStyles();
   const history = useHistory();
+  const { pathname } = useLocation();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -41,7 +42,11 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
         become a sitter
       </Button>
       <Link to="/login" className={classes.link}>
-        <Button color="inherit" className={`${classes.btn} ${classes.loginBtn}`} variant="outlined">
+        <Button
+          color="inherit"
+          className={` ${pathname === '/' ? classes.landingBtn : ''} ${classes.btn} ${classes.loginBtn}`}
+          variant="outlined"
+        >
           Login
         </Button>
       </Link>
@@ -55,6 +60,11 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
 
   const UserNav = () => (
     <Grid>
+      <Link to="/checkout" className={classes.link}>
+        <Button color="primary" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
+          Checkout
+        </Button>
+      </Link>
       <Button variant="text" className={classes.userNavItem}>
         Notifications <span className={classes.active} />
       </Button>
@@ -72,7 +82,10 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
 
   return (
     <Grid container>
-      <AppBar position="static" className={`${classes.appBar} ${!user && classes.transparentNav}`}>
+      <AppBar
+        position="static"
+        className={`${pathname === '/' ? classes.landingNav : ''} ${classes.appBar} ${!user && classes.transparentNav}`}
+      >
         <Toolbar>
           <Link to="/listings" className={classes.link}>
             <img src={Logo} alt="logo" />
