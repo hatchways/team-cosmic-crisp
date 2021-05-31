@@ -1,11 +1,30 @@
 import { Box, CssBaseline, Typography } from '@material-ui/core';
-
+import { useState, useEffect } from 'react';
 import useStyles from './useStyles';
 import ProfileSearch from '../../components/Listings/ProfileSearch/ProfileSearch';
 import ProfileList from '../../components/Listings/ProfileList/ProfileList';
+import { useAuth } from '../../context/useAuthContext';
+import searchSitterProfilesAPI from '../../helpers/APICalls/searchProfiles';
+import { SitterProfilesApiData } from '../../interface/AuthApiData';
 
 export default function Listings(): JSX.Element {
   const classes = useStyles();
+  const { updateSitterProfilesContext, setLoading } = useAuth();
+  const [filters, setFilters] = useState<{ city?: string; date?: Date }>({});
+  useEffect(() => {
+    const fetchSitterProfiles = async () => {
+      setLoading(true);
+      await searchSitterProfilesAPI(filters).then((data: SitterProfilesApiData) => {
+        if (data.success) {
+          updateSitterProfilesContext(data.success);
+        } else if (data.error) {
+          // setErrorMsg(data.error.message);
+        }
+        setLoading(false);
+      });
+    };
+    fetchSitterProfiles();
+  }, [filters]);
   return (
     <Box display="flex" justifyContent="center" className={classes.mainContainer}>
       <CssBaseline />
@@ -13,7 +32,7 @@ export default function Listings(): JSX.Element {
         <Typography variant="h3" align="center" className={classes.title}>
           Your search results
         </Typography>
-        <ProfileSearch />
+        <ProfileSearch city={filters?.city} date={filters?.date} setFilters={setFilters} />
         <Box className={classes.profilesContainer}>
           <ProfileList />
         </Box>
