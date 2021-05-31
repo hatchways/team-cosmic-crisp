@@ -3,20 +3,19 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Rating from '@material-ui/lab/Rating';
 import { Link } from 'react-router-dom';
 
-import { User } from '../../../interface/User';
 import { useAuth } from '../../../context/useAuthContext';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import searchProfileDetails from '../../../helpers/APICalls/searchProfileDetails';
 import useStyles from './useStyles';
+import { Profile } from '../../../interface/Profile';
 
 interface Props {
-  user: User;
+  profile: Profile;
 }
 
-export default function ProfileCard({ user }: Props): JSX.Element {
+export default function ProfileCard({ profile }: Props): JSX.Element {
   const { updateProfileDetailsContext, setLoading } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
-  const { profile } = user;
   const classes = useStyles();
 
   const getProfileDetails = (id: string) => {
@@ -30,7 +29,6 @@ export default function ProfileCard({ user }: Props): JSX.Element {
       }
     });
   };
-  if (!profile) return <></>;
   return (
     <Link to={`/profile/${profile._id}`} onClick={() => getProfileDetails(profile._id)} className={classes.link}>
       <Card raised={true} className={classes.profileCard}>

@@ -18,7 +18,7 @@ export default function ProfileList(): JSX.Element {
       <Grid container spacing={8}>
         {userProfiles.map((userProfile) => (
           <Grid item xs={12} sm={4} key={userProfile._id}>
-            <ProfileCard user={userProfile} />
+            {userProfile && userProfile.profile !== undefined && <ProfileCard profile={userProfile.profile} />}
           </Grid>
         ))}
       </Grid>

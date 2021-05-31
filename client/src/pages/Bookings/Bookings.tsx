@@ -25,7 +25,6 @@ export default function Bookings(): JSX.Element {
     getRequests().then((data) => {
       if (data.requests) setBookings(data.requests);
     });
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -39,14 +38,14 @@ export default function Bookings(): JSX.Element {
       }
     }
     setNextBooking(current.shift());
-    setPastBookings([...past]);
-    setCurrentBookings([...current]);
+    setPastBookings(past);
+    setCurrentBookings(current);
+    if (loading) setLoading(false);
   }, [bookings]);
 
   useEffect(() => {
     if (!moment(selectedDate).isSame(today, 'day')) {
       const dateBookings: Array<Request> = [];
-      console.log(selectedDate);
       bookings.forEach((booking) => {
         if (moment(booking.start).isSame(selectedDate, 'day')) {
           dateBookings.push(booking);
@@ -70,8 +69,8 @@ export default function Bookings(): JSX.Element {
   return (
     <>
       <CssBaseline />
-      <Grid container component="main" justify="space-around" className={`${classes.root}`}>
-        <Grid item md={4} sm={5} xs={8} className={classes.bookings}>
+      <Grid container component="main" justify="space-around">
+        <Grid item md={4} sm={5} xs={8}>
           {bookings.length === 0 ? (
             <Paper elevation={6} className={classes.paper}>
               {loading ? (
@@ -90,6 +89,7 @@ export default function Bookings(): JSX.Element {
                     <Typography component="span" variant="subtitle2">
                       YOUR NEXT BOOKING:
                     </Typography>
+                    {loading && <CircularProgress color="primary" />}
                     {nextBooking ? (
                       <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
                     ) : (
@@ -119,7 +119,7 @@ export default function Bookings(): JSX.Element {
                   <Typography component="span" variant="subtitle2">
                     CURRENT BOOKINGS:
                   </Typography>
-                  {!moment(selectedDate).isSame(today, 'day') && (
+                  {!moment(selectedDate).isSame(today, 'day') && nextBooking !== undefined && (
                     <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
                   )}
                   {currentBookings.map((booking) => (

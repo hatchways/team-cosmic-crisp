@@ -10,13 +10,12 @@ import { acceptRequest, declineRequest } from '../../../helpers/APICalls/booking
 import moment from 'moment';
 
 interface Props {
-  bookingDetails: Request | undefined;
+  bookingDetails: Request;
   changeBooking: (bookingDetails: Request, newBooking: Request) => void;
 }
 
 export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.Element {
   const classes = useStyles();
-  if (!bookingDetails) return <></>;
   const { _id, start, accepted, declined, sitter, user } = bookingDetails;
   const handleClick = (type: string) => {
     if (type === 'accept')
