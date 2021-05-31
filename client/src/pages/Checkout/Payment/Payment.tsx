@@ -146,62 +146,60 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
   };
 
   return (
-    <>
-      <Grid>
-        <Typography variant="h4">Checkout</Typography>
-        <Grid container direction="column" className={classes.paymentContainer}>
-          <Grid>
-            <Typography variant="h6">Payment Options</Typography>
+    <Grid>
+      <Typography variant="h4">Checkout</Typography>
+      <Grid container direction="column" className={classes.paymentContainer}>
+        <Grid>
+          <Typography variant="h6">Payment Options</Typography>
+        </Grid>
+        <Grid>
+          <Grid container alignItems="center">
+            <Radio
+              checked={paymentType === 'card'}
+              onChange={(e) => setPaymentType(e.target.value)}
+              value="card"
+              className={classes.radioBtn}
+              color="primary"
+            />
+            <Typography component="legend">Credit &amp; Debit Card</Typography>
           </Grid>
-          <Grid>
-            <Grid container alignItems="center">
-              <Radio
-                checked={paymentType === 'card'}
-                onChange={(e) => setPaymentType(e.target.value)}
-                value="card"
-                className={classes.radioBtn}
-                color="primary"
+          {paymentType === 'card' && (
+            <form onSubmit={handleSubmit} className={classes.form}>
+              <TextField
+                fullWidth
+                label="Full Name"
+                value={billingDetails.name}
+                variant="outlined"
+                className={classes.input}
+                onChange={(e) => setBillingDetails({ ...billingDetails, name: e.target.value })}
+                required
               />
-              <Typography component="legend">Credit &amp; Debit Card</Typography>
-            </Grid>
-            {paymentType === 'card' && (
-              <form onSubmit={handleSubmit} className={classes.form}>
-                <TextField
-                  fullWidth
-                  label="Full Name"
-                  value={billingDetails.name}
-                  variant="outlined"
-                  className={classes.input}
-                  onChange={(e) => setBillingDetails({ ...billingDetails, name: e.target.value })}
-                  required
-                />
-                <TextField
-                  fullWidth
-                  label="Email"
-                  value={billingDetails.email}
-                  variant="outlined"
-                  type="email"
-                  className={classes.input}
-                  onChange={(e) => setBillingDetails({ ...billingDetails, email: e.target.value })}
-                  required
-                />
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  value={billingDetails.phone}
-                  variant="outlined"
-                  className={classes.input}
-                  onChange={(e) => setBillingDetails({ ...billingDetails, phone: e.target.value })}
-                />
-                <CardElement options={CARD_OPTIONS} className={classes.cardElement} />
-                <Button type="submit" variant="contained" className={classes.submitBtn} size="large" color="primary">
-                  {processing ? <CircularProgress style={{ color: 'white' }} /> : 'Confirm & Pay'}
-                </Button>
-              </form>
-            )}
-          </Grid>
+              <TextField
+                fullWidth
+                label="Email"
+                value={billingDetails.email}
+                variant="outlined"
+                type="email"
+                className={classes.input}
+                onChange={(e) => setBillingDetails({ ...billingDetails, email: e.target.value })}
+                required
+              />
+              <TextField
+                fullWidth
+                label="Phone Number"
+                value={billingDetails.phone}
+                variant="outlined"
+                className={classes.input}
+                onChange={(e) => setBillingDetails({ ...billingDetails, phone: e.target.value })}
+              />
+              <CardElement options={CARD_OPTIONS} className={classes.cardElement} />
+              <Button type="submit" variant="contained" className={classes.submitBtn} size="large" color="primary">
+                {processing ? <CircularProgress style={{ color: 'white' }} /> : 'Confirm & Pay'}
+              </Button>
+            </form>
+          )}
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 }
