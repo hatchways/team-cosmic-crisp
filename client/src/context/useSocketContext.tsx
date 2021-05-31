@@ -1,6 +1,8 @@
 import { useState, useContext, createContext, FunctionComponent, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 
+const ENDPOINT = 'localhost:3001';
+
 interface ISocketContext {
   socket: Socket | undefined;
   initSocket: () => void;
@@ -17,7 +19,7 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
   const initSocket = useCallback(() => {
     console.log('trying to connect');
     setSocket(
-      io('/', {
+      io(ENDPOINT, {
         withCredentials: true,
       }),
     );
