@@ -53,6 +53,11 @@ export default function Navbar({ user, logout }: Props): JSX.Element {
 
   const UserNav = () => (
     <Grid>
+      <Link to="/checkout" className={classes.link}>
+        <Button color="primary" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
+          Checkout
+        </Button>
+      </Link>
       <Button variant="text" className={classes.userNavItem}>
         Notifications <span className={classes.active} />
       </Button>

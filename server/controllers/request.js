@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
+const stripe = require('stripe')(process.env.STRPIE_PRIVATE_KEY);
 
 const Request = require('../models/Request');
+const Profile = require('../models/Profile');
 
 // @route GET /requests
 // @desc Get all requests of current users
@@ -86,5 +88,75 @@ exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
   } catch (error) {
     res.status(500);
     throw new Error(error.message);
+  }
+});
+
+// @route POST /requests/:id/pay
+// @desc Pay and confirm accepted request
+// @access Private
+exports.payRequest = asyncHandler(async (req, res, next) => {
+  const { sitter, start, end, hours, payment_method_id, payment_intent_id } = req.body;
+  const requestId = req.params.id;
+  let intent;
+
+  if (!sitter) {
+    res.status(400);
+    throw new Error('No sitter provided');
+  }
+
+  const request = await Request.findById(requestId);
+  if (!requestId || !request) {
+    res.status(400);
+    throw new Error('Invalid Request');
+  }
+
+  if (payment_method_id) {
+    //getting sitter profile for pricing
+    const sitterProfile = await Profile.findById(sitter);
+    if (!sitterProfile) {
+      res.status(400);
+      throw new Error('No sitter found');
+    }
+
+    //amount in pennies with service fee (3%)
+    const totalAmount = hours * sitterProfile.price * 100 * 1.03;
+
+    //creating payment Intent
+    intent = await stripe.paymentIntents.create({
+      payment_method: payment_method_id,
+      amount: totalAmount,
+      currency: 'usd',
+      confirmation_method: 'manual',
+      confirm: true,
+    });
+  } else if (payment_intent_id) {
+    intent = await stripe.paymentIntents.confirm(payment_intent_id);
+  }
+
+  //sending responce to frontend
+  if (intent.status === 'requires_action' && intent.next_action.type === 'use_stripe_sdk') {
+    // Tell the client to handle the action
+    res.json({
+      requires_action: true,
+      payment_intent_client_secret: intent.client_secret,
+    });
+  } else if (intent.status === 'succeeded') {
+    // The payment didn’t need any additional actions and completed!
+    // Handle post-payment fulfillment
+    request.paid = true;
+    request.start = start;
+    request.end = end;
+    request.payDetails = {
+      paidAt: new Date(),
+    };
+    await request.save();
+    res.json({
+      success: true,
+    });
+  } else {
+    // Invalid status
+    res.json({
+      error: 'Invalid PaymentIntent status',
+    });
   }
 });
