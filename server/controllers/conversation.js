@@ -23,7 +23,8 @@ exports.getConversations = asyncHandler(async (req,res,next) => {
               conversationId: conversation._id,
               recipient: await Profile.findById(
                 conversation.participants.filter(participant => {
-                  return participant !== user.profile._id;
+                  console.log(participant)
+                  return participant !== user.profile._id.toString();
                 })[0]
                 ).select("firstName lastName profilePhoto")
               }
