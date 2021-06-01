@@ -27,6 +27,7 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
           {
             $match: {
               isDogSitter: true,
+              isAvailable: true,
               price: { $exists: true },
               city: { $regex: city, $options: 'i' },
               availability: { $in: [dayOfWeek] },
@@ -36,7 +37,12 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
       } else if (city !== 'undefined' && date === 'undefined')
         profiles = await Profile.aggregate([
           {
-            $match: { isDogSitter: true, price: { $exists: true }, city: { $regex: city, $options: 'i' } },
+            $match: {
+              isDogSitter: true,
+              isAvailable: true,
+              price: { $exists: true },
+              city: { $regex: city, $options: 'i' },
+            },
           },
         ]);
       else if (date !== 'undefined' && city === 'undefined') {
@@ -45,6 +51,7 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
           {
             $match: {
               isDogSitter: true,
+              isAvailable: true,
               price: { $exists: true },
               city: { $exists: true },
               availability: { $in: [dayOfWeek] },

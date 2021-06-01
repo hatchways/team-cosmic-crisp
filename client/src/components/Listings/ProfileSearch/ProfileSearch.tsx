@@ -10,15 +10,13 @@ interface Props {
   city?: string;
   date?: Date;
   setFilters: Dispatch<SetStateAction<{ city?: string | undefined; date?: Date | undefined }>>;
+  reset: () => void;
 }
 
-export default function ProfileSearch({ city, date, setFilters }: Props): JSX.Element {
+export default function ProfileSearch({ city, date, setFilters, reset }: Props): JSX.Element {
   const today = new Date();
   const [startDate, setStartDate] = useState<Date | null>(today);
   const classes = useStyles();
-  const resetFilters = () => {
-    setFilters({ date: undefined, city: undefined });
-  };
   return (
     <Box maxWidth={675} display="flex" margin="auto">
       <Box flex={2}>
@@ -58,7 +56,7 @@ export default function ProfileSearch({ city, date, setFilters }: Props): JSX.El
           />
         </MuiPickersUtilsProvider>
       </Box>
-      <Button variant="text" color="primary" disabled={city === undefined && date === undefined} onClick={resetFilters}>
+      <Button variant="text" color="primary" disabled={city === undefined && date === undefined} onClick={reset}>
         reset
       </Button>
     </Box>

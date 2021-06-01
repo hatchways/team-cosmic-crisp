@@ -34,11 +34,14 @@ export default function EditProfileForm(): JSX.Element {
         firstName: loggedInUserDetails?.firstName,
         lastName: loggedInUserDetails?.lastName,
         email: loggedInUserDetails?.email,
+        city: loggedInUserDetails?.city,
+        price: loggedInUserDetails?.price,
         phoneNumber: loggedInUserDetails?.phoneNumber,
         address: loggedInUserDetails?.address,
         description: loggedInUserDetails?.description,
         isAvailable: loggedInUserDetails?.isAvailable,
         availability: loggedInUserDetails?.availability,
+        isDogSitter: loggedInUserDetails?.isDogSitter,
       });
     }
   }, [loggedInUserDetails]);
@@ -114,7 +117,30 @@ export default function EditProfileForm(): JSX.Element {
             value={profile.email ? profile.email : ''}
             label="email address"
             placeholder="user@gmail.com"
+            type="email"
           />
+          <CustomTextField
+            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+              handleChange(e, 'city')
+            }
+            value={profile.city ? profile.city : ''}
+            label="city"
+            placeholder="city"
+            required={profile.isAvailable}
+          />
+          {profile.isDogSitter && (
+            <CustomTextField
+              onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+                handleChange(e, 'price')
+              }
+              value={profile.price ? profile.price : 0}
+              label="price"
+              placeholder="price"
+              required={profile.isAvailable}
+              type="number"
+            />
+          )}
+
           <Grid item xs={12}>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={12} sm={3}>

@@ -17,9 +17,12 @@ export interface Profile {
 }
 
 export interface OwnerFormProfile {
+  isDogSitter?: boolean;
   firstName?: string;
   lastName?: string;
   email?: string;
+  city?: string;
+  price?: number;
   phoneNumber?: string;
   address?: string;
   description?: string;

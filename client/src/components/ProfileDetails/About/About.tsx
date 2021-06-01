@@ -1,4 +1,4 @@
-import { Avatar, Box, Fade, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
+import { Avatar, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 import { Profile } from '../../../interface/Profile';
@@ -30,6 +30,15 @@ export default function About({ sitter }: Props): JSX.Element {
                 <LocationOnIcon color="primary" />
                 {sitter.city}
               </Typography>
+              <Grid container justify="center" alignItems="center">
+                <Typography className={classes.dayAvailable}>Availability:</Typography>
+                {sitter.availability.length === 0 && <Typography className={classes.dayAvailable}>N/A</Typography>}
+                {sitter.availability.map((day) => (
+                  <Typography key={day} className={classes.dayAvailable}>
+                    {day}
+                  </Typography>
+                ))}
+              </Grid>
               <Box textAlign="left">
                 <Typography variant="h5" className={classes.aboutTitle}>
                   About Me
