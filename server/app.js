@@ -14,6 +14,7 @@ const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const photoRouter = require("./routes/photo");
 const profileRouter = require("./routes/profile");
+const reviewRouter = require('./routes/review');
 const requestRouter = require("./routes/request");
 
 const { json, urlencoded } = express;
@@ -49,6 +50,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profiles", profileRouter);
 app.use("/api", photoRouter);
+app.use("/reviews", reviewRouter);
 app.use("/requests", requestRouter);
 
 if (process.env.NODE_ENV === "production") {
