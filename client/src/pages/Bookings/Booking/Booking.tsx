@@ -55,7 +55,7 @@ export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.
           <Button size="large" disabled className={classes.button}>
             {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
           </Button>
-          {user === undefined && moment(start).isSameOrAfter(new Date()) && (
+          {!user && moment(start).isSameOrAfter(new Date().setHours(0, 0, 0, 0)) && (
             <>
               {!accepted && (
                 <Button className={`${classes.button} ${classes.accept}`} onClick={() => handleClick('accept')}>
@@ -63,9 +63,11 @@ export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.
                 </Button>
               )}
 
-              <Button className={`${classes.button} ${classes.decline}`} onClick={() => handleClick('reject')}>
-                decline
-              </Button>
+              {!declined && (
+                <Button className={`${classes.button} ${classes.decline}`} onClick={() => handleClick('reject')}>
+                  decline
+                </Button>
+              )}
             </>
           )}
         </Grid>
