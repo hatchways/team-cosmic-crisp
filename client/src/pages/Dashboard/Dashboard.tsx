@@ -21,12 +21,11 @@ export default function Dashboard(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (socket) {
-      console.log(socket);
-      socket.on('connect', () => {
-        console.log('Successfully connected!');
-      });
-    }
+    socket?.open();
+
+    return () => {
+      socket?.close();
+    };
   }, [initSocket]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
