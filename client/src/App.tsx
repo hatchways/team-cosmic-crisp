@@ -14,6 +14,7 @@ import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
+import Bookings from './pages/Bookings/Bookings';
 import Checkout from './pages/Checkout/Checkout';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
