@@ -1,7 +1,7 @@
 import { useState, useContext, createContext, FunctionComponent, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const ENDPOINT = 'localhost:3001';
+const ENDPOINT = 'http://localhost:3001';
 
 interface ISocketContext {
   socket: Socket | undefined;
@@ -21,6 +21,7 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
     setSocket(
       io(ENDPOINT, {
         withCredentials: true,
+        transports: ['websocket'],
       }),
     );
   }, []);

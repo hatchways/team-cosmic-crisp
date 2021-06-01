@@ -27,25 +27,13 @@ const server = http.createServer(app);
 
 const io = socketio(server, {
   cors: {
-    origin: "*"
+    origin: "http://localhost:3000",
+    credentials: true,
   }
 });
 
-if (process.env.NODE_ENV === "development") {
-  app.use(logger("dev"));
-}
-app.use(json());
-app.use(urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(join(__dirname, "public")));
-
-// app.use((req, res, next) => {
-//   req.io = io;
-//   next();
-// });
-
 io.use((socket, next) => {
-  let token = cookie.parse(socket.handshake.headers?.cookie || "").token;
+  const token = cookie.parse(socket.handshake.headers?.cookie || "").token;
 
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, async(err, decoded) => {
@@ -56,14 +44,24 @@ io.use((socket, next) => {
         if (!user) {
           next(new Error("User not found!"));
         }
+        next();
       }
     })
   } else {
     next(new Error("User Authentication Failed!"));
   }
 }).on("connection", (socket) => {
-  console.log(user);
+  socket.on("go-online", console.log("Online!"));
+  socket.on("disconnect", console.log("Disconnected!"));
 })
+
+if (process.env.NODE_ENV === "development") {
+  app.use(logger("dev"));
+}
+app.use(json());
+app.use(urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(join(__dirname, "public")));
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
