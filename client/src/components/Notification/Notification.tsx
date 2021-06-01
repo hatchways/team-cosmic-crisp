@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, ClickAwayListener } from '@material-ui/core';
 import useStyles from './useStyles';
 import useNavBarStyles from '../Navbar/useStyles';
+import NotificationItem from './NotificationItem';
 
 export default function Notification(): JSX.Element {
   const classes = { ...useStyles(), ...useNavBarStyles() };
@@ -22,13 +23,7 @@ export default function Notification(): JSX.Element {
         </Button>
         {open ? (
           <div className={classes.dropdown}>
-            <ul>
-              <li>A</li>
-              <li>A</li>
-              <li>A</li>
-              <li>A</li>
-              <li>A</li>
-            </ul>
+            <NotificationItem />
           </div>
         ) : null}
       </span>
