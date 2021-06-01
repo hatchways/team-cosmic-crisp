@@ -29,6 +29,12 @@ const profileSchema = new mongoose.Schema({
     profilePhoto: String,
     coverPhoto: String,
     gallery: [String],
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'review',
+        },
+    ],
 })
 
 module.exports = Profile = mongoose.model('profile', profileSchema);
