@@ -8,6 +8,7 @@ import { User } from '../../interface/User';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Notification from '../Notification/Notification';
 
 interface Props {
   user: User | null | undefined;
@@ -53,9 +54,7 @@ export default function Navbar({ user, logout }: Props): JSX.Element {
 
   const UserNav = () => (
     <Grid>
-      <Button variant="text" className={classes.userNavItem}>
-        Notifications <span className={classes.active} />
-      </Button>
+      <Notification />
       <Button variant="text" className={classes.userNavItem}>
         My Jobs
       </Button>
