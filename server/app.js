@@ -2,58 +2,23 @@ const colors = require("colors");
 const path = require("path");
 const http = require("http");
 const express = require("express");
-const socketio = require("socket.io");
 const { notFound, errorHandler } = require("./middleware/error");
 const connectDB = require("./db");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const jwt = require("jsonwebtoken");
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const uploadRouter = require("./routes/upload");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
-const { cookie } = require("express-validator");
-const User = require("./models/User");
-
 
 const { json, urlencoded } = express;
 
 connectDB();
 const app = express();
 const server = http.createServer(app);
-
-const io = socketio(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    credentials: true,
-  }
-});
-
-io.use((socket, next) => {
-  const token = cookie.parse(socket.handshake.headers?.cookie || "").token;
-
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, async(err, decoded) => {
-      if (err) {
-        next(new Error("Invalid Token"))
-      } else {
-        const user = await User.findById(decoded.id);
-        if (!user) {
-          next(new Error("User not found!"));
-        }
-        next();
-      }
-    })
-  } else {
-    next(new Error("User Authentication Failed!"));
-  }
-}).on("connection", (socket) => {
-  socket.on("go-online", console.log("Online!"));
-  socket.on("disconnect", console.log("Disconnected!"));
-})
 
 if (process.env.NODE_ENV === "development") {
   app.use(logger("dev"));

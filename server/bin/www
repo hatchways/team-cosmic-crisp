@@ -8,7 +8,9 @@ require("dotenv").config();
  */
 
 var app = require("../app").app;
-var http = require("http");
+const jwt = require("jsonwebtoken");
+const cookie = require("cookie");
+const User = require("../models/User");
 
 /**
  * Get port from environment and store in Express.
@@ -26,6 +28,41 @@ var server = require("../app").server;
 /**
  * Listen on provided port, on all network interfaces.
  */
+
+ const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+  }
+});
+
+io.use((socket, next) => {
+  const token = cookie.parse(socket.handshake.headers?.cookie || "").token;
+
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, async(err, decoded) => {
+      if (err) {
+        next(new Error("Invalid Token"));
+      } else {
+        const user = await User.findById(decoded.id);
+        if (!user) {
+          next(new Error("User not found!"));
+        }
+        next();
+      }
+    })
+  } else {
+    next(new Error("User Authentication Failed!"));
+  }
+}).on("connection", (socket) => {
+  socket.on("go-online", () => {
+    console.log("Online!")
+  });
+  socket.on("disconnect", () => {
+    console.log("Disconnected!")
+  });
+})
+
 
 server.listen(port);
 server.on("error", onError);

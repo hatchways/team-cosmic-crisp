@@ -1,7 +1,7 @@
 import { useState, useContext, createContext, FunctionComponent, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const ENDPOINT = 'http://localhost:3001';
+const ENDPOINT = 'ws://localhost:3001';
 
 interface ISocketContext {
   socket: Socket | undefined;
