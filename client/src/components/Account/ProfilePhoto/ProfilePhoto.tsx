@@ -1,7 +1,7 @@
 import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { uploadPhoto, deletePhotos } from '../../../helpers/APICalls/updatePhotos';
 
 import { useAuth } from '../../../context/useAuthContext';
