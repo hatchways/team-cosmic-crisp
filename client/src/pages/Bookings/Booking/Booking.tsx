@@ -7,15 +7,15 @@ import { Button, Paper, Typography } from '@material-ui/core';
 import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { acceptRequest, declineRequest } from '../../../helpers/APICalls/bookings';
+import moment from 'moment';
 
 interface Props {
-  bookingDetails: Request | undefined;
+  bookingDetails: Request;
   changeBooking: (bookingDetails: Request, newBooking: Request) => void;
 }
 
 export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.Element {
   const classes = useStyles();
-  if (!bookingDetails) return <></>;
   const { _id, start, accepted, declined, sitter, user } = bookingDetails;
   const handleClick = (type: string) => {
     if (type === 'accept')
@@ -55,7 +55,7 @@ export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.
           <Button size="large" disabled className={classes.button}>
             {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
           </Button>
-          {user === undefined && (
+          {!user && moment(start).isSameOrAfter(new Date().setHours(0, 0, 0, 0)) && (
             <>
               {!accepted && (
                 <Button className={`${classes.button} ${classes.accept}`} onClick={() => handleClick('accept')}>
@@ -63,9 +63,11 @@ export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.
                 </Button>
               )}
 
-              <Button className={`${classes.button} ${classes.decline}`} onClick={() => handleClick('reject')}>
-                decline
-              </Button>
+              {!declined && (
+                <Button className={`${classes.button} ${classes.decline}`} onClick={() => handleClick('reject')}>
+                  decline
+                </Button>
+              )}
             </>
           )}
         </Grid>

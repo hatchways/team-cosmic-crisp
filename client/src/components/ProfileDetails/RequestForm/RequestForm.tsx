@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Button, CircularProgress, Fade, Grid, Paper, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Rating from '@material-ui/lab/Rating';
@@ -26,13 +26,16 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
   const handleSubmit = () => {
     setLoading(true);
     if (sitter) {
-      postRequest(sitter._id, startDate, endDate).then((data) => {
-        setSuccess(true);
-        console.log(data);
-      });
+      postRequest(sitter._id, startDate, endDate)
+        .then(() => {
+          setSuccess(true);
+        })
+        .catch((e) => setLoading(false));
     }
-    setLoading(false);
   };
+  useEffect(() => {
+    if (success) setLoading(false);
+  }, [success]);
 
   return (
     <>
