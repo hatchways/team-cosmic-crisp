@@ -1,14 +1,10 @@
 export interface Profile {
   _id: string;
   isDogSitter: boolean;
+  isAvailable: boolean;
   firstName: string;
   lastName: string;
-  availability: [
-    {
-      start: Date;
-      end: Date;
-    },
-  ];
+  availability: string[];
   email?: string;
   price: number;
   city: string;
@@ -21,10 +17,15 @@ export interface Profile {
 }
 
 export interface OwnerFormProfile {
+  isDogSitter?: boolean;
   firstName?: string;
   lastName?: string;
   email?: string;
+  city?: string;
+  price?: number;
   phoneNumber?: string;
   address?: string;
   description?: string;
+  availability?: string[];
+  isAvailable?: boolean;
 }
