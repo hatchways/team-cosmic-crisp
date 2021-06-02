@@ -27,4 +27,5 @@ export interface OwnerFormProfile {
   phoneNumber?: string;
   address?: string;
   description?: string;
+  profilePhoto?: string;
 }
