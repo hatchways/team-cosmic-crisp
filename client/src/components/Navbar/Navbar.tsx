@@ -5,16 +5,18 @@ import useStyles from './useStyles';
 import { Button, IconButton, Grid, Menu, MenuItem } from '@material-ui/core';
 import Logo from '../../Images/logo.png';
 import { User } from '../../interface/User';
+import { Profile } from '../../interface/Profile';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 interface Props {
   user: User | null | undefined;
+  profile: Profile | null | undefined;
   logout(): void;
 }
 
-export default function Navbar({ user, logout }: Props): JSX.Element {
+export default function Navbar({ user, profile, logout }: Props): JSX.Element {
   const classes = useStyles();
   const history = useHistory();
   const { pathname } = useLocation();
@@ -66,9 +68,11 @@ export default function Navbar({ user, logout }: Props): JSX.Element {
       <Button variant="text" className={classes.userNavItem}>
         Notifications <span className={classes.active} />
       </Button>
-      <Button variant="text" className={classes.userNavItem}>
-        My Jobs
-      </Button>
+      <Link to="/bookings" className={classes.link}>
+        <Button variant="text" className={classes.userNavItem}>
+          {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
+        </Button>
+      </Link>
       <Link to="/messages" className={classes.link}>
         <Button variant="text" className={classes.userNavItem}>
           Messages <span className={classes.active} />
@@ -84,7 +88,7 @@ export default function Navbar({ user, logout }: Props): JSX.Element {
         className={`${pathname === '/' ? classes.landingNav : ''} ${classes.appBar} ${!user && classes.transparentNav}`}
       >
         <Toolbar>
-          <Link to="/" className={classes.link}>
+          <Link to="/listings" className={classes.link}>
             <img src={Logo} alt="logo" />
           </Link>
           <div className={classes.grow} />
@@ -92,7 +96,7 @@ export default function Navbar({ user, logout }: Props): JSX.Element {
             <>
               <UserNav />
               <IconButton onClick={handleClick} aria-controls="user-menu" aria-haspopup="true">
-                {user !== null && user !== undefined && <AvatarDisplay loggedIn={true} user={user} />}
+                {user !== null && user !== undefined && <AvatarDisplay loggedIn={true} profile={profile} />}
               </IconButton>
               <Menu
                 id="user-menu"

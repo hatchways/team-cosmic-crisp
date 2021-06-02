@@ -7,10 +7,10 @@ interface Props {
 }
 
 const Layout = ({ children }: Props): JSX.Element => {
-  const { loggedInUser, logout } = useAuth();
+  const { loggedInUser, loggedInUserDetails, logout } = useAuth();
   return (
     <Container maxWidth={false} style={{ padding: '0' }}>
-      <Navbar user={loggedInUser} logout={logout} />
+      <Navbar user={loggedInUser} profile={loggedInUserDetails} logout={logout} />
       {children}
     </Container>
   );
