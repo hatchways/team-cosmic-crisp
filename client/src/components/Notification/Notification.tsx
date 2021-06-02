@@ -31,7 +31,7 @@ export default function NotificationComponent(): JSX.Element {
               Notifications
             </Typography>
             <Divider />
-            <NotificationItem />
+            <NotificationItem notifications={notifications} />
           </Paper>
         ) : null}
       </span>
