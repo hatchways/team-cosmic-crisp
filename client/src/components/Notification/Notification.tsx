@@ -3,10 +3,14 @@ import { Button, ClickAwayListener, Paper, Typography, Divider } from '@material
 import useStyles from './useStyles';
 import useNavBarStyles from '../Navbar/useStyles';
 import NotificationItem from './NotificationItem';
+import { useEffect } from 'react';
+import { Notification } from '../../interface/Notification';
+import { getUnreadNotifications } from '../../helpers/APICalls/notifications';
 
-export default function Notification(): JSX.Element {
+export default function NotificationComponent(): JSX.Element {
   const classes = { ...useStyles(), ...useNavBarStyles() };
   const [open, setOpen] = useState(false);
+  const [notifications, setNotification] = useState<Notification[]>([]);
 
   const handleClick = () => {
     setOpen((prev) => !prev);
@@ -15,6 +19,12 @@ export default function Notification(): JSX.Element {
   const handleClickAway = () => {
     setOpen(false);
   };
+  useEffect(() => {
+    async function fetchNotification() {
+      const res = await getUnreadNotifications();
+    }
+    fetchNotification();
+  }, []);
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <span className={classes.root}>

@@ -9,6 +9,7 @@ import {
 } from '../interface/AuthApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/Profile';
+import { Notification } from '../interface/Notification';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
 import searchProfilesAPI from '../helpers/APICalls/searchProfiles';
@@ -23,19 +24,23 @@ interface IAuthContext {
   updateLoginContext: (data: AuthApiDataSuccess) => void;
   updateUserProfilesContext: (data: UserProfileApiDataSuccess) => void;
   updateProfileDetailsContext: (data: ProfileDetailsApiDataSuccess) => void;
+  updateNotificationsContext: (data: Notification[]) => void;
   logout: () => void;
   setLoading: (value: boolean) => void;
+  notifications: Notification[];
 }
 
 export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
   userProfiles: [],
   profileDetails: undefined,
+  notifications: [],
   loading: true,
   errorMsg: '',
   updateLoginContext: () => null,
   updateUserProfilesContext: () => null,
   updateProfileDetailsContext: () => null,
+  updateNotificationsContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
 });
@@ -44,6 +49,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   // default undefined before loading, once loaded provide user or null if logged out
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const [userProfiles, setUserProfiles] = useState<User[]>([]);
+  const [notifications, setNotification] = useState<Notification[]>([]);
   const [profileDetails, setProfileDetails] = useState<Profile | null | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -68,6 +74,13 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     (data: ProfileDetailsApiDataSuccess) => {
       setProfileDetails(data.profile);
       setLoading(false);
+    },
+    [history],
+  );
+
+  const updateNotificationsContext = useCallback(
+    (data: Notification[]) => {
+      setNotification(data);
     },
     [history],
   );
@@ -120,12 +133,14 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         loggedInUser,
         userProfiles,
         profileDetails,
+        notifications,
         loading,
         errorMsg,
         setLoading,
         updateProfileDetailsContext,
         updateLoginContext,
         updateUserProfilesContext,
+        updateNotificationsContext,
         logout,
       }}
     >

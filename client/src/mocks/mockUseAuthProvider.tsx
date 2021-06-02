@@ -2,6 +2,7 @@ import { FunctionComponent } from 'react';
 import { AuthContext } from '../context/useAuthContext';
 import { mockLoggedInUser, mockOtherUsers } from './mockUser';
 import { mockProfile } from './mockProfile';
+import { mockNotification } from './mockNotifications';
 
 const MockUseAuthProvider: FunctionComponent = ({ children }) => {
   return (
@@ -17,6 +18,8 @@ const MockUseAuthProvider: FunctionComponent = ({ children }) => {
         updateUserProfilesContext: jest.fn(),
         updateProfileDetailsContext: jest.fn(),
         logout: jest.fn(),
+        notifications: mockNotification,
+        updateNotificationsContext: jest.fn(),
       }}
     >
       {children}
