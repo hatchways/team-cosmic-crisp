@@ -24,7 +24,9 @@ export default function Bookings(): JSX.Element {
     setLoading(true);
     getRequests().then((data) => {
       if (data.requests) setBookings(data.requests);
+      console.log(data.requests);
     });
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -38,14 +40,14 @@ export default function Bookings(): JSX.Element {
       }
     }
     setNextBooking(current.shift());
-    setPastBookings(past);
-    setCurrentBookings(current);
-    if (loading) setLoading(false);
+    setPastBookings([...past]);
+    setCurrentBookings([...current]);
   }, [bookings]);
 
   useEffect(() => {
     if (!moment(selectedDate).isSame(today, 'day')) {
       const dateBookings: Array<Request> = [];
+      console.log(selectedDate);
       bookings.forEach((booking) => {
         if (moment(booking.start).isSame(selectedDate, 'day')) {
           dateBookings.push(booking);
@@ -57,15 +59,20 @@ export default function Bookings(): JSX.Element {
 
   const changeBooking = (oldBooking: Request, newBooking: Request) => {
     let allBookings = [...bookings];
-    allBookings = allBookings.map((booking) => (booking._id === newBooking._id ? newBooking : booking));
-    setBookings(allBookings);
+    allBookings = allBookings.map((booking) => {
+      if (booking._id === newBooking._id) {
+        return newBooking;
+      }
+      return booking;
+    });
+    setBookings([...allBookings]);
   };
 
   return (
     <>
       <CssBaseline />
-      <Grid container component="main" justify="space-around">
-        <Grid item md={4} sm={5} xs={8}>
+      <Grid container component="main" justify="space-around" className={`${classes.root}`}>
+        <Grid item md={4} sm={5} xs={8} className={classes.bookings}>
           {bookings.length === 0 ? (
             <Paper elevation={6} className={classes.paper}>
               {loading ? (
@@ -78,20 +85,13 @@ export default function Bookings(): JSX.Element {
             </Paper>
           ) : (
             <>
-              <Paper elevation={6} className={`${classes.paper} ${classes.currentBookings}`}>
+              <Paper elevation={6} className={classes.paper}>
                 {moment(selectedDate).isSame(today, 'day') ? (
                   <>
                     <Typography component="span" variant="subtitle2">
                       YOUR NEXT BOOKING:
                     </Typography>
-                    {loading && <CircularProgress color="primary" />}
-                    {nextBooking ? (
-                      <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
-                    ) : (
-                      <Typography component="div" variant="h6">
-                        No Bookings Found
-                      </Typography>
-                    )}
+                    <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
                   </>
                 ) : (
                   <>
@@ -114,7 +114,7 @@ export default function Bookings(): JSX.Element {
                   <Typography component="span" variant="subtitle2">
                     CURRENT BOOKINGS:
                   </Typography>
-                  {!moment(selectedDate).isSame(today, 'day') && nextBooking !== undefined && (
+                  {!moment(selectedDate).isSame(today, 'day') && (
                     <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
                   )}
                   {currentBookings.map((booking) => (
