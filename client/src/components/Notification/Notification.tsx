@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, ClickAwayListener } from '@material-ui/core';
+import { Button, ClickAwayListener, Paper, Typography, Divider } from '@material-ui/core';
 import useStyles from './useStyles';
 import useNavBarStyles from '../Navbar/useStyles';
 import NotificationItem from './NotificationItem';
@@ -22,9 +22,13 @@ export default function Notification(): JSX.Element {
           Notifications <span className={classes.active} />
         </Button>
         {open ? (
-          <div className={classes.dropdown}>
+          <Paper className={classes.dropdown}>
+            <Typography variant="h5" className={classes.notificationTitle}>
+              Notifications
+            </Typography>
+            <Divider />
             <NotificationItem />
-          </div>
+          </Paper>
         ) : null}
       </span>
     </ClickAwayListener>
