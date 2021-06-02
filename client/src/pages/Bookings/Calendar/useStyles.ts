@@ -5,6 +5,7 @@ const useStyles = makeStyles(() => ({
     background: '#fff',
     padding: '0.5rem 1rem',
     border: '1px solid #bdbdbd',
+    // borderRadius: '0',
     width: '100%',
     minWidth: '400px',
     marginTop: '0.5rem',
