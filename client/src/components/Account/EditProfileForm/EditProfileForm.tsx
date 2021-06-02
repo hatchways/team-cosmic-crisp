@@ -3,9 +3,10 @@ import Grow from '@material-ui/core/Grow';
 
 import useStyles from './useStyles';
 import CustomTextField from './CustomTextField';
+import { useAuth } from '../../../context/useAuthContext';
+import Availability from './Availability';
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../../context/useAuthContext';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 
 import updateProfile from '../../../helpers/APICalls/updateProfile';
@@ -23,6 +24,8 @@ export default function EditProfileForm(): JSX.Element {
     phoneNumber: '',
     address: '',
     description: '',
+    isAvailable: false,
+    availability: [],
   });
   useEffect(() => {
     if (loggedInUserDetails !== undefined) {
@@ -31,9 +34,14 @@ export default function EditProfileForm(): JSX.Element {
         firstName: loggedInUserDetails?.firstName,
         lastName: loggedInUserDetails?.lastName,
         email: loggedInUserDetails?.email,
+        city: loggedInUserDetails?.city,
+        price: loggedInUserDetails?.price,
         phoneNumber: loggedInUserDetails?.phoneNumber,
         address: loggedInUserDetails?.address,
         description: loggedInUserDetails?.description,
+        isAvailable: loggedInUserDetails?.isAvailable,
+        availability: loggedInUserDetails?.availability,
+        isDogSitter: loggedInUserDetails?.isDogSitter,
       });
     }
   }, [loggedInUserDetails]);
@@ -43,8 +51,26 @@ export default function EditProfileForm(): JSX.Element {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
     property: string,
+    value?: string,
   ): void => {
-    setProfile({ ...profile, [property]: e.target.value });
+    switch (property) {
+      case 'isAvailable':
+        setProfile({ ...profile, isAvailable: !profile.isAvailable });
+        break;
+      case 'availability': {
+        if (value && profile.availability) {
+          setProfile({
+            ...profile,
+            availability: profile.availability?.includes(value)
+              ? profile.availability.filter((day) => day !== value)
+              : [...profile?.availability, value],
+          });
+        }
+        break;
+      }
+      default:
+        setProfile({ ...profile, [property]: e.target.value });
+    }
   };
 
   const toggleInput = () => setShowPhoneInput(!showPhoneInput);
@@ -67,6 +93,7 @@ export default function EditProfileForm(): JSX.Element {
       </Typography>
       <form>
         <Grid container spacing={3}>
+          {loggedInUserDetails?.isDogSitter && <Availability profile={profile} handleChange={handleChange} />}
           <CustomTextField
             onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>): void =>
               handleChange(e, 'firstName')
@@ -90,7 +117,30 @@ export default function EditProfileForm(): JSX.Element {
             value={profile.email ? profile.email : ''}
             label="email address"
             placeholder="user@gmail.com"
+            type="email"
           />
+          <CustomTextField
+            onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+              handleChange(e, 'city')
+            }
+            value={profile.city ? profile.city : ''}
+            label="city"
+            placeholder="city"
+            required={profile.isAvailable}
+          />
+          {profile.isDogSitter && (
+            <CustomTextField
+              onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+                handleChange(e, 'price')
+              }
+              value={profile.price ? profile.price : 0}
+              label="price"
+              placeholder="price"
+              required={profile.isAvailable}
+              type="number"
+            />
+          )}
+
           <Grid item xs={12}>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={12} sm={3}>

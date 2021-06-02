@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '8.5rem',
     borderRadius: theme.shape.borderRadius,
   },
+  availability: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    margin: '1rem 0',
+  },
   shouldNotDisplay: {
     display: 'none',
   },
