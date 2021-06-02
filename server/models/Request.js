@@ -7,7 +7,7 @@ const requestSchema = new mongoose.Schema({
   },
   sitter: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'profile',
   },
   start: Date,
   end: Date,

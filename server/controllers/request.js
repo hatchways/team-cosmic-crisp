@@ -10,15 +10,21 @@ const Profile = require('../models/Profile');
 // @access Private
 exports.getRequests = asyncHandler(async (req, res, next) => {
   try {
-    const requests = await Request.find({ $or: [{ user: req.user.id }, { sitter: req.user.id }] })
-      .populate('sitter', '-password')
-      .populate('user', '-password');
+    const userProfile = await User.findById(req.user.id).populate('profile');
+    let requests = await Request.find({ $or: [{ user: req.user.id }, { sitter: userProfile.profile._id }] })
+      .sort({ start: 'desc' })
+      .populate('sitter', '-password');
 
-    requests.map((request) => {
-      if (request.user._id.toString() === req.user.id) request.user = undefined;
-      else request.sitter = undefined;
+    let promises = requests.map(async (request) => {
+      if (request.sitter._id.toString() === userProfile.profile._id.toString()) {
+        const otherUser = await User.findById(request.user).populate('profile');
+        request.sitter = otherUser.profile;
+        request.user = undefined;
+      }
       return request;
     });
+
+    requests = await Promise.all(promises);
 
     res.status(200).json({ requests });
   } catch (error) {
@@ -71,19 +77,24 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
   }
 });
 
-// @route PATCH /requests/:id/accept
+// @route PATCH /requests/accept/:id
 // @desc accept or decline request by sitter
 // @access Private
 exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const { accepted, declined } = req.body;
   try {
-    const request = await Request.findOne({ _id: id });
-    if (request.sitter.toString() === req.user.id) {
+    const request = await Request.findById(id);
+    const user = await User.findById(req.user.id).populate('profile');
+    // only sitter can accept or decline
+    if (request.sitter.toString() === user.profile._id.toString()) {
       request.accepted = accepted;
       request.declined = declined;
     }
     await request.save();
+    const otherUser = await User.findById(request.user).populate('profile');
+    request.sitter = otherUser.profile;
+    request.user = undefined;
     res.status(200).json({ request });
   } catch (error) {
     res.status(500);

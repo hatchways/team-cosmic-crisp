@@ -14,6 +14,7 @@ import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
+import Bookings from './pages/Bookings/Bookings';
 import Checkout from './pages/Checkout/Checkout';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -43,6 +44,7 @@ function App(): JSX.Element {
                   <Route exact path="/checkout" component={CheckoutContainer} />
                   <ProtectedRoute exact path="/listings" component={Listings} />
                   <Route exact path="/listings" component={Listings} />
+                  <Route exact path="/bookings" component={Bookings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
                 </Switch>
               </Layout>

@@ -9,12 +9,23 @@ export interface Profile {
       end: Date;
     },
   ];
+  email?: string;
   price: number;
   city: string;
   gallery: [string];
   profilePhoto?: string;
   coverPhoto?: string;
   description?: string;
-  phoneNumber?: Number;
-  address?: String;
+  phoneNumber?: string;
+  address?: string;
+}
+
+export interface OwnerFormProfile {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  address?: string;
+  description?: string;
+  profilePhoto?: string;
 }
