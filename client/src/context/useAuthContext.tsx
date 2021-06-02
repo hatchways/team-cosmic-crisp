@@ -12,6 +12,7 @@ import { Profile } from '../interface/Profile';
 import { Notification } from '../interface/Notification';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
+import { getUnreadNotifications } from '../helpers/APICalls/notifications';
 import searchProfilesAPI from '../helpers/APICalls/searchProfiles';
 import { boolean } from 'yup';
 
@@ -109,6 +110,19 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       });
     };
     fetchUserProfiles();
+  }, [loggedInUser]);
+
+  useEffect(() => {
+    async function fetchNotification() {
+      try {
+        const res = await getUnreadNotifications();
+        console.log(res);
+        res.notifications && updateNotificationsContext(res.notifications);
+      } catch (error) {
+        console.log('error occurred getting notifications', error);
+      }
+    }
+    fetchNotification();
   }, [loggedInUser]);
 
   // use our cookies to check if we can login straight away

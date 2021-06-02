@@ -8,3 +8,8 @@ export interface Notification {
   thumbnail?: string;
   date: number;
 }
+
+export interface NotificationApiData {
+  error?: { message: string };
+  notifications?: Notification[];
+}

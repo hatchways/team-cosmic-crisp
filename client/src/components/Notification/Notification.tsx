@@ -4,13 +4,12 @@ import useStyles from './useStyles';
 import useNavBarStyles from '../Navbar/useStyles';
 import NotificationItem from './NotificationItem';
 import { useEffect } from 'react';
-import { Notification } from '../../interface/Notification';
-import { getUnreadNotifications } from '../../helpers/APICalls/notifications';
+import { useAuth } from '../../context/useAuthContext';
 
 export default function NotificationComponent(): JSX.Element {
   const classes = { ...useStyles(), ...useNavBarStyles() };
   const [open, setOpen] = useState(false);
-  const [notifications, setNotification] = useState<Notification[]>([]);
+  const { notifications } = useAuth();
 
   const handleClick = () => {
     setOpen((prev) => !prev);
@@ -19,17 +18,12 @@ export default function NotificationComponent(): JSX.Element {
   const handleClickAway = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    async function fetchNotification() {
-      const res = await getUnreadNotifications();
-    }
-    fetchNotification();
-  }, []);
+
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <span className={classes.root}>
         <Button variant="text" className={`${classes.userNavItem}`} onClick={handleClick}>
-          Notifications <span className={classes.active} />
+          Notifications {notifications.length > 0 ? <span className={classes.active} /> : null}
         </Button>
         {open ? (
           <Paper className={classes.dropdown}>
