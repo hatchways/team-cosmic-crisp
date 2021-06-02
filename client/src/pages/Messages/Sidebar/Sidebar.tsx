@@ -1,22 +1,37 @@
 import { ChangeEvent, useState } from 'react';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { User } from '../../../interface/User';
 import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
 import Search from '../../../components/Search/Search';
-import AuthMenu from '../../../components/AuthMenu/AuthMenu';
+import { Profile } from '../../../interface/Profile';
+import Chat from './Chat';
+import { Conversation } from '../../../interface/Messages';
 
 interface Props {
-  loggedInUser: User;
+  userProfile: Profile;
   handleDrawerToggle?: () => void;
 }
 
-const SideBar = ({ loggedInUser }: Props): JSX.Element => {
+const SideBar = ({ userProfile }: Props): JSX.Element => {
+  const classes = useStyles();
   const [search, setSearch] = useState<string>('test');
   const [newChatUser, setNewChatUser] = useState<User | null>(null);
-  const classes = useStyles();
+
+  const [conversations, setConversations] = useState<Conversation[]>([
+    {
+      conversationId: '123456',
+      recipent: {
+        _id: '123',
+        firstName: 'Michale',
+        lastName: 'Scott',
+        profilePhoto: '#',
+      },
+      lastMessage: 'Test message',
+      seen: false,
+    },
+  ]);
 
   // React.FormEvent<FormControl & FormControlProps>)
   const handleChange = (e: ChangeEvent<HTMLInputElement>, newInputValue: string) => {
@@ -28,19 +43,25 @@ const SideBar = ({ loggedInUser }: Props): JSX.Element => {
 
   return (
     <Grid className={classes.chatSideBanner}>
-      <Box className={classes.userPanel}>
-        <AvatarDisplay loggedIn user={loggedInUser} />
-        <Typography className={classes.userText} variant="h5">
-          {loggedInUser.profile.firstName}
-        </Typography>
-        <AuthMenu />
-      </Box>
-      <Box>
+      <Grid item className={classes.userPanel}>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item>
+            <AvatarDisplay loggedIn profile={userProfile} online />
+            <Typography className={classes.userText} component="span" variant="h5">
+              {`${userProfile.firstName} ${userProfile.lastName}`}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
         <Typography className={classes.chatTitle} variant="h5">
-          Users
+          Chats
         </Typography>
         <Search search={search} handleChange={handleChange} />
-      </Box>
+        {conversations.map((conversation) => (
+          <Chat key={conversation.conversationId} conversation={conversation} />
+        ))}
+      </Grid>
     </Grid>
   );
 };
