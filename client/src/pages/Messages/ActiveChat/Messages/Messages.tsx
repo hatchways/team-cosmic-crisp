@@ -1,9 +1,9 @@
-import React from 'react';
-import { Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import moment from 'moment';
 import { Message } from '../../../../interface/Messages';
 import SenderBubble from '../Bubbles/SenderBubble';
 import OtherUserBubble from '../Bubbles/OtherUserBubble';
+import useStyles from './useStyles';
 
 interface Props {
   messages: Message[];
@@ -15,8 +15,9 @@ interface Props {
 }
 
 const Messages = ({ messages, userId, otherUser }: Props) => {
+  const classes = useStyles();
   return (
-    <Box>
+    <Grid className={classes.root}>
       {messages.map((message) => {
         const time = moment(message.createdAt).format('h:mm');
         return message.sender === userId ? (
@@ -25,7 +26,7 @@ const Messages = ({ messages, userId, otherUser }: Props) => {
           <OtherUserBubble key={message._id} text={message.content} time={time} otherUser={otherUser} />
         );
       })}
-    </Box>
+    </Grid>
   );
 };
 

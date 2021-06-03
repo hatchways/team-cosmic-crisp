@@ -31,8 +31,15 @@ const useStyles = makeStyles((theme) => ({
     margin: '1rem 0',
   },
   chat: {
-    margin: '1.5rem 0',
+    margin: '0.5rem 0',
+    padding: '1rem',
     cursor: 'pointer',
+
+    boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px',
+    '&:hover': {
+      boxShadow:
+        'rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px;',
+    },
   },
   lastText: {
     marginLeft: '1rem',

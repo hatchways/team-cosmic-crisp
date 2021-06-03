@@ -1,6 +1,7 @@
 import { FormControl, FilledInput } from '@material-ui/core';
 import useStyles from './useStyles';
 import { ChangeEvent, FormEvent, useState } from 'react';
+
 const Input = () => {
   const classes = useStyles();
   const [text, setText] = useState<string>('');

@@ -13,7 +13,7 @@ interface Props {
 
 const SideBar = ({ conversation }: Props): JSX.Element => {
   const classes = useStyles();
-  const { firstName, lastName, _id, online } = conversation.recipent;
+  const { firstName, lastName, online } = conversation.recipent;
   const { messages } = conversation;
   const { loggedInUserDetails } = useAuth();
   return (
@@ -21,12 +21,12 @@ const SideBar = ({ conversation }: Props): JSX.Element => {
       {conversation.recipent && (
         <>
           <Header userName={`${firstName} ${lastName}`} online={online} />
-          <Box className={classes.chatContainer}>
+          <Grid container direction="column" justify="space-between" className={classes.chatContainer}>
             {messages !== undefined && loggedInUserDetails !== undefined && (
               <Messages messages={messages} otherUser={conversation.recipent} userId={loggedInUserDetails?._id} />
             )}
             <Input />
-          </Box>
+          </Grid>
         </>
       )}
     </Grid>
