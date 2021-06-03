@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     padding: 0,
     maxHeight: 500,
+    minHeight: 150,
     overflowY: 'auto',
     scrollbarWidth: 'none',
     '&::-webkit-scrollbar': {
@@ -63,6 +64,11 @@ const useStyles = makeStyles((theme) => ({
   notificationTime: {
     fontSize: '0.8rem',
     fontWeight: 600,
+  },
+  emptyNotificationMessage: {
+    fontSize: '1.2rem',
+    fontWeight: 500,
+    paddingTop: theme.spacing(3),
   },
 }));
 

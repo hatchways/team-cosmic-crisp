@@ -24,17 +24,28 @@ export default function NotificationDropdown(): JSX.Element {
       }
     }
     markUnreadNotification();
+    //change the notification state after dropdown unmounted
+    //in this case, update the notification Context in useAuthContext
     return function cleanup() {
       res.notifications && updateNotificationsContext(res.notifications);
     };
   }, []);
+  // this useEffect hook only needs to run when the dropdown first mount
+  // so the dependency here is empty
   return (
     <Paper className={classes.dropdown}>
       <Typography variant="h5" className={classes.notificationTitle}>
         Notifications
       </Typography>
       <Divider />
-      <NotificationItem notifications={notifications} />
+      {notifications.length > 0 ? (
+        <NotificationItem notifications={notifications} />
+      ) : (
+        <Typography color="secondary" align="center" className={classes.emptyNotificationMessage}>
+          There are no new notifications
+        </Typography>
+        // when the notification is empty, display helper message
+      )}
     </Paper>
   );
 }
