@@ -51,6 +51,10 @@ const useStyles = makeStyles(() => ({
     marginRight: '1rem',
     overflow: 'hidden',
   },
+  dayAvailable: {
+    textTransform: 'capitalize',
+    margin: '0 0.25rem',
+  },
 }));
 
 export default useStyles;

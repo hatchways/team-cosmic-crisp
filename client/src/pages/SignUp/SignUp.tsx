@@ -14,7 +14,7 @@ import { Button } from '@material-ui/core';
 
 export default function Register(): JSX.Element {
   const classes = useStyles();
-  const { updateLoginContext } = useAuth();
+  const { updateLoginContext, getUserProfileDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
 
   const handleSubmit = (
@@ -27,6 +27,7 @@ export default function Register(): JSX.Element {
         setSubmitting(false);
         updateSnackBarMessage(data.error.message);
       } else if (data.success) {
+        getUserProfileDetails(data.success.user.profile);
         updateLoginContext(data.success);
       } else {
         // should not get here from backend but this catch is for an unknown issue

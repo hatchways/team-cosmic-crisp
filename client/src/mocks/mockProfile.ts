@@ -5,13 +5,12 @@ export const mockProfile: Profile = {
   isDogSitter: true,
   firstName: 'Bob',
   lastName: 'Cat',
-  availability: [
-    {
-      start: new Date(),
-      end: new Date(),
-    },
-  ],
+  availability: ['mon', 'tues'],
+  isAvailable: true,
+  email: 'bob@gmail.com',
   price: 20,
   city: 'New York',
   gallery: [''],
 };
+
+export const mockProfiles: Profile[] = [mockProfile];

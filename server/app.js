@@ -9,10 +9,12 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
+
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
-const uploadRouter = require("./routes/upload");
+const photoRouter = require("./routes/photo");
 const profileRouter = require("./routes/profile");
+const reviewRouter = require('./routes/review');
 const requestRouter = require("./routes/request");
 const notificationRouter = require("./routes/notification");
 
@@ -48,7 +50,8 @@ app.use((req, res, next) => {
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profiles", profileRouter);
-app.use("/api", uploadRouter);
+app.use("/api", photoRouter);
+app.use("/reviews", reviewRouter);
 app.use("/requests", requestRouter);
 app.use("/notification", notificationRouter);
 
