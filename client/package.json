@@ -20,6 +20,8 @@
     "date-fns": "^2.21.3",
     "eslint": "^7.26.0",
     "formik": "^2.2.6",
+    "lodash.merge": "^4.6.2",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

@@ -1,6 +1,7 @@
 import { Avatar, Grid, Typography } from '@material-ui/core';
 import useStyles from './useStyles';
 import { Notification } from '../../interface/Notification';
+import moment from 'moment';
 
 interface Props {
   notifications: Notification[];
@@ -24,7 +25,7 @@ export default function NotificationItem({ notifications }: Props): JSX.Element 
                 </Grid>
                 <Grid item>
                   <Typography color="secondary" className={classes.notificationTime}>
-                    {notification.date}
+                    {moment(notification.date).fromNow()}
                   </Typography>
                 </Grid>
               </Grid>
