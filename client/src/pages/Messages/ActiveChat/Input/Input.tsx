@@ -2,7 +2,11 @@ import { FormControl, FilledInput } from '@material-ui/core';
 import useStyles from './useStyles';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-const Input = () => {
+interface Props {
+  handleSendMessage: (text: string) => void;
+}
+
+const Input = ({ handleSendMessage }: Props): JSX.Element => {
   const classes = useStyles();
   const [text, setText] = useState<string>('');
 
@@ -12,6 +16,8 @@ const Input = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    handleSendMessage(text);
+    setText('');
   };
 
   return (

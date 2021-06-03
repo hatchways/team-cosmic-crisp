@@ -15,7 +15,7 @@ interface Props {
 const SideBar = ({ userProfile, conversation, handleChatClick }: Props): JSX.Element => {
   const classes = useStyles();
   const { firstName, lastName } = conversation.recipent;
-  const { lastMessage, seen, conversationId } = conversation;
+  const { lastMessage, seen } = conversation;
   return (
     <Grid
       container

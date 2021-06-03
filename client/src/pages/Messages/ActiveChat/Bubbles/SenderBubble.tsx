@@ -1,5 +1,3 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 import useStyles from './useStyles';
 
@@ -8,13 +6,13 @@ interface Props {
   text: string;
 }
 
-const SenderBubble = ({ time, text }: Props) => {
+const SenderBubble = ({ time, text }: Props): JSX.Element => {
   const classes = useStyles();
   return (
-    <Box className={classes.root}>
+    <Box className={`${classes.root} ${classes.user}`}>
       <Typography className={classes.date}>{time}</Typography>
-      <Box className={classes.bubble}>
-        <Typography className={classes.text}>{text}</Typography>
+      <Box className={classes.userBubble}>
+        <Typography className={classes.userText}>{text}</Typography>
       </Box>
     </Box>
   );

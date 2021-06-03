@@ -14,7 +14,7 @@ interface Props {
   };
 }
 
-const Messages = ({ messages, userId, otherUser }: Props) => {
+const Messages = ({ messages, userId, otherUser }: Props): JSX.Element => {
   const classes = useStyles();
   return (
     <Grid className={classes.root}>

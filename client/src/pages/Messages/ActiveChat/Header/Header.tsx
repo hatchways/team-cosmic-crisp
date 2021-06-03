@@ -6,7 +6,7 @@ interface Props {
   online?: boolean;
 }
 
-const Header = ({ userName, online }: Props) => {
+const Header = ({ userName, online }: Props): JSX.Element => {
   const classes = useStyles();
   return (
     <Grid container alignItems="center" className={classes.root}>

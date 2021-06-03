@@ -7,7 +7,7 @@ import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import SideBar from './Sidebar/Sidebar';
-import { Conversation } from '../../interface/Messages';
+import { Conversation, Message } from '../../interface/Messages';
 import ActiveChat from './ActiveChat/ActiveChat';
 
 export default function Messages(): JSX.Element {
@@ -50,7 +50,7 @@ export default function Messages(): JSX.Element {
         },
         {
           read: false,
-          _id: '1234',
+          _id: '12344',
           content: 'Test message',
           sender: '123',
           createdAt: new Date(),
@@ -58,7 +58,7 @@ export default function Messages(): JSX.Element {
       ],
     },
     {
-      conversationId: '123456',
+      conversationId: '12345',
       recipent: {
         _id: '125',
         firstName: 'Michale',
@@ -79,10 +79,35 @@ export default function Messages(): JSX.Element {
     },
   ]);
   const [activeConvo, setActiveConvo] = useState<Conversation | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const handleChatClick = (convoId: Conversation) => {
     setActiveConvo(convoId);
   };
+
+  const handleSendMessage = (text: string) => {
+    let temp = [...conversations];
+    const message = {
+      read: false,
+      _id: text,
+      content: text,
+      sender: loggedInUserDetails?._id as string,
+      createdAt: new Date(),
+    };
+    temp = temp.map((convo) =>
+      convo.conversationId === activeConvo?.conversationId
+        ? { ...convo, messages: [...convo.messages, message] }
+        : convo,
+    );
+    setConversations(temp);
+  };
+
+  useEffect(() => {
+    if (activeConvo) {
+      const conversation = conversations.find((convo) => convo.conversationId === activeConvo.conversationId);
+      if (conversation?.messages) setMessages(conversation?.messages);
+    }
+  }, [conversations, activeConvo]);
 
   return (
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
@@ -93,7 +118,9 @@ export default function Messages(): JSX.Element {
         )}
       </Grid>
       <Grid item md={10}>
-        {activeConvo && <ActiveChat conversation={activeConvo} />}
+        {activeConvo && (
+          <ActiveChat conversation={activeConvo} handleSendMessage={handleSendMessage} messages={messages} />
+        )}
       </Grid>
     </Grid>
   );

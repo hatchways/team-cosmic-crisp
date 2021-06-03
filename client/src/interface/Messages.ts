@@ -9,7 +9,7 @@ export interface Conversation {
   };
   lastMessage: string;
   seen: boolean;
-  messages?: Message[];
+  messages: Message[];
 }
 
 export interface Message {
