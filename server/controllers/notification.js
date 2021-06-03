@@ -11,7 +11,7 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
     const notifications = await Notification.find({user:id});
     res.status(200).json({
       notifications
-    })}catch(error){
+    })} catch(error){
       res.status(500);
       throw new Error(error.message);
     }
