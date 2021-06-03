@@ -9,4 +9,13 @@ export interface Conversation {
   };
   lastMessage: string;
   seen: boolean;
+  messages?: Message[];
+}
+
+export interface Message {
+  read: boolean;
+  _id: string;
+  content: string;
+  sender: string;
+  createdAt: Date;
 }

@@ -11,27 +11,14 @@ import { Conversation } from '../../../interface/Messages';
 
 interface Props {
   userProfile: Profile;
-  handleDrawerToggle?: () => void;
+  conversations: Conversation[];
+  handleChatClick: (convoId: Conversation) => void;
 }
 
-const SideBar = ({ userProfile }: Props): JSX.Element => {
+const SideBar = ({ userProfile, conversations, handleChatClick }: Props): JSX.Element => {
   const classes = useStyles();
   const [search, setSearch] = useState<string>('test');
   const [newChatUser, setNewChatUser] = useState<User | null>(null);
-
-  const [conversations, setConversations] = useState<Conversation[]>([
-    {
-      conversationId: '123456',
-      recipent: {
-        _id: '123',
-        firstName: 'Michale',
-        lastName: 'Scott',
-        profilePhoto: '#',
-      },
-      lastMessage: 'Test message',
-      seen: false,
-    },
-  ]);
 
   // React.FormEvent<FormControl & FormControlProps>)
   const handleChange = (e: ChangeEvent<HTMLInputElement>, newInputValue: string) => {
@@ -59,7 +46,7 @@ const SideBar = ({ userProfile }: Props): JSX.Element => {
         </Typography>
         <Search search={search} handleChange={handleChange} />
         {conversations.map((conversation) => (
-          <Chat key={conversation.conversationId} conversation={conversation} />
+          <Chat key={conversation.conversationId} conversation={conversation} handleChatClick={handleChatClick} />
         ))}
       </Grid>
     </Grid>
