@@ -30,7 +30,6 @@ exports.createMessage = asyncHandler(async (req,res,next) => {
     const user = await User.findById(req.user.id);
     const conversation = await Conversation.findById(conversationId);
     const newMessage = new Message({
-      conversationId,
       content,
       sender: user.profile
     })
