@@ -68,8 +68,8 @@ export default function CreateReview({ sitterId }: Props): JSX.Element {
               <TextField
                 variant="outlined"
                 color="secondary"
-                label="Review"
-                rows={5}
+                label="Write a review"
+                rows={6}
                 multiline
                 value={review.message}
                 placeholder="Write a review"

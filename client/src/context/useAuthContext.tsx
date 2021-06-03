@@ -87,11 +87,12 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     (data: ReviewsApiDataSuccess) => {
       if (data.reviews) setSitterReviews(data.reviews);
       else if (data.review) {
-        console.log(sitterReviews);
-        setSitterReviews([...sitterReviews, data.review]);
+        const reviews = [...sitterReviews];
+        reviews.push(data.review);
+        setSitterReviews(reviews);
       }
     },
-    [history],
+    [sitterReviews],
   );
 
   const getUserProfileDetails = useCallback(

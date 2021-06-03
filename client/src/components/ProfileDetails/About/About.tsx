@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Avatar, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import { Avatar, Button, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
@@ -17,6 +17,7 @@ export interface Props {
 }
 
 export default function About({ sitter }: Props): JSX.Element {
+  const [toggle, setToggle] = useState<boolean>(false);
   const { loggedInUser, sitterReviews, updateReviewsContext } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
   const classes = useStyles();
@@ -80,12 +81,24 @@ export default function About({ sitter }: Props): JSX.Element {
               </GridList>
             </Box>
             <Box className={classes.reviewsContainer}>
-              <Typography variant="h6" className={classes.reviewTitle}>
+              <Button
+                variant="text"
+                className={classes.reviewBtn}
+                onClick={() => setToggle((prevToggle) => !prevToggle)}
+              >
                 Ratings and Reviews ({sitterReviews.length})
-              </Typography>
-              {sitterReviews.map((review) => (
-                <SitterReview review={review} key={review._id} />
-              ))}
+              </Button>
+
+              {toggle && (
+                <Fade in={true}>
+                  <Box>
+                    {sitterReviews.map((review) => (
+                      <SitterReview review={review} key={review._id} />
+                    ))}
+                  </Box>
+                </Fade>
+              )}
+
               {loggedInUser ? (
                 <CreateReview sitterId={sitter._id} />
               ) : (

@@ -58,10 +58,13 @@ const useStyles = makeStyles(() => ({
   reviewsContainer: {
     padding: '0.5rem 2.5rem 2.5rem 2.5rem',
   },
-  reviewTitle: {
+  reviewBtn: {
     fontWeight: 600,
+    fontSize: '1rem',
     marginBottom: '1.5rem',
+    color: 'blue',
     textDecoration: 'underline',
+    cursor: 'pointer',
   },
 }));
 
