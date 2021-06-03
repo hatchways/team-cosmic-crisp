@@ -11,7 +11,6 @@ interface Props {
 
 export default function NotificationItem({ notifications }: Props): JSX.Element {
   const classes = useStyles();
-  console.log(notifications);
   return (
     <ul className={classes.listItemContainer}>
       {notifications.map((notification) => (

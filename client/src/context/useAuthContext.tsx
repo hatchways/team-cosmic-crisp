@@ -134,7 +134,6 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     async function fetchNotification() {
       try {
         const res = await getUnreadNotifications();
-        console.log(res);
         res.notifications && updateNotificationsContext(res.notifications);
       } catch (error) {
         console.log('error occurred getting notifications', error);
