@@ -1,15 +1,39 @@
+import { useEffect } from 'react';
 import { Avatar, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 import { Profile } from '../../../interface/Profile';
+import { useAuth } from '../../../context/useAuthContext';
+import { useSnackBar } from '../../../context/useSnackbarContext';
+import { ReviewsApiData } from '../../../interface/ReviewApiData';
+import { getReviews } from '../../../helpers/APICalls/reviews';
 import useStyles from './useStyles';
+import SitterReview from '../Review/Review';
+import CreateReview from '../CreateReview/CreateReview';
 
 export interface Props {
   sitter: Profile | null | undefined;
 }
 
 export default function About({ sitter }: Props): JSX.Element {
+  const { loggedInUser, sitterReviews, updateReviewsContext } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
   const classes = useStyles();
+  console.log(sitterReviews);
+
+  useEffect(() => {
+    if (sitter) {
+      getReviews(sitter._id).then((data: ReviewsApiData) => {
+        if (data.success) {
+          updateReviewsContext(data.success);
+        } else if (data.error) {
+          updateSnackBarMessage('There was an error fetching reviews!');
+        }
+      });
+    }
+  }, []);
+
   return (
     <>
       {sitter && (
@@ -54,6 +78,23 @@ export default function About({ sitter }: Props): JSX.Element {
                   </GridListTile>
                 ))}
               </GridList>
+            </Box>
+            <Box className={classes.reviewsContainer}>
+              <Typography variant="h6" className={classes.reviewTitle}>
+                Ratings and Reviews ({sitterReviews.length})
+              </Typography>
+              {sitterReviews.map((review) => (
+                <SitterReview review={review} key={review._id} />
+              ))}
+              {loggedInUser ? (
+                <CreateReview sitterId={sitter._id} />
+              ) : (
+                <Typography variant="body1">
+                  Please &nbsp;
+                  <Link to="/login">Sign In</Link>
+                  &nbsp; to create a Review
+                </Typography>
+              )}
             </Box>
           </Paper>
         </Fade>

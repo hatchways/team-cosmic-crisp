@@ -1,3 +1,5 @@
+import { Review } from './Review';
+
 export interface Profile {
   _id: string;
   isDogSitter: boolean;
@@ -14,6 +16,7 @@ export interface Profile {
   description?: string;
   phoneNumber?: string;
   address?: string;
+  reviews?: Review[];
 }
 
 export interface OwnerFormProfile {

@@ -7,8 +7,10 @@ import {
   SitterProfilesApiData,
   SitterProfilesApiDataSuccess,
 } from '../interface/AuthApiData';
+import { ReviewsApiDataSuccess } from '../interface/ReviewApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/Profile';
+import { Review } from '../interface/Review';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
 import searchSitterProfilesAPI from '../helpers/APICalls/searchProfiles';
@@ -19,11 +21,13 @@ interface IAuthContext {
   loggedInUser: User | null | undefined;
   loggedInUserDetails: Profile | null | undefined;
   sitterProfiles: Profile[];
+  sitterReviews: Review[];
   loading: boolean;
   errorMsg: string;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
   updateLoggedInUserDetails: (data: UserProfileApiData) => void;
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
+  updateReviewsContext: (data: ReviewsApiDataSuccess) => void;
   logout: () => void;
   setLoading: (value: boolean) => void;
   getUserProfileDetails: (id: string) => void;
@@ -33,11 +37,13 @@ export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
   loggedInUserDetails: undefined,
   sitterProfiles: [],
+  sitterReviews: [],
   loading: true,
   errorMsg: '',
   updateLoginContext: () => null,
   updateLoggedInUserDetails: () => null,
   updateSitterProfilesContext: () => null,
+  updateReviewsContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
   getUserProfileDetails: () => null,
@@ -48,6 +54,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const [loggedInUserDetails, setLoggedInUserDetails] = useState<Profile | null | undefined>();
   const [sitterProfiles, setSitterProfiles] = useState<Profile[]>([]);
+  const [sitterReviews, setSitterReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const history = useHistory();
@@ -71,6 +78,17 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     (data: UserProfileApiData) => {
       if (data.success !== undefined) {
         setLoggedInUserDetails(data.success.profile);
+      }
+    },
+    [history],
+  );
+
+  const updateReviewsContext = useCallback(
+    (data: ReviewsApiDataSuccess) => {
+      if (data.reviews) setSitterReviews(data.reviews);
+      else if (data.review) {
+        console.log(sitterReviews);
+        setSitterReviews([...sitterReviews, data.review]);
       }
     },
     [history],
@@ -139,12 +157,14 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         loggedInUser,
         loggedInUserDetails,
         sitterProfiles,
+        sitterReviews,
         loading,
         errorMsg,
         setLoading,
         updateLoggedInUserDetails,
         updateLoginContext,
         updateSitterProfilesContext,
+        updateReviewsContext,
         logout,
         getUserProfileDetails,
       }}

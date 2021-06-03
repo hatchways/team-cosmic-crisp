@@ -55,6 +55,14 @@ const useStyles = makeStyles(() => ({
     textTransform: 'capitalize',
     margin: '0 0.25rem',
   },
+  reviewsContainer: {
+    padding: '0.5rem 2.5rem 2.5rem 2.5rem',
+  },
+  reviewTitle: {
+    fontWeight: 600,
+    marginBottom: '1.5rem',
+    textDecoration: 'underline',
+  },
 }));
 
 export default useStyles;
