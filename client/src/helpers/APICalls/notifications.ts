@@ -25,3 +25,21 @@ export const setReadNotifications = async (): Promise<NotificationApiData> => {
   }
   return getUnreadNotifications();
 };
+
+export const createNewNotification = async (
+  type: string,
+  description: string,
+  thumbnail?: string,
+): Promise<NotificationApiData> => {
+  const fetchOptions: FetchOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type, description, thumbnail }),
+    credentials: 'include',
+  };
+  return await fetch(`/notification`, fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: { message: 'Unable to connect to server. Please try again' },
+    }));
+};
