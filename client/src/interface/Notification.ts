@@ -13,3 +13,8 @@ export interface NotificationApiData {
   error?: { message: string };
   notifications?: Notification[];
 }
+
+export interface ReadNotificationApiData {
+  error?: { message: string };
+  message?: string;
+}
