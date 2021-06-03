@@ -21,7 +21,6 @@ export default function About({ sitter }: Props): JSX.Element {
   const { loggedInUser, sitterReviews, updateReviewsContext } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
   const classes = useStyles();
-  console.log(sitterReviews);
 
   useEffect(() => {
     if (sitter) {
