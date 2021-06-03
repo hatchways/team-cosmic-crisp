@@ -3,6 +3,8 @@ import useStyles from './useStyles';
 import { Notification } from '../../interface/Notification';
 import moment from 'moment';
 
+import NotificationsIcon from '@material-ui/icons/Notifications';
+
 interface Props {
   notifications: Notification[];
 }
@@ -16,7 +18,13 @@ export default function NotificationItem({ notifications }: Props): JSX.Element 
         <li className={classes.listItem} key={notification._id}>
           <Grid container direction="row" alignItems="center" className={classes.listContainer}>
             <Grid item xs={2}>
-              <Avatar alt="notification icon" src={notification.thumbnail} className={classes.notiAvatar} />
+              {notification.thumbnail ? (
+                <Avatar alt="notification icon" src={notification.thumbnail} className={classes.notiAvatar} />
+              ) : (
+                <Avatar className={classes.notiAvatar}>
+                  <NotificationsIcon />
+                </Avatar>
+              )}
             </Grid>
             <Grid item xs={9}>
               <Grid container direction="column" justify="space-around" alignItems="flex-start" spacing={1}>
