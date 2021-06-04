@@ -11,31 +11,42 @@ const Message = require('../models/Message');
 exports.getConversations = asyncHandler(async (req,res,next) => {
   try {
     const user = await User.findById(req.user.id);
-    Conversation.find(
-      {
-      participants: { $all: [user.profile] },
+    const conversations = await Conversation
+    .find({participants: { $all: [user.profile] }})
+    .populate({
+      path: 'participants',
+      match: {
+        _id: {$ne: user.profile}
       },
-      async (err, conversations) => {
-        if (err) console.log (err);
-        const conversationData = await Promise.all(
-          conversations.map(async conversation => {
-            return {
-              conversationId: conversation._id,
-              recipient: await Profile.findById(
-                conversation.participants.filter(participant => {
-                  return participant !== user.profile.toString();
-                })[0]
-                ).select("firstName lastName profilePhoto")
-              }
-          })
-        )
-        res.status(200).json({
-          success: {
-            conversations: conversationData
-          }
-        })
+      select: "firstName lastName profilePhoto"
+    })
+    .populate({
+      path: 'messages',
+      options: {
+        limit: 1,
+        sort: {createdAt: -1},
       }
-    )
+    })
+
+    const filteredConversations = conversations.map(conversation => {
+      return {
+        conversationId: conversation._id,
+        recipient: {
+          _id: conversation.participants[0]._id,
+          firstName: conversation.participants[0].firstName,
+          lastName: conversation.participants[0].lastName,
+          profilePhoto: conversation.participants[0].profilePhoto,
+        },
+        lastMessage: conversation.messages[0].content,
+        seen: conversation.messages[0].read,
+      }
+    })
+
+    res.status(200).json({
+      success: {
+        conversations: filteredConversations
+      }
+    })
   } catch(err) {
     res.status(500);
     throw new Error(error.message);
