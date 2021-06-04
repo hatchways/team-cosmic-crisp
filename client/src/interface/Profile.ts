@@ -16,7 +16,7 @@ export interface Profile {
   description?: string;
   phoneNumber?: string;
   address?: string;
-  reviews?: Review[];
+  reviews: Review[];
 }
 
 export interface OwnerFormProfile {

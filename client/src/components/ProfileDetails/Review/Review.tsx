@@ -22,7 +22,7 @@ export default function SitterReview({ review }: Props): JSX.Element {
               {`${review.creator.firstName} ${review.creator.lastName}`}
             </Typography>
           </Box>
-          <Rating value={review.rating} name="Sitter Rating" readOnly />
+          <Rating value={review.rating} name="sitter-rating" readOnly />
         </Box>
         <Box>
           <Typography variant="body1">{review?.message}</Typography>

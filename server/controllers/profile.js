@@ -18,6 +18,9 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
         {
           $match: { isDogSitter: true, price: { $exists: true }, city: { $exists: true } },
         },
+        {
+          $lookup: {from: 'reviews', localField:'reviews', foreignField: '_id', as: 'reviews'}
+        }
       ]);
     } else {
       // if either or one filter is provided
@@ -33,6 +36,9 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
               availability: { $in: [dayOfWeek] },
             },
           },
+          {
+            $lookup: {from: 'reviews', localField:'reviews', foreignField: '_id', as: 'reviews'}
+          }
         ]);
       } else if (city !== 'undefined' && date === 'undefined')
         profiles = await Profile.aggregate([
@@ -44,6 +50,9 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
               city: { $regex: city, $options: 'i' },
             },
           },
+          {
+            $lookup: {from: 'reviews', localField:'reviews', foreignField: '_id', as: 'reviews'}
+          }
         ]);
       else if (date !== 'undefined' && city === 'undefined') {
         let dayOfWeek = weekDays[new Date(date).getDay()];
@@ -57,6 +66,9 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
               availability: { $in: [dayOfWeek] },
             },
           },
+          {
+            $lookup: {from: 'reviews', localField:'reviews', foreignField: '_id', as: 'reviews'}
+          }
         ]);
       }
     }

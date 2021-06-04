@@ -66,6 +66,7 @@ export default function CreateReview({ sitterId }: Props): JSX.Element {
               </Typography>
               <Rating
                 value={review.rating}
+                name="set-sitters-rating"
                 onChange={(event, newValue) => {
                   setReview({ ...review, rating: newValue });
                 }}

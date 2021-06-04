@@ -21,7 +21,6 @@ interface IAuthContext {
   loggedInUser: User | null | undefined;
   loggedInUserDetails: Profile | null | undefined;
   sitterProfiles: Profile[];
-  sitterReviews: Review[];
   loading: boolean;
   errorMsg: string;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
@@ -31,13 +30,13 @@ interface IAuthContext {
   logout: () => void;
   setLoading: (value: boolean) => void;
   getUserProfileDetails: (id: string) => void;
+  calculateAvgRating: (reviews: Review[]) => number;
 }
 
 export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
   loggedInUserDetails: undefined,
   sitterProfiles: [],
-  sitterReviews: [],
   loading: true,
   errorMsg: '',
   updateLoginContext: () => null,
@@ -47,6 +46,7 @@ export const AuthContext = createContext<IAuthContext>({
   logout: () => null,
   setLoading: () => boolean,
   getUserProfileDetails: () => null,
+  calculateAvgRating: () => 0,
 });
 
 export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
@@ -54,7 +54,6 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const [loggedInUserDetails, setLoggedInUserDetails] = useState<Profile | null | undefined>();
   const [sitterProfiles, setSitterProfiles] = useState<Profile[]>([]);
-  const [sitterReviews, setSitterReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const history = useHistory();
@@ -84,16 +83,15 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     [history],
   );
 
-  const updateReviewsContext = useCallback(
-    (data: ReviewsApiDataSuccess) => {
-      if (data.reviews) setSitterReviews(data.reviews);
-      else if (data.review) {
-        const reviews = [...sitterReviews];
-        reviews.push(data.review);
-        setSitterReviews(reviews);
-      }
+  const updateReviewsContext = useCallback((data: ReviewsApiDataSuccess) => {
+    if (data.review) console.log(data.review);
+  }, []);
+
+  const calculateAvgRating = useCallback(
+    (reviews: Review[]) => {
+      return reviews.reduce((a, { rating }) => a + rating, 0) / reviews.length;
     },
-    [sitterReviews],
+    [history],
   );
 
   const getUserProfileDetails = useCallback(
@@ -159,7 +157,6 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         loggedInUser,
         loggedInUserDetails,
         sitterProfiles,
-        sitterReviews,
         loading,
         errorMsg,
         setLoading,
@@ -169,6 +166,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         updateReviewsContext,
         logout,
         getUserProfileDetails,
+        calculateAvgRating,
       }}
     >
       {children}
