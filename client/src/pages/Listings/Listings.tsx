@@ -1,11 +1,19 @@
+import { useEffect } from 'react';
 import { Box, CssBaseline, Typography } from '@material-ui/core';
 
 import useStyles from './useStyles';
+import { useSocket } from '../../context/useSocketContext';
 import ProfileSearch from '../../components/Listings/ProfileSearch/ProfileSearch';
 import ProfileList from '../../components/Listings/ProfileList/ProfileList';
 
 export default function Listings(): JSX.Element {
+  const { initSocket } = useSocket();
   const classes = useStyles();
+
+  useEffect(() => {
+    initSocket();
+  }, []);
+
   return (
     <Box display="flex" justifyContent="center" className={classes.mainContainer}>
       <CssBaseline />

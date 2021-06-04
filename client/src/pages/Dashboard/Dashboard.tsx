@@ -12,21 +12,8 @@ export default function Dashboard(): JSX.Element {
   const classes = useStyles();
 
   const { loggedInUser } = useAuth();
-  const { initSocket, socket } = useSocket();
 
   const history = useHistory();
-
-  useEffect(() => {
-    initSocket();
-  }, []);
-
-  useEffect(() => {
-    socket?.open();
-
-    return () => {
-      socket?.close();
-    };
-  }, [initSocket]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
   if (!loggedInUser) {

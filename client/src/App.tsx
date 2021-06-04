@@ -11,7 +11,6 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
-import Dashboard from './pages/Dashboard/Dashboard';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
@@ -31,7 +30,6 @@ function App(): JSX.Element {
                   <Route exact path="/signup" component={Signup} />
                   <Route exact path="/listings" component={Listings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
-                  <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                 </Switch>
               </Layout>
             </SocketProvider>
