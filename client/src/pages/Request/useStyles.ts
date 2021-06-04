@@ -1,23 +1,12 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  mainContainer: {
-    minHeight: '90vh',
-    width: '100%',
-    background: '#f5f5f5',
-    padding: '3.5rem 0rem',
-  },
-  secondaryContainer: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
   paper: {
-    minHeight: '75vh',
-    width: '100%',
-    maxWidth: 685,
+    width: '80%',
+    margin: '2rem auto',
+    minHeight: '85vh',
     background: '#ffffff',
     borderRadius: theme.shape.borderRadius,
-    padding: '2.25rem 2.5rem',
   },
 }));
 
