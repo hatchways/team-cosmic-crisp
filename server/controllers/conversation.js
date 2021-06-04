@@ -56,16 +56,26 @@ exports.getConversations = asyncHandler(async (req,res,next) => {
 // @route POST/coversations
 //Create a conversation
 exports.createConversation = asyncHandler(async (req,res,next) => {
-  const newConverstaion = new Conversation({
-    participants: [req.body.senderId, req.body.receiverId]
-  })
   try {
-    const savedConversation = await newConverstaion.save();
-    res.status(201).json({
-      success: {
-        conversation: savedConversation,
-      }
+    const conversation = await Conversation.findOne({
+      participants: {$all :[req.body.senderId, req.body.receiverId]}
     })
+
+    if (!conversation) {
+      const newConverstaion = new Conversation({
+        participants: [req.body.senderId, req.body.receiverId]
+      })
+      const savedConversation = await newConverstaion.save();
+      res.status(201).json({
+        success: {
+          conversation: savedConversation,
+        }
+      })
+    } else {
+      res.status(409);
+      res.json({error: {message:  "Conversation already exists!" }})
+    }
+    
   } catch(err) {
     res.status(500);
     throw new Error(error.message);
