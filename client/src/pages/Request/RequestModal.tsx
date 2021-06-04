@@ -25,7 +25,7 @@ export default function RequestModal(): JSX.Element {
   };
 
   return (
-    <TableCell>
+    <TableCell align="center">
       <Button onClick={handleClickOpen}>
         <MoreVertIcon />
       </Button>
