@@ -58,6 +58,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const history = useHistory();
+  console.log(sitterProfiles);
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {

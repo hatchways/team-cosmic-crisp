@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Avatar, Button, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 import { Profile } from '../../../interface/Profile';
 import { useAuth } from '../../../context/useAuthContext';
@@ -84,6 +86,7 @@ export default function About({ sitter }: Props): JSX.Element {
                 variant="text"
                 className={classes.reviewBtn}
                 onClick={() => setToggle((prevToggle) => !prevToggle)}
+                endIcon={toggle ? <RemoveIcon /> : <AddIcon />}
               >
                 Ratings and Reviews ({sitterReviews.length})
               </Button>

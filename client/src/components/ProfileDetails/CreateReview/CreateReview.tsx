@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Avatar, Box, Button, TextField, Typography } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
+import CreateIcon from '@material-ui/icons/Create';
+import CloseIcon from '@material-ui/icons/Close';
 
 import useStyles from './useStyles';
 import { useAuth } from '../../../context/useAuthContext';
@@ -39,7 +41,13 @@ export default function CreateReview({ sitterId }: Props): JSX.Element {
   return (
     <Box className={classes.mainContainer}>
       <Box textAlign="right">
-        <Button variant="contained" color="primary" onClick={() => setToggle((prevToggle) => !prevToggle)}>
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          startIcon={toggle ? <CloseIcon /> : <CreateIcon />}
+          onClick={() => setToggle((prevToggle) => !prevToggle)}
+        >
           {toggle ? 'Close' : 'Write a Review'}
         </Button>
       </Box>
