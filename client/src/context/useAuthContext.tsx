@@ -57,7 +57,6 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const history = useHistory();
-  console.log(sitterProfiles);
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
@@ -83,9 +82,15 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     [history],
   );
 
-  const updateReviewsContext = useCallback((data: ReviewsApiDataSuccess) => {
-    if (data.review) console.log(data.review);
-  }, []);
+  const updateReviewsContext = useCallback(
+    (data: ReviewsApiDataSuccess) => {
+      const reviewedProfiles = sitterProfiles.map((profile) => {
+        return profile._id !== data.profile._id ? profile : data.profile;
+      });
+      setSitterProfiles(reviewedProfiles);
+    },
+    [history],
+  );
 
   const calculateAvgRating = useCallback(
     (reviews: Review[]) => {

@@ -1,8 +1,8 @@
-import { Review } from './Review';
+import { Profile } from './Profile';
 
 export interface ReviewsApiDataSuccess {
   message: string;
-  review: Review;
+  profile: Profile;
 }
 
 export interface ReviewsApiData {
