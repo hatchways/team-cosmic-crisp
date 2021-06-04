@@ -65,6 +65,11 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
           Checkout
         </Button>
       </Link>
+      <Link to="/requests" className={classes.link}>
+        <Button variant="text" className={classes.userNavItem}>
+          Request
+        </Button>
+      </Link>
       <Button variant="text" className={classes.userNavItem}>
         Notifications <span className={classes.active} />
       </Button>

@@ -18,6 +18,7 @@ import Bookings from './pages/Bookings/Bookings';
 import Checkout from './pages/Checkout/Checkout';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import Request from './pages/Request/Request';
 
 const stripePromise = loadStripe(
   'pk_test_51Ite41ETXh1tPNGoqqdONIoPnTfqTTKF7AXARKRrMqmqDzL6jP0dpaD2jQgCVf1NpnId9ZHTC5cTiQZiTlLSHUU100Md0Rj9EK',
@@ -46,6 +47,7 @@ function App(): JSX.Element {
                   <Route exact path="/listings" component={Listings} />
                   <Route exact path="/bookings" component={Bookings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
+                  <Route exact path="/requests" component={Request} />
                 </Switch>
               </Layout>
             </SocketProvider>
