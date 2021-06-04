@@ -1,6 +1,7 @@
 import { Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, Grid } from '@material-ui/core';
 import useStyles from './useStyles';
 
+import RequestModal from './RequestModal';
 export default function Request(): JSX.Element {
   const classes = useStyles();
 
@@ -17,6 +18,7 @@ export default function Request(): JSX.Element {
                   <TableCell>Status</TableCell>
                   <TableCell>Price</TableCell>
                   <TableCell>Date created</TableCell>
+                  <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -25,6 +27,7 @@ export default function Request(): JSX.Element {
                   <TableCell>Pending</TableCell>
                   <TableCell>$35</TableCell>
                   <TableCell>2 days ago</TableCell>
+                  <RequestModal />
                 </TableRow>
               </TableBody>
             </Table>
