@@ -9,9 +9,14 @@ import {
   TableCell,
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Request } from '../../interface/Bookings';
 import useStyles from './useStyles';
 
-export default function RequestModal(): JSX.Element {
+interface Props {
+  request: Request;
+}
+
+export default function RequestModal({ request }: Props): JSX.Element {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);

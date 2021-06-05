@@ -4,7 +4,7 @@ import useStyles from './useStyles';
 import RequestTableHead from './RequestTableHead';
 import RequestTableBody from './RequestTableBody';
 
-export default function Request(): JSX.Element {
+export default function JobRequest(): JSX.Element {
   const classes = useStyles();
 
   return (
@@ -12,7 +12,7 @@ export default function Request(): JSX.Element {
       <Grid container direction="column" spacing={3}>
         <Grid item>
           <Typography variant="h4" className={classes.tableName}>
-            Requests
+            Sitting Requests
           </Typography>
         </Grid>
         <Grid item>
