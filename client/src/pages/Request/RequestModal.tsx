@@ -12,16 +12,18 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Request } from '../../interface/Bookings';
 import useStyles from './useStyles';
 import moment from 'moment';
+import { acceptRequest, declineRequest } from '../../helpers/APICalls/bookings';
 
 interface Props {
   request: Request;
+  updateRequest: (newRequest: Request) => void;
 }
 
-export default function RequestModal({ request }: Props): JSX.Element {
+export default function RequestModal({ request, updateRequest }: Props): JSX.Element {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const { start, end } = request;
+  const { start, end, _id } = request;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,6 +37,23 @@ export default function RequestModal({ request }: Props): JSX.Element {
     const startDate = moment(start);
     const endDate = moment(end);
     return endDate.diff(startDate, 'hours');
+  };
+
+  const handleDecline = (): void => {
+    declineRequest(_id).then((data) => {
+      if (data.request) {
+        updateRequest(data.request);
+        handleClose();
+      }
+    });
+  };
+  const handleAccept = (): void => {
+    acceptRequest(_id).then((data) => {
+      if (data.request) {
+        updateRequest(data.request);
+        handleClose();
+      }
+    });
   };
 
   return (
@@ -58,10 +77,10 @@ export default function RequestModal({ request }: Props): JSX.Element {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleDecline} color="primary">
             Decline
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleAccept} color="primary" autoFocus>
             Accept
           </Button>
         </DialogActions>

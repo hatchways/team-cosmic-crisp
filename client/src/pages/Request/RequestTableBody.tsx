@@ -48,6 +48,13 @@ export default function RequestTableBody(): JSX.Element {
     );
   }
 
+  function updateRequest(newRequest: Request): void {
+    const newRequests = requests.map((request) => {
+      return request._id === newRequest._id ? newRequest : request;
+    });
+    setRequests(newRequests as Request[]);
+  }
+
   return (
     <TableBody>
       {requests
@@ -59,7 +66,7 @@ export default function RequestTableBody(): JSX.Element {
               <TableCell align="center">{checkLabel(request.accepted, request.declined)}</TableCell>
               <TableCell align="center">{moment(request.start).format('MMMM Do YYYY, h:mm a')}</TableCell>
               <TableCell align="center">{moment(request.start).format('MMMM Do YYYY, h:mm a')}</TableCell>
-              <RequestModal request={request} />
+              <RequestModal request={request} updateRequest={updateRequest} />
             </TableRow>
           ))
         : null}
