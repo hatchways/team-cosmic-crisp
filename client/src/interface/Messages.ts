@@ -9,7 +9,7 @@ export interface Conversation {
   };
   lastMessage: string;
   seen: boolean;
-  messages: Message[];
+  messages?: Message[];
 }
 
 export interface Message {
@@ -18,4 +18,31 @@ export interface Message {
   content: string;
   sender: string;
   createdAt: Date;
+}
+
+export interface CreateConversationAPIDataSuccess {
+  success: {
+    conversation: {
+      participants: string[];
+      messages: string[];
+    };
+  };
+}
+
+export interface GetConversationAPIDataSuccess {
+  success: {
+    conversations: Conversation[];
+  };
+}
+
+export interface PostMessageAPIDataSuccess {
+  success: {
+    message: Message;
+  };
+}
+
+export interface GetMessagesAPIDataSuccess {
+  success: {
+    messages: Message[];
+  };
 }
