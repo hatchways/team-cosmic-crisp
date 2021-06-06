@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(4),
     height: theme.spacing(4),
   },
+  dialogText: {
+    fontWeight: 600,
+  },
 }));
 
 export default useStyles;
