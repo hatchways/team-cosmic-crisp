@@ -19,10 +19,6 @@ export default function Bookings({ bookingDetails }: Props): JSX.Element {
   if (!bookingDetails) return <></>;
   const { start, accepted, declined, sitter } = bookingDetails;
 
-  const handleCheckout = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    console.log(e);
-  };
-
   return (
     <>
       <CssBaseline />
@@ -61,13 +57,7 @@ export default function Bookings({ bookingDetails }: Props): JSX.Element {
             style={{ textDecoration: 'none' }}
             className={declined || !accepted ? classes.checkoutLink : ''}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.btnDisplay}
-              onClick={(e) => handleCheckout(e)}
-              disabled={declined || !accepted}
-            >
+            <Button variant="contained" color="primary" className={classes.btnDisplay} disabled={declined || !accepted}>
               Checkout
             </Button>
           </Link>

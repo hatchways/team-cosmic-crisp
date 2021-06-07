@@ -109,7 +109,6 @@ exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
 exports.payRequest = asyncHandler(async (req, res, next) => {
   const { sitter, start, end, hours, payment_method_id, payment_intent_id } = req.body;
   const requestId = req.params.id;
-  console.log(sitter, start, end, hours, payment_method_id, payment_intent_id);
   let intent;
 
   if (!sitter) {

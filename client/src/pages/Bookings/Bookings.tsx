@@ -23,8 +23,9 @@ export default function Bookings(): JSX.Element {
   useEffect(() => {
     setLoading(true);
     getRequests().then((data) => {
-      if (data.requests) setBookings(data.requests);
-      console.log(data.requests);
+      if (data.requests) {
+        setBookings(data?.requests);
+      }
     });
     setLoading(false);
   }, []);
@@ -47,7 +48,7 @@ export default function Bookings(): JSX.Element {
   useEffect(() => {
     if (!moment(selectedDate).isSame(today, 'day')) {
       const dateBookings: Array<Request> = [];
-      console.log(selectedDate);
+
       bookings.forEach((booking) => {
         if (moment(booking.start).isSame(selectedDate, 'day')) {
           dateBookings.push(booking);
