@@ -5,7 +5,7 @@ const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
 const User = require('../models/User');
 
-// @route GET/:conversationId messages
+// @route GET /messages/:conversationId
 //Get all messages for a conversation
 exports.getMessages = asyncHandler(async (req, res, next) => {
   const conversationId = req.params.conversationId;
@@ -18,11 +18,11 @@ exports.getMessages = asyncHandler(async (req, res, next) => {
     });
   } catch (err) {
     res.status(500);
-    throw new Error(error.message);
+    throw new Error(err.message);
   }
 });
 
-// @route POST/messages
+// @route POST /messages
 //Create a message
 exports.createMessage = asyncHandler(async (req, res, next) => {
   const { conversationId, content } = req.body;
@@ -43,6 +43,6 @@ exports.createMessage = asyncHandler(async (req, res, next) => {
     });
   } catch (err) {
     res.status(500);
-    throw new Error(error.message);
+    throw new Error(err.message);
   }
 });

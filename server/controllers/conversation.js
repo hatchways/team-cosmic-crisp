@@ -3,8 +3,6 @@ const asyncHandler = require('express-async-handler');
 
 const Conversation = require('../models/Conversation');
 const User = require('../models/User');
-const Profile = require('../models/Profile');
-const Message = require('../models/Message');
 
 // @route GET/conversations
 //Get all conversations for a user
