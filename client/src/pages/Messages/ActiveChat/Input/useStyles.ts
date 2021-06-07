@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   hideEmoji: {
     display: 'none',
   },
+  displayNone: {
+    display: 'none',
+  },
 }));
 
 export default useStyles;

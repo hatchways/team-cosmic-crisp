@@ -49,6 +49,12 @@ const Input = ({ handleSendMessage }: Props): JSX.Element => {
     };
   }, [emojiContainerRef]);
 
+  // there are issues with recently used emojies in emoji picker
+  useEffect(() => {
+    const recentlyUsed = document.querySelector("[data-display-name='Recently Used']");
+    if (recentlyUsed) recentlyUsed.classList.add(classes.displayNone);
+  }, [emojiPicker]);
+
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       <Grid className={`${classes.emojiPicker} ${!emojiPicker ? classes.hideEmoji : ''}`} ref={emojiContainerRef}>
