@@ -9,6 +9,16 @@ const useStyles = makeStyles((theme) => ({
   transparentNav: {
     boxShadow: 'none',
   },
+  landingNav: {
+    position: 'fixed',
+    top: 0,
+    background: 'transparent',
+    color: '#fff',
+  },
+  landingBtn: {
+    color: '#fff !important',
+    border: '1px solid #A9A9A9 !important',
+  },
   grow: {
     flexGrow: 1,
   },
@@ -18,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     filter: 'drop-shadow(0px 2px 6px rgba(74,106,149,0.2))',
     boxShadow: 'none',
-    marginRight: 35,
+    marginRight: 30,
     textTransform: 'uppercase',
   },
   sitterBtn: {

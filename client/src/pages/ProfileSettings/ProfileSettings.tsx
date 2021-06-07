@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import useStyles from './useStyles';
 import SideBar from '../../components/Account/Sidebar/Sidebar';
 import EditProfileForm from '../../components/Account/EditProfileForm/EditProfileForm';
-import UploadPhoto from '../../components/Account/UploadPhoto/UploadPhoto';
+import ProfilePhoto from '../../components/Account/ProfilePhoto/ProfilePhoto';
 
 export default function ProfileSettings(): JSX.Element {
   const classes = useStyles();
@@ -15,7 +15,7 @@ export default function ProfileSettings(): JSX.Element {
       case 'edit-profile':
         return <EditProfileForm />;
       case 'profile-photo':
-        return <UploadPhoto />;
+        return <ProfilePhoto />;
 
       default:
         return null;

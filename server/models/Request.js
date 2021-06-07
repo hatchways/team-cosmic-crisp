@@ -7,7 +7,7 @@ const requestSchema = new mongoose.Schema({
   },
   sitter: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'profile',
   },
   start: Date,
   end: Date,
@@ -22,6 +22,9 @@ const requestSchema = new mongoose.Schema({
   paid: {
     type: Boolean,
     default: false,
+  },
+  payDetails: {
+    paidAt: Date,
   },
 });
 
