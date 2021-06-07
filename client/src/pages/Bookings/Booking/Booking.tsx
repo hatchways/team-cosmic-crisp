@@ -7,6 +7,8 @@ import { Button, Paper, Typography } from '@material-ui/core';
 import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { acceptRequest, declineRequest } from '../../../helpers/APICalls/bookings';
+import { Link } from 'react-router-dom';
+import React from 'react';
 
 interface Props {
   bookingDetails: Request | undefined;
@@ -15,8 +17,10 @@ interface Props {
 
 export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.Element {
   const classes = useStyles();
+
   if (!bookingDetails) return <></>;
   const { _id, start, accepted, declined, sitter, user } = bookingDetails;
+
   const handleClick = (type: string) => {
     if (type === 'accept')
       acceptRequest(_id).then((data) => {
@@ -26,6 +30,9 @@ export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.
       declineRequest(_id).then((data) => {
         if (data.request) changeBooking(bookingDetails, data.request);
       });
+  };
+  const handleCheckout = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    console.log(e);
   };
 
   return (
@@ -55,6 +62,28 @@ export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.
           <Button size="large" disabled className={classes.button}>
             {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
           </Button>
+
+          <Link
+            to={{
+              pathname: '/checkout',
+              state: {
+                bookingDetails: bookingDetails,
+              },
+            }}
+            style={{ textDecoration: 'none' }}
+            className={declined || !accepted ? classes.checkoutLink : ''}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.btnDisplay}
+              onClick={(e) => handleCheckout(e)}
+              disabled={declined || !accepted}
+            >
+              Checkout
+            </Button>
+          </Link>
+
           {user === undefined && (
             <>
               {!accepted && (

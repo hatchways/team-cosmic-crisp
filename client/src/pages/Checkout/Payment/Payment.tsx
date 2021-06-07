@@ -9,7 +9,7 @@ import { CircularProgress } from '@material-ui/core';
 
 interface Props {
   userProfile: {
-    id: string;
+    _id: string;
   };
   hours: number;
   requestId: string;
@@ -95,7 +95,7 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         payment_method_id: paymentMethod.id,
-        sitter: userProfile.id,
+        sitter: userProfile._id,
         hours,
         start,
         end,

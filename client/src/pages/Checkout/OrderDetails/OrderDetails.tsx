@@ -10,9 +10,9 @@ interface Props {
   userProfile: {
     firstName: string;
     lastName: string;
-    profilePhoto: string;
+    profilePhoto?: string;
     price: number;
-    rating: number;
+    rating?: number;
   };
   startDate: Date | null;
   endDate: Date | null;

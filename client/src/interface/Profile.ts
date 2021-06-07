@@ -14,6 +14,7 @@ export interface Profile {
   description?: string;
   phoneNumber?: string;
   address?: string;
+  rating?: number;
 }
 
 export interface OwnerFormProfile {

@@ -37,6 +37,12 @@ const useStyles = makeStyles(() => ({
   decline: {
     color: 'red',
   },
+  btnDisplay: {
+    marginLeft: '1rem',
+  },
+  checkoutLink: {
+    pointerEvents: 'none',
+  },
 }));
 
 export default useStyles;
