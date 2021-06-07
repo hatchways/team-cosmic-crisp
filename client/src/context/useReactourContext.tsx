@@ -35,6 +35,6 @@ export const ReactourProvider: FunctionComponent = ({ children }): JSX.Element =
   );
 };
 
-export function useSnackBar(): IReactourContext {
+export function useReactour(): IReactourContext {
   return useContext(ReactourContext);
 }
