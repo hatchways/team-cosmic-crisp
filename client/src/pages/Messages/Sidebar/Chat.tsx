@@ -5,17 +5,18 @@ import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
 import { Profile } from '../../../interface/Profile';
 import { Conversation } from '../../../interface/Messages';
 import { Box } from '@material-ui/core';
+import { useMessages } from '../../../context/useMessageContext';
 
 interface Props {
   userProfile?: Profile;
   conversation: Conversation;
-  handleChatClick: (convoId: Conversation) => void;
 }
 
-const SideBar = ({ userProfile, conversation, handleChatClick }: Props): JSX.Element => {
+const SideBar = ({ conversation }: Props): JSX.Element => {
   const classes = useStyles();
-  const { firstName, lastName } = conversation.recipent;
+  const { firstName, lastName, profilePhoto, online } = conversation.recipient;
   const { lastMessage, seen } = conversation;
+  const { setActiveConversation } = useMessages();
   return (
     <Grid
       container
@@ -23,10 +24,10 @@ const SideBar = ({ userProfile, conversation, handleChatClick }: Props): JSX.Ele
       justify="space-between"
       className={classes.chat}
       wrap="nowrap"
-      onClick={() => handleChatClick(conversation)}
+      onClick={() => setActiveConversation(conversation.conversationId)}
     >
       <Grid container alignItems="center">
-        <AvatarDisplay loggedIn profile={userProfile} online />
+        <AvatarDisplay loggedIn src={profilePhoto} online={online} offline={!online} />
         <Grid>
           <Typography className={classes.userText} component="div" variant="h5">
             {`${firstName} ${lastName}`}

@@ -12,10 +12,9 @@ import { Conversation } from '../../../interface/Messages';
 interface Props {
   userProfile: Profile;
   conversations: Conversation[];
-  handleChatClick: (convoId: Conversation) => void;
 }
 
-const SideBar = ({ userProfile, conversations, handleChatClick }: Props): JSX.Element => {
+const SideBar = ({ userProfile, conversations }: Props): JSX.Element => {
   const classes = useStyles();
   const [search, setSearch] = useState<string>('test');
   const [newChatUser, setNewChatUser] = useState<User | null>(null);
@@ -45,9 +44,8 @@ const SideBar = ({ userProfile, conversations, handleChatClick }: Props): JSX.El
           Chats
         </Typography>
         <Search search={search} handleChange={handleChange} />
-        {conversations.map((conversation) => (
-          <Chat key={conversation.conversationId} conversation={conversation} handleChatClick={handleChatClick} />
-        ))}
+        {conversations.length > 0 &&
+          conversations.map((conversation) => <Chat key={conversation.conversationId} conversation={conversation} />)}
       </Grid>
     </Grid>
   );

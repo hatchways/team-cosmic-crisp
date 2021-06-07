@@ -5,6 +5,7 @@ const useStyles = makeStyles(() => ({
     height: '100%',
   },
   chatContainer: {
+    maxHeight: 'calc( 100vh - 350px )',
     padding: '0 2rem',
     width: '100%',
     flexGrow: 1,

@@ -6,16 +6,17 @@ import useStyles from './useStyles';
 interface Props {
   loggedIn?: boolean;
   online?: boolean;
+  offline?: boolean;
   profile?: Profile | null | undefined;
   src?: string;
 }
 
-const AvatarDisplay = ({ profile, src, online }: Props): JSX.Element => {
+const AvatarDisplay = ({ profile, src, online, offline }: Props): JSX.Element => {
   const classes = useStyles();
-  if (online)
+  if (online || offline)
     return (
       <Badge
-        classes={{ badge: `${classes.badge} ${online && classes.online}` }}
+        classes={{ badge: `${classes.badge}  ${online && classes.offline} ${online && classes.online}` }}
         variant="dot"
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         overlap="circle"

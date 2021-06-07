@@ -8,6 +8,9 @@ const useStyles = makeStyles(() => ({
     border: '2px solid white',
     backgroundColor: '#D0DAE9',
   },
+  offline: {
+    backgroundColor: '#D0DAE9',
+  },
   online: {
     backgroundColor: '#1CED84',
   },

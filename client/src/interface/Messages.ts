@@ -1,6 +1,6 @@
 export interface Conversation {
   conversationId: string;
-  recipent: {
+  recipient: {
     _id: string;
     firstName: string;
     lastName: string;
@@ -22,27 +22,28 @@ export interface Message {
 
 export interface CreateConversationAPIDataSuccess {
   success: {
-    conversation: {
-      participants: string[];
-      messages: string[];
-    };
+    conversation: Conversation;
   };
+  error?: { message: string };
 }
 
 export interface GetConversationAPIDataSuccess {
   success: {
     conversations: Conversation[];
   };
+  error?: { message: string };
 }
 
 export interface PostMessageAPIDataSuccess {
   success: {
     message: Message;
   };
+  error?: { message: string };
 }
 
 export interface GetMessagesAPIDataSuccess {
   success: {
     messages: Message[];
   };
+  error?: { message: string };
 }

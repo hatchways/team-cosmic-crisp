@@ -1,32 +1,37 @@
 import Grid from '@material-ui/core/Grid';
 import useStyles from './useStyles';
-import { Conversation, Message } from '../../../interface/Messages';
+import { Conversation } from '../../../interface/Messages';
 import Header from './Header/Header';
 import Messages from './Messages/Messages';
 import Input from './Input/Input';
 import { useAuth } from '../../../context/useAuthContext';
+import { useMessages } from '../../../context/useMessageContext';
+import { CircularProgress } from '@material-ui/core';
 
 interface Props {
-  conversation: Conversation;
+  conversation?: Conversation;
   handleSendMessage: (text: string) => void;
-  messages: Message[];
 }
 
-const SideBar = ({ conversation, handleSendMessage, messages }: Props): JSX.Element => {
+const SideBar = ({ conversation, handleSendMessage }: Props): JSX.Element => {
   const classes = useStyles();
-  const { firstName, lastName, online } = conversation.recipent;
   const { loggedInUserDetails } = useAuth();
+  const { loading, messages } = useMessages();
   return (
     <Grid container direction="column" className={classes.root}>
-      {conversation.recipent && (
+      {conversation && conversation.recipient && (
         <>
-          <Header userName={`${firstName} ${lastName}`} online={online} />
+          <Header
+            userName={`${conversation.recipient.firstName} ${conversation.recipient.lastName}`}
+            online={conversation.recipient.online}
+          />
           <Grid container direction="column" justify="space-between" className={classes.chatContainer}>
+            {loading && <CircularProgress />}
             {messages !== undefined && loggedInUserDetails !== undefined && (
-              <Messages messages={messages} otherUser={conversation.recipent} userId={loggedInUserDetails?._id} />
+              <Messages messages={messages} otherUser={conversation.recipient} userId={loggedInUserDetails?._id} />
             )}
-            <Input handleSendMessage={handleSendMessage} />
           </Grid>
+          <Input handleSendMessage={handleSendMessage} />
         </>
       )}
     </Grid>

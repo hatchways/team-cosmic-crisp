@@ -18,14 +18,15 @@ const Messages = ({ messages, userId, otherUser }: Props): JSX.Element => {
   const classes = useStyles();
   return (
     <Grid className={classes.root}>
-      {messages.map((message) => {
-        const time = moment(message.createdAt).format('h:mm');
-        return message.sender === userId ? (
-          <SenderBubble key={message._id} text={message.content} time={time} />
-        ) : (
-          <OtherUserBubble key={message._id} text={message.content} time={time} otherUser={otherUser} />
-        );
-      })}
+      {messages.length > 0 &&
+        messages.map((message) => {
+          const time = moment(message.createdAt).format('h:mm');
+          return message.sender === userId ? (
+            <SenderBubble key={message._id} text={message.content} time={time} />
+          ) : (
+            <OtherUserBubble key={message._id} text={message.content} time={time} otherUser={otherUser} />
+          );
+        })}
     </Grid>
   );
 };
