@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: '2rem 0',
+    margin: '1rem 0 0.25rem 0',
     padding: '2rem 0',
     boxShadow: `0 0 3px ${theme.palette.primary.main}`,
   },
