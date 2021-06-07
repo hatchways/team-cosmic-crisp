@@ -11,8 +11,11 @@ interface IMessageContext {
   activeConversation: string | null;
   messages: Message[];
   addMessage: (message: Message) => void;
+  addNewMessage: (message: Message) => void;
   setActiveConversation: (conversationId: string) => void;
   loading: boolean;
+  addOnlineUser: (id: string) => void;
+  removeOfflineUser: (id: string) => void;
 }
 
 export const MessageContext = createContext<IMessageContext>({
@@ -20,10 +23,13 @@ export const MessageContext = createContext<IMessageContext>({
   activeConversation: null,
   messages: [],
   addMessage: () => null,
+  addNewMessage: () => null,
   setActiveConversation: () => null,
   updateConversations: () => null,
   addConversation: () => null,
   loading: false,
+  addOnlineUser: () => null,
+  removeOfflineUser: () => null,
 });
 
 export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Element => {
@@ -87,6 +93,23 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
     [history, conversations],
   );
 
+  const addNewMessage = useCallback(
+    (message) => {
+      const convo = conversations.find((convo) => convo.recipient._id === message.sender);
+      if (convo && convo.conversationId === activeConversation) {
+        addMessage(message);
+      } else {
+        const temp = conversations.map((convo) =>
+          convo.recipient._id === message.sender && convo.messages
+            ? { ...convo, messages: [...convo.messages, message] }
+            : convo,
+        );
+        setConversations(temp);
+      }
+    },
+    [history, conversations],
+  );
+
   const addMessage = useCallback(
     (message) => {
       const temp = [...messages, message];
@@ -103,6 +126,27 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
     });
   }, [history, loggedInUser]);
 
+  const addOnlineUser = useCallback(
+    (id: string) => {
+      const temp = conversations.map((convo) =>
+        convo.recipient._id === id ? { ...convo, recipient: { ...convo.recipient, online: true } } : convo,
+      );
+      setConversations(temp);
+    },
+    [history, conversations],
+  );
+
+  const removeOfflineUser = useCallback(
+    (id: string) => {
+      const temp = conversations.map((convo) =>
+        convo.recipient._id === id ? { ...convo, recipient: { ...convo.recipient, online: false } } : convo,
+      );
+
+      setConversations(temp);
+    },
+    [history, conversations],
+  );
+
   return (
     <MessageContext.Provider
       value={{
@@ -110,10 +154,13 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
         activeConversation,
         messages,
         addMessage,
+        addNewMessage,
         setActiveConversation,
         updateConversations,
         addConversation,
         loading,
+        addOnlineUser,
+        removeOfflineUser,
       }}
     >
       {children}

@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 
 const Conversation = require('../models/Conversation');
 const User = require('../models/User');
+const onlineUsers = require('../onlineUsers');
 
 // @route GET/conversations
 //Get all conversations for a user
@@ -33,6 +34,7 @@ exports.getConversations = asyncHandler(async (req, res, next) => {
           firstName: conversation.participants[0].firstName,
           lastName: conversation.participants[0].lastName,
           profilePhoto: conversation.participants[0].profilePhoto,
+          online: onlineUsers[conversation.participants[0]._id.toString()] ? true : false,
         },
         lastMessage: conversation.messages[0]?.content || '',
         seen: conversation.messages[0]?.read || true,

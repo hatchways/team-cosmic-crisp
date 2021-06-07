@@ -38,14 +38,14 @@ const Messages = ({ messages, userId, otherUser }: Props): JSX.Element => {
         messages.map((message) => {
           const time = moment(message.createdAt).format('h:mm');
           return (
-            <>
+            <Grid key={message._id}>
               <DisplayDate date={message.createdAt} />
               {message.sender === userId ? (
-                <SenderBubble key={message._id} text={message.content} time={time} />
+                <SenderBubble text={message.content} time={time} />
               ) : (
-                <OtherUserBubble key={message._id} text={message.content} time={time} otherUser={otherUser} />
+                <OtherUserBubble text={message.content} time={time} otherUser={otherUser} />
               )}
-            </>
+            </Grid>
           );
         })}
     </Grid>

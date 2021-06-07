@@ -6,6 +6,7 @@ export interface Conversation {
     lastName: string;
     profilePhoto: string;
     online?: boolean;
+    typing?: boolean;
   };
   lastMessage: string;
   seen: boolean;
@@ -18,6 +19,7 @@ export interface Message {
   content: string;
   sender: string;
   createdAt: Date;
+  receiver?: string;
 }
 
 export interface CreateConversationAPIDataSuccess {

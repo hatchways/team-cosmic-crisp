@@ -9,6 +9,7 @@ import SideBar from './Sidebar/Sidebar';
 import ActiveChat from './ActiveChat/ActiveChat';
 import { useMessages } from '../../context/useMessageContext';
 import { sendMessage } from '../../helpers/APICalls/messages';
+import { useSocket } from '../../context/useSocketContext';
 
 interface RouteParams {
   conversationId: string;
@@ -20,6 +21,7 @@ export default function Messages(): JSX.Element {
   const { loggedInUser, loggedInUserDetails } = useAuth();
   const { conversations, activeConversation, addMessage, loading, setActiveConversation } = useMessages();
   const { conversationId } = useParams<RouteParams>();
+  const { socket } = useSocket();
 
   const [error, setError] = useState<string>('');
 
@@ -28,6 +30,8 @@ export default function Messages(): JSX.Element {
       sendMessage(activeConversation, text).then((res) => {
         if (res.success) {
           addMessage(res.success.message);
+          const recipient = conversations.find((convo) => convo.conversationId === activeConversation)?.recipient;
+          socket?.emit('new-message', { ...res.success.message, receiver: recipient?._id });
         } else if (res.error) setError(res.error.message);
       });
     }
