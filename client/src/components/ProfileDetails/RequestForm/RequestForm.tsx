@@ -3,7 +3,6 @@ import { Box, Button, CircularProgress, Fade, Grid, Paper, Typography } from '@m
 import { KeyboardDatePicker, TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Rating from '@material-ui/lab/Rating';
 import DateFnsUtils from '@date-io/date-fns';
-import { Link } from 'react-router-dom';
 
 import { Profile } from '../../../interface/Profile';
 import useStyles from './useStyles';
@@ -28,7 +27,6 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
     if (sitter) {
       postRequest(sitter._id, startDate, endDate).then((data) => {
         setSuccess(true);
-        console.log(data);
       });
     }
     setLoading(false);
@@ -117,23 +115,9 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   <>
                     {success && (
                       <Typography component="span" variant="subtitle1">
-                        Request sent click pay now to continue
+                        Request sent, waiting for Sitter&apos;s approve
                       </Typography>
                     )}
-                    <Link
-                      to={{
-                        pathname: '/checkout',
-                        state: {
-                          sitter: sitter._id,
-                          startDate,
-                          endDate,
-                        },
-                      }}
-                    >
-                      <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
-                        Pay now
-                      </Button>
-                    </Link>
                   </>
                 )}
               </Box>
