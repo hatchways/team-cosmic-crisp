@@ -6,6 +6,7 @@ import Signup from './pages/SignUp/SignUp';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
+import { ReactourProvider } from './context/useReactourContext';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
@@ -35,19 +36,21 @@ function App(): JSX.Element {
         <SnackBarProvider>
           <AuthProvider>
             <SocketProvider>
-              <Layout>
-                <Switch>
-                  <Route exact path="/" component={LandingPage} />
-                  <Route exact path="/profile/:id" component={ProfileDetails} />
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/signup" component={Signup} />
-                  <Route exact path="/checkout" component={CheckoutContainer} />
-                  <ProtectedRoute exact path="/listings" component={Listings} />
-                  <Route exact path="/listings" component={Listings} />
-                  <Route exact path="/bookings" component={Bookings} />
-                  <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
-                </Switch>
-              </Layout>
+              <ReactourProvider>
+                <Layout>
+                  <Switch>
+                    <Route exact path="/" component={LandingPage} />
+                    <Route exact path="/profile/:id" component={ProfileDetails} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/signup" component={Signup} />
+                    <Route exact path="/checkout" component={CheckoutContainer} />
+                    <ProtectedRoute exact path="/listings" component={Listings} />
+                    <Route exact path="/listings" component={Listings} />
+                    <Route exact path="/bookings" component={Bookings} />
+                    <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
+                  </Switch>
+                </Layout>
+              </ReactourProvider>
             </SocketProvider>
           </AuthProvider>
         </SnackBarProvider>
