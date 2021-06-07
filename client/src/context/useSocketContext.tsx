@@ -1,5 +1,9 @@
-import { useState, useContext, createContext, FunctionComponent, useCallback } from 'react';
+import { useState, useContext, useEffect, createContext, FunctionComponent, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
+
+import { useAuth } from '../context/useAuthContext';
+
+const ENDPOINT = 'ws://localhost:3001';
 
 interface ISocketContext {
   socket: Socket | undefined;
@@ -12,16 +16,24 @@ export const SocketContext = createContext<ISocketContext>({
 });
 
 export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => {
+  const { loggedInUser } = useAuth();
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
 
   const initSocket = useCallback(() => {
-    console.log('trying to connect');
+    console.log('Trying to connect');
     setSocket(
-      io('/', {
+      io(ENDPOINT, {
         withCredentials: true,
+        transports: ['websocket'],
       }),
     );
   }, []);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      initSocket();
+    }
+  }, [loggedInUser]);
 
   return <SocketContext.Provider value={{ socket, initSocket }}>{children}</SocketContext.Provider>;
 };
