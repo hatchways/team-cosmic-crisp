@@ -57,17 +57,6 @@ export default function Bookings(): JSX.Element {
     }
   }, [selectedDate]);
 
-  const changeBooking = (oldBooking: Request, newBooking: Request) => {
-    let allBookings = [...bookings];
-    allBookings = allBookings.map((booking) => {
-      if (booking._id === newBooking._id) {
-        return newBooking;
-      }
-      return booking;
-    });
-    setBookings([...allBookings]);
-  };
-
   return (
     <>
       <CssBaseline />
@@ -91,7 +80,7 @@ export default function Bookings(): JSX.Element {
                     <Typography component="span" variant="subtitle2">
                       YOUR NEXT BOOKING:
                     </Typography>
-                    <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
+                    <Booking bookingDetails={nextBooking} />
                   </>
                 ) : (
                   <>
@@ -104,7 +93,7 @@ export default function Bookings(): JSX.Element {
                       </Typography>
                     )}
                     {selectedDateBookings.map((booking) => (
-                      <Booking key={booking._id} bookingDetails={booking} changeBooking={changeBooking} />
+                      <Booking key={booking._id} bookingDetails={booking} />
                     ))}
                   </>
                 )}
@@ -114,11 +103,9 @@ export default function Bookings(): JSX.Element {
                   <Typography component="span" variant="subtitle2">
                     CURRENT BOOKINGS:
                   </Typography>
-                  {!moment(selectedDate).isSame(today, 'day') && (
-                    <Booking bookingDetails={nextBooking} changeBooking={changeBooking} />
-                  )}
+                  {!moment(selectedDate).isSame(today, 'day') && <Booking bookingDetails={nextBooking} />}
                   {currentBookings.map((booking) => (
-                    <Booking key={booking._id} bookingDetails={booking} changeBooking={changeBooking} />
+                    <Booking key={booking._id} bookingDetails={booking} />
                   ))}
                 </Grid>
                 <Grid className={classes.pastBookings}>
@@ -126,7 +113,7 @@ export default function Bookings(): JSX.Element {
                     PAST BOOKINGS:
                   </Typography>
                   {pastBookings.map((booking) => (
-                    <Booking key={booking._id} bookingDetails={booking} changeBooking={changeBooking} />
+                    <Booking key={booking._id} bookingDetails={booking} />
                   ))}
                 </Grid>
               </Paper>
