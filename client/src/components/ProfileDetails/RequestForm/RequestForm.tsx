@@ -36,7 +36,6 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
     if (sitter) {
       postRequest(sitter._id, startDate, endDate).then((data) => {
         setSuccess(true);
-        console.log(data);
       });
     }
     setLoading(false);
@@ -45,7 +44,6 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
   const sendMessage = () => {
     if (loggedInUserDetails && sitter)
       createConversation(loggedInUserDetails?._id, sitter?._id).then((res) => {
-        console.log(res);
         if (res.success) {
           addConversation(res.success.conversation);
           history.push(`/messages/${res.success.conversation.conversationId}`);
@@ -156,7 +154,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   </>
                 )}
                 <Button variant="contained" color="primary" className={classes.submitBtn} onClick={sendMessage}>
-                  send message
+                  Message
                 </Button>
               </Box>
             </Box>

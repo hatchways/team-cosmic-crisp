@@ -2,6 +2,7 @@ import { useState, useContext, createContext, FunctionComponent, useEffect, useC
 import { useHistory } from 'react-router-dom';
 import { getConversations, getMessages } from '../helpers/APICalls/messages';
 import { Conversation, Message, GetConversationAPIDataSuccess } from '../interface/Messages';
+import { useAuth } from './useAuthContext';
 
 interface IMessageContext {
   conversations: Conversation[];
@@ -32,6 +33,7 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
   const [messages, setMessages] = useState<Message[]>([]);
   const [activeConversation, setActiveConvo] = useState<string | null>(null);
   const history = useHistory();
+  const { loggedInUser } = useAuth();
 
   const updateConversations = useCallback(
     (data) => {
@@ -99,7 +101,7 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
       if (res.success) updateConversations(res);
       else if (res.error) setError(res.error.message);
     });
-  }, [history]);
+  }, [history, loggedInUser]);
 
   return (
     <MessageContext.Provider

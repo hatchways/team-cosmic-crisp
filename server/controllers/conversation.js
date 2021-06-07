@@ -36,8 +36,8 @@ exports.getConversations = asyncHandler(async (req, res, next) => {
           lastName: conversation.participants[0].lastName,
           profilePhoto: conversation.participants[0].profilePhoto,
         },
-        lastMessage: conversation.messages[0]?.content | '',
-        seen: conversation.messages[0]?.read | true,
+        lastMessage: conversation.messages[0]?.content || '',
+        seen: conversation.messages[0]?.read || true,
       };
     });
 
@@ -117,8 +117,8 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
               lastName: conversation.participants[0].lastName,
               profilePhoto: conversation.participants[0].profilePhoto,
             },
-            lastMessage: conversation.messages[0]?.content,
-            seen: conversation.messages[0]?.read,
+            lastMessage: conversation.messages[0]?.content || '',
+            seen: conversation.messages[0]?.read || true,
           },
         },
       });

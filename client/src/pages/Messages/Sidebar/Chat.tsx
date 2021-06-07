@@ -16,7 +16,7 @@ const SideBar = ({ conversation }: Props): JSX.Element => {
   const classes = useStyles();
   const { firstName, lastName, profilePhoto, online } = conversation.recipient;
   const { lastMessage, seen } = conversation;
-  const { setActiveConversation } = useMessages();
+  const { setActiveConversation, messages } = useMessages();
   return (
     <Grid
       container
@@ -33,7 +33,9 @@ const SideBar = ({ conversation }: Props): JSX.Element => {
             {`${firstName} ${lastName}`}
           </Typography>
           <Typography component="div" variant="body2" className={`${classes.lastText} ${!seen && classes.textNotSeen}`}>
-            {lastMessage}
+            {conversation.messages && conversation.messages.length > 0
+              ? conversation.messages[conversation.messages.length - 1].content
+              : lastMessage}
           </Typography>
         </Grid>
       </Grid>
