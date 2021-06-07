@@ -15,16 +15,16 @@ interface Props {
 const SideBar = ({ conversation }: Props): JSX.Element => {
   const classes = useStyles();
   const { firstName, lastName, profilePhoto, online } = conversation.recipient;
-  const { lastMessage, seen } = conversation;
-  const { setActiveConversation, messages } = useMessages();
+  const { lastMessage, seen, conversationId } = conversation;
+  const { setActiveConversation, activeConversation } = useMessages();
   return (
     <Grid
       container
       alignItems="center"
       justify="space-between"
-      className={classes.chat}
+      className={`${classes.chat} ${activeConversation === conversationId ? classes.active : ''}`}
       wrap="nowrap"
-      onClick={() => setActiveConversation(conversation.conversationId)}
+      onClick={() => setActiveConversation(conversationId)}
     >
       <Grid container alignItems="center">
         <AvatarDisplay loggedIn src={profilePhoto} online={online} offline={!online} />

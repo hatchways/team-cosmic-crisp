@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
   userBubble: {
     borderRadius: '0 10px 10px 10px',
-    background: '#F4F6FA',
+    background: theme.palette.primary.main,
   },
   text: {
     fontSize: 14,
@@ -38,15 +38,14 @@ const useStyles = makeStyles(() => ({
   userText: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#91A3C0',
+    color: '#fff',
     letterSpacing: -0.2,
     padding: 8,
   },
   date: {
     fontSize: 11,
     color: '#BECCE2',
-    fontWeight: 'bold',
-    marginBottom: 5,
+    marginTop: 5,
   },
 }));
 
