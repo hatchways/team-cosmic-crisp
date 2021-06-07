@@ -3,16 +3,13 @@ const asyncHandler = require('express-async-handler');
 
 const Conversation = require('../models/Conversation');
 const User = require('../models/User');
-const Profile = require('../models/Profile');
-const Message = require('../models/Message');
 
 // @route GET/conversations
 //Get all conversations for a user
-exports.getConversations = asyncHandler(async (req,res,next) => {
+exports.getConversations = asyncHandler(async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
-    const conversations = await Conversation
-    .find({participants: { $all: [user.profile] }})
+    const conversations = await Conversation.find({participants: { $all: [user.profile] }})
     .populate({
       path: 'participants',
       match: {
@@ -28,7 +25,7 @@ exports.getConversations = asyncHandler(async (req,res,next) => {
       }
     })
 
-    const filteredConversations = conversations.map(conversation => {
+    const filteredConversations = conversations.map((conversation) => {
       return {
         conversationId: conversation._id,
         recipient: {
@@ -37,8 +34,8 @@ exports.getConversations = asyncHandler(async (req,res,next) => {
           lastName: conversation.participants[0].lastName,
           profilePhoto: conversation.participants[0].profilePhoto,
         },
-        lastMessage: conversation.messages[0].content,
-        seen: conversation.messages[0].read,
+        lastMessage: conversation.messages[0]?.content || '',
+        seen: conversation.messages[0]?.read || true,
       }
     })
 
@@ -49,13 +46,13 @@ exports.getConversations = asyncHandler(async (req,res,next) => {
     })
   } catch(err) {
     res.status(500);
-    throw new Error(error.message);
+    throw new Error(err.message);
   }
 })
 
 // @route POST/coversations
 //Create a conversation
-exports.createConversation = asyncHandler(async (req,res,next) => {
+exports.createConversation = asyncHandler(async (req, res, next) => {
   try {
     const conversation = await Conversation.findOne({
       participants: {$all :[req.body.senderId, req.body.receiverId]}
@@ -78,6 +75,6 @@ exports.createConversation = asyncHandler(async (req,res,next) => {
     
   } catch(err) {
     res.status(500);
-    throw new Error(error.message);
+    throw new Error(err.message);
   }
 })
