@@ -55,10 +55,10 @@ export default function Messages(): JSX.Element {
   return (
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
       <CssBaseline />
-      <Grid item className={classes.drawerWrapper} md={2}>
+      <Grid item className={classes.drawerWrapper} sm={4}>
         {loggedInUserDetails && <SideBar userProfile={loggedInUserDetails} conversations={conversations} />}
       </Grid>
-      <Grid item md={10}>
+      <Grid item sm={8}>
         {activeConversation && (
           <ActiveChat
             conversation={conversations.find((convo) => convo.conversationId === activeConversation)}

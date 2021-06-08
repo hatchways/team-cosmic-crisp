@@ -66,10 +66,6 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
         setUsersTyping((usersTyping) => usersTyping.filter((convo) => convo !== conversationId));
       });
     });
-
-    return () => {
-      socket?.off('new-message');
-    };
   }, [socket, loggedInUserDetails, loggedInUser]);
 
   useEffect(() => {
