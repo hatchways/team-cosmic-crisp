@@ -9,6 +9,7 @@ import { Profile } from '../../interface/Profile';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useSocket } from '../../context/useSocketContext';
 
 interface Props {
   user: User | null | undefined;
@@ -20,6 +21,7 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
   const classes = useStyles();
   const history = useHistory();
   const { pathname } = useLocation();
+  const { socket } = useSocket();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -32,6 +34,7 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
   };
 
   const handleLogout = () => {
+    socket?.emit('logout', profile?._id);
     handleClose();
     logout();
   };

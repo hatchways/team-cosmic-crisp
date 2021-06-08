@@ -11,11 +11,13 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { useSocket } from '../../context/useSocketContext';
 
 export default function Login(): JSX.Element {
   const classes = useStyles();
   const { updateLoginContext, getUserProfileDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
+  const { socket } = useSocket();
 
   const handleSubmit = (
     { email, password }: { email: string; password: string },

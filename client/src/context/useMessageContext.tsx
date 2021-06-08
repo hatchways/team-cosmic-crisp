@@ -14,6 +14,7 @@ interface IMessageContext {
   addNewMessage: (message: Message) => void;
   setActiveConversation: (conversationId: string) => void;
   loading: boolean;
+  removeOfflineUser: (id: string) => void;
 }
 
 export const MessageContext = createContext<IMessageContext>({
@@ -26,6 +27,7 @@ export const MessageContext = createContext<IMessageContext>({
   updateConversations: () => null,
   addConversation: () => null,
   loading: false,
+  removeOfflineUser: () => null,
 });
 
 export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Element => {
@@ -124,11 +126,22 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
     (message) => {
       setMessages((messages) => {
         const temp = [...messages, message];
-        return temp;
         saveMessages(activeConversation, temp);
+        return temp;
       });
     },
     [history, messages, activeConversation],
+  );
+
+  const removeOfflineUser = useCallback(
+    (id) => {
+      setConversations((conversations) =>
+        conversations.map((convo) =>
+          convo.recipient._id === id ? { ...convo, recipient: { ...convo.recipient, online: false } } : convo,
+        ),
+      );
+    },
+    [history, conversations],
   );
 
   return (
@@ -143,6 +156,7 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
         updateConversations,
         addConversation,
         loading,
+        removeOfflineUser,
       }}
     >
       {children}
