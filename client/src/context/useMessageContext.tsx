@@ -107,8 +107,8 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
             })
             .finally(() => setLoading(false));
         }
-        setActiveConvo(convo.conversationId);
       }
+      setActiveConvo(conversationId);
     },
     [history, conversations, activeConversation],
   );

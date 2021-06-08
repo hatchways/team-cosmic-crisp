@@ -51,7 +51,6 @@ exports.createMessage = asyncHandler(async (req, res, next) => {
 //Set message status to seen
 exports.setMessageToSeen = asyncHandler(async (req, res, next) => {
   const { conversationId } = req.body;
-  console.log(conversationId);
   try {
     const user = await User.findById(req.user.id);
     const conversation = await Conversation.findById(conversationId).populate({

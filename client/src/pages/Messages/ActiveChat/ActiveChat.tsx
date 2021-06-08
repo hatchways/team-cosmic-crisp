@@ -19,7 +19,11 @@ const ActiceChat = ({ conversation, handleSendMessage }: Props): JSX.Element => 
   const { loading, messages } = useMessages();
   // if (conversation?.recipient.typing) console.log('typing from message');
   return (
-    <Grid container direction="column" className={classes.root}>
+    <Grid
+      container
+      direction="column"
+      className={`${classes.root} ${conversation ? classes.active : classes.notActive}`}
+    >
       {conversation && conversation.recipient && (
         <>
           <Header
