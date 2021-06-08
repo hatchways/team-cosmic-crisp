@@ -13,7 +13,7 @@ const Layout = ({ children }: Props): JSX.Element => {
     <Container maxWidth={false} style={{ padding: '0' }}>
       <Navbar user={loggedInUser} profile={loggedInUserDetails} logout={logout} />
       {children}
-      <ReactourFAB />
+      {loggedInUser && <ReactourFAB />}
     </Container>
   );
 };

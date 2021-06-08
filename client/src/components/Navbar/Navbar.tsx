@@ -65,16 +65,16 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
           Checkout
         </Button>
       </Link>
-      <Button variant="text" className={classes.userNavItem}>
+      <Button variant="text" className={classes.userNavItem} id="product_tour_navigation_button">
         Notifications <span className={classes.active} />
       </Button>
 
       <Link to="/bookings" className={classes.link}>
-        <Button variant="text" className={classes.userNavItem}>
+        <Button variant="text" className={classes.userNavItem} id="product_tour_sitter_button">
           {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
         </Button>
       </Link>
-      <Button variant="text" className={classes.userNavItem}>
+      <Button variant="text" className={classes.userNavItem} id="product_tour_message_button">
         Messages <span className={classes.active} />
       </Button>
     </Grid>
@@ -94,7 +94,12 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
           {user ? (
             <>
               <UserNav />
-              <IconButton onClick={handleClick} aria-controls="user-menu" aria-haspopup="true">
+              <IconButton
+                onClick={handleClick}
+                aria-controls="user-menu"
+                aria-haspopup="true"
+                id="product_tour_profile_button"
+              >
                 {user !== null && user !== undefined && <AvatarDisplay loggedIn={true} profile={profile} />}
               </IconButton>
               <Menu

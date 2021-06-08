@@ -15,6 +15,9 @@ export const ReactourProvider: FunctionComponent = ({ children }): JSX.Element =
   const history = useHistory();
   const tourConfig = [
     {
+      action: () => {
+        history.push('/listings');
+      },
       selector: '#product_tour_search_box',
       content: 'Start by giving a city and date',
     },
@@ -28,6 +31,25 @@ export const ReactourProvider: FunctionComponent = ({ children }): JSX.Element =
       },
       selector: '#product_tour_request_form',
       content: 'Select Drop In and Drop Off time, send request',
+    },
+    {
+      action: () => {
+        history.push('/listings');
+      },
+      selector: '#product_tour_navigation_button',
+      content: 'You can view all notifications here',
+    },
+    {
+      selector: '#product_tour_sitter_button',
+      content: 'You can view all the bookings here',
+    },
+    {
+      selector: '#product_tour_message_button',
+      content: 'Send and receive message here',
+    },
+    {
+      selector: '#product_tour_profile_button',
+      content: 'Edit profile here',
     },
   ];
 
