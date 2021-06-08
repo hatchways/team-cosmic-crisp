@@ -1,6 +1,6 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { getConversations, getMessages } from '../helpers/APICalls/messages';
+import { getConversations, getMessages, setMessageSeen } from '../helpers/APICalls/messages';
 import { Conversation, Message, GetConversationAPIDataSuccess } from '../interface/Messages';
 import { useAuth } from './useAuthContext';
 
@@ -64,6 +64,23 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
     }
   }, [conversations, activeConversation]);
 
+  useEffect(() => {
+    //setting seen to be true whenever chat is selected
+    if (activeConversation) {
+      setConversations((conversations) =>
+        conversations.map((convo) => {
+          if (convo.conversationId === activeConversation && convo.seen === false) {
+            convo.seen = true;
+            setMessageSeen(convo.conversationId).then((res) => {
+              if (res.error) setError(res.error.message);
+            });
+          }
+          return convo;
+        }),
+      );
+    }
+  }, [activeConversation]);
+
   const addConversation = useCallback(
     (conversation) => {
       const temp = conversations.find((convo) => convo.conversationId === conversation.conversationId);
@@ -80,7 +97,7 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
       const convo = conversations.find((convo) => convo.conversationId === conversationId);
       if (convo) {
         // if messages are already saved
-        if (convo?.messages === undefined || convo?.messages.length === 0) {
+        if (convo.getNewMessages || convo?.messages === undefined || convo?.messages.length === 0) {
           setLoading(true);
           getMessages(convo?.conversationId)
             .then((res) => {
@@ -101,7 +118,9 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
     (conversationId, messages) => {
       setConversations((conversations) => {
         const convos = conversations.map((convo) =>
-          convo.conversationId === conversationId ? { ...convo, messages: [...messages] } : convo,
+          convo.conversationId === conversationId
+            ? { ...convo, getNewMessages: false, messages: [...messages] }
+            : convo,
         );
         return convos;
       });
@@ -114,12 +133,27 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
       //if message is already added
       const convo = conversations.find((convo) => convo.conversationId === message.conversationId);
       if (convo?.messages && convo.messages.find((msg) => msg._id === message._id)) {
+        console.log('already present');
         return conversations;
       }
       // add messages to conversation
+      console.log('adding present');
       const temp = conversations.map((convo) =>
-        convo.conversationId === message.conversationId && convo.messages
-          ? { ...convo, seen: convo.conversationId === activeConversation, messages: [...convo.messages, message] }
+        convo.conversationId === message.conversationId && convo.messages //if messages are already present in conversation
+          ? {
+              ...convo,
+              lastMessage: message.content,
+              seen: convo.conversationId === activeConversation,
+              messages: [...convo.messages, message],
+            }
+          : convo.conversationId === message.conversationId && !convo.messages //if messages are not already present in conversation create new messages array
+          ? {
+              ...convo,
+              lastMessage: message.content,
+              seen: convo.conversationId === activeConversation,
+              messages: [message],
+              getNewMessages: true,
+            }
           : convo,
       );
       return temp;

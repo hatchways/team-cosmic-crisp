@@ -62,3 +62,17 @@ export const getMessages = async (conversationId: string): Promise<GetMessagesAP
       error: { message: 'Unable to connect to server. Please try again' },
     }));
 };
+
+export const setMessageSeen = async (conversationId: string): Promise<GetMessagesAPIDataSuccess> => {
+  const fetchOptions: FetchOptions = {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ conversationId }),
+  };
+  return await fetch(`/messages/${conversationId}`, fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: { message: 'Unable to connect to server. Please try again' },
+    }));
+};

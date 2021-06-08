@@ -11,6 +11,7 @@ export interface Conversation {
   lastMessage: string;
   seen: boolean;
   messages?: Message[];
+  getNewMessages?: boolean; // value to save if we should get new messages from server
 }
 
 export interface Message {

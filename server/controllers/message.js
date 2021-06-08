@@ -46,3 +46,29 @@ exports.createMessage = asyncHandler(async (req, res, next) => {
     throw new Error(err.message);
   }
 });
+
+// @route PATCH /messages/:conversationId
+//Set message status to seen
+exports.setMessageToSeen = asyncHandler(async (req, res, next) => {
+  const { conversationId } = req.body;
+  console.log(conversationId);
+  try {
+    const user = await User.findById(req.user.id);
+    const conversation = await Conversation.findById(conversationId).populate({
+      path: 'messages',
+      match: { sender: { $ne: user.profile } },
+      options: {
+        limit: 1,
+        sort: { createdAt: -1 },
+      },
+    });
+    await Message.findOneAndUpdate({ _id: conversation.messages[0]._id }, { $set: { read: true } });
+    res.status(201).json({
+      success: true,
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500);
+    throw new Error(err.message);
+  }
+});

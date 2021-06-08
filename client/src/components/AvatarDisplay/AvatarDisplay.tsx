@@ -13,17 +13,16 @@ interface Props {
 
 const AvatarDisplay = ({ profile, src, online, offline }: Props): JSX.Element => {
   const classes = useStyles();
-  if (online || offline)
-    return (
-      <Badge
-        classes={{ badge: `${classes.badge}  ${online && classes.offline} ${online && classes.online}` }}
-        variant="dot"
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        overlap="circle"
-      >
-        <Avatar alt="Profile Image" src={profile?.profilePhoto || src} />
-      </Badge>
-    );
+  return (
+    <Badge
+      classes={{ badge: `${classes.badge}  ${online && classes.online}  ${offline && classes.offline}` }}
+      variant="dot"
+      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      overlap="circle"
+    >
+      <Avatar alt="Profile Image" src={profile?.profilePhoto || src} />
+    </Badge>
+  );
   return <Avatar alt="Profile Image" src={profile?.profilePhoto || src} />;
 };
 

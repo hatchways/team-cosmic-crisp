@@ -33,14 +33,18 @@ const SideBar = ({ conversation }: Props): JSX.Element => {
           <Typography className={classes.userText} component="div" variant="h5">
             {`${firstName} ${lastName}`}
           </Typography>
-          <Typography component="div" variant="body2" className={`${classes.lastText} ${!seen && classes.textNotSeen}`}>
+          <Typography
+            component="div"
+            variant="body2"
+            className={`${classes.lastText} ${seen === false && classes.textNotSeen}`}
+          >
             {conversation.messages && conversation.messages.length > 0
               ? conversation.messages[conversation.messages.length - 1].content
               : lastMessage}
           </Typography>
         </Grid>
       </Grid>
-      {!seen && <Box className={classes.notSeenBox} />}
+      {seen === false && <Box className={classes.notSeenBox} />}
     </Grid>
   );
 };
