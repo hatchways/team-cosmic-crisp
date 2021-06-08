@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
       width: '300px',
     },
   },
+  activeConvoContainer: {
+    // margin: '0 auto',
+  },
 }));
 
 export default useStyles;

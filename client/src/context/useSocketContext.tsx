@@ -23,7 +23,7 @@ export const SocketContext = createContext<ISocketContext>({
 export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => {
   const { loggedInUser, loggedInUserDetails } = useAuth();
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
-  const { addNewMessage, removeOfflineUser } = useMessages();
+  const { addNewMessage, removeOfflineUser, addOnlineUser } = useMessages();
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const [usersTyping, setUsersTyping] = useState<string[]>([]);
 
@@ -47,6 +47,7 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
     socket?.on('connect', () => {
       socket.on('add-online-user', (id) => {
         setOnlineUsers((onlineUsers) => [...onlineUsers, id]);
+        addOnlineUser(id);
       });
 
       socket.on('remove-offline-user', (id) => {

@@ -53,12 +53,12 @@ export default function Messages(): JSX.Element {
   }
 
   return (
-    <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
+    <Grid container component="main" justify="center" className={`${classes.root} ${classes.dashboard}`}>
       <CssBaseline />
-      <Grid item className={classes.drawerWrapper} sm={4}>
+      <Grid item className={classes.drawerWrapper} sm={4} md={2}>
         {loggedInUserDetails && <SideBar userProfile={loggedInUserDetails} conversations={conversations} />}
       </Grid>
-      <Grid item sm={8}>
+      <Grid item sm={8} className={classes.activeConvoContainer}>
         {activeConversation && (
           <ActiveChat
             conversation={conversations.find((convo) => convo.conversationId === activeConversation)}

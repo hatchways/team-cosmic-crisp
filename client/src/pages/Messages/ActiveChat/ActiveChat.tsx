@@ -7,7 +7,6 @@ import Input from './Input/Input';
 import { useAuth } from '../../../context/useAuthContext';
 import { useMessages } from '../../../context/useMessageContext';
 import { CircularProgress } from '@material-ui/core';
-import { useSocket } from '../../../context/useSocketContext';
 
 interface Props {
   conversation?: Conversation;
@@ -18,7 +17,6 @@ const ActiceChat = ({ conversation, handleSendMessage }: Props): JSX.Element => 
   const classes = useStyles();
   const { loggedInUserDetails } = useAuth();
   const { loading, messages } = useMessages();
-  const { onlineUsers } = useSocket();
   // if (conversation?.recipient.typing) console.log('typing from message');
   return (
     <Grid container direction="column" className={classes.root}>
@@ -26,17 +24,21 @@ const ActiceChat = ({ conversation, handleSendMessage }: Props): JSX.Element => 
         <>
           <Header
             userName={`${conversation.recipient.firstName} ${conversation.recipient.lastName}`}
-            online={conversation.recipient.online || onlineUsers.includes(conversation.recipient._id)}
+            online={conversation.recipient.online}
           />
           <Grid container direction="column" justify="space-between" className={classes.chatContainer}>
-            {loading && <CircularProgress />}
-            {messages !== undefined && loggedInUserDetails !== undefined && (
-              <Messages
-                messages={messages}
-                conversationId={conversation.conversationId}
-                otherUser={conversation.recipient}
-                userId={loggedInUserDetails?._id}
-              />
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              messages !== undefined &&
+              loggedInUserDetails !== undefined && (
+                <Messages
+                  messages={messages}
+                  conversationId={conversation.conversationId}
+                  otherUser={conversation.recipient}
+                  userId={loggedInUserDetails?._id}
+                />
+              )
             )}
           </Grid>
           <Input handleSendMessage={handleSendMessage} />
