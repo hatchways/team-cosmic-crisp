@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Grid } from '@material-ui/core';
 import moment from 'moment';
 import { Message } from '../../../../interface/Messages';

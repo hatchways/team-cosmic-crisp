@@ -1,4 +1,4 @@
-import { FormControl, FilledInput, TextField, Typography, Button, Grid } from '@material-ui/core';
+import { TextField, Button, Grid } from '@material-ui/core';
 import useStyles from './useStyles';
 import { ChangeEvent, FormEvent, MouseEvent, useState, useRef, useEffect } from 'react';
 import Picker, { IEmojiData } from 'emoji-picker-react';

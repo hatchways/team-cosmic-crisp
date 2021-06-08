@@ -51,9 +51,6 @@ export default function Messages(): JSX.Element {
     // loading for a split seconds until history.push works
     return <CircularProgress />;
   }
-  if (loading) {
-    return <CircularProgress />;
-  }
 
   return (
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
