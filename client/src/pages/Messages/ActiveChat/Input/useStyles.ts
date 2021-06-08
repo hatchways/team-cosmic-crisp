@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   },
   displayNone: {
-    display: 'none',
+    display: 'none !important',
   },
 }));
 

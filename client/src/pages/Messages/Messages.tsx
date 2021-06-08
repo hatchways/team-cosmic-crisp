@@ -31,7 +31,11 @@ export default function Messages(): JSX.Element {
         if (res.success) {
           addMessage(res.success.message);
           const recipient = conversations.find((convo) => convo.conversationId === activeConversation)?.recipient;
-          socket?.emit('new-message', { ...res.success.message, receiver: recipient?._id });
+          socket?.emit('new-message', {
+            ...res.success.message,
+            receiver: recipient?._id,
+            conversationId: activeConversation,
+          });
         } else if (res.error) setError(res.error.message);
       });
     }

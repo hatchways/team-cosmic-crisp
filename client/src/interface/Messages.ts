@@ -20,6 +20,7 @@ export interface Message {
   sender: string;
   createdAt: Date;
   receiver?: string;
+  conversationId?: string;
 }
 
 export interface CreateConversationAPIDataSuccess {

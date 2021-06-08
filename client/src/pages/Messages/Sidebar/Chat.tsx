@@ -6,6 +6,7 @@ import { Profile } from '../../../interface/Profile';
 import { Conversation } from '../../../interface/Messages';
 import { Box } from '@material-ui/core';
 import { useMessages } from '../../../context/useMessageContext';
+import { useSocket } from '../../../context/useSocketContext';
 
 interface Props {
   userProfile?: Profile;
@@ -14,9 +15,11 @@ interface Props {
 
 const SideBar = ({ conversation }: Props): JSX.Element => {
   const classes = useStyles();
-  const { firstName, lastName, profilePhoto, online } = conversation.recipient;
+  const { firstName, lastName, profilePhoto, _id } = conversation.recipient;
   const { lastMessage, seen, conversationId } = conversation;
   const { setActiveConversation, activeConversation } = useMessages();
+  const { onlineUsers } = useSocket();
+  const online = onlineUsers.includes(_id) || conversation.recipient.online;
   return (
     <Grid
       container
