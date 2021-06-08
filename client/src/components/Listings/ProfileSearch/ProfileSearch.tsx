@@ -63,7 +63,7 @@ export default function ProfileSearch({ city, startDate, endDate, setFilters }: 
             inputVariant="outlined"
             format="MM/dd"
             label="Drop In"
-            value={dateFilters.dropIn}
+            value={dateFilters.dropIn || null}
             onChange={(date) => {
               date !== null && setDateFilters((prevState) => ({ ...prevState, dropIn: date }));
             }}
@@ -77,7 +77,7 @@ export default function ProfileSearch({ city, startDate, endDate, setFilters }: 
             inputVariant="outlined"
             format="MM/dd"
             label="Drop Off"
-            value={dateFilters.dropOff}
+            value={dateFilters.dropOff || null}
             onChange={(date) => {
               date !== null && setDateFilters((prevState) => ({ ...prevState, dropOff: date }));
             }}
