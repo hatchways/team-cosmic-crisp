@@ -89,7 +89,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       });
       setSitterProfiles(reviewedProfiles);
     },
-    [history],
+    [history, sitterProfiles],
   );
 
   const calculateAvgRating = useCallback(
