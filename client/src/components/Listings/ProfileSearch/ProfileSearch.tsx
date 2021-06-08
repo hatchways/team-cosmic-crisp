@@ -18,7 +18,7 @@ export default function ProfileSearch({ city, date, setFilters, reset }: Props):
   const [startDate, setStartDate] = useState<Date | null>(today);
   const classes = useStyles();
   return (
-    <Box maxWidth={675} display="flex" margin="auto">
+    <Box id="product_tour_search_box" maxWidth={675} display="flex" margin="auto">
       <Box flex={2}>
         <TextField
           variant="outlined"
