@@ -43,7 +43,6 @@ function App(): JSX.Element {
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
-                  {/* <ProtectedRoute exact path="/listings" component={Listings} /> */}
                   <ProtectedRoute exact path="/bookings" component={Bookings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
                 </Switch>
