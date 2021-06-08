@@ -8,12 +8,14 @@ import { Link } from 'react-router-dom';
 import { Profile } from '../../../interface/Profile';
 import useStyles from './useStyles';
 import { postRequest } from '../../../helpers/APICalls/bookings';
+import { useAuth } from '../../../context/useAuthContext';
 
 export interface Props {
   sitter: Profile | null | undefined;
 }
 
 export default function RequestForm({ sitter }: Props): JSX.Element {
+  const { loggedInUser } = useAuth();
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -108,35 +110,52 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   </MuiPickersUtilsProvider>
                 </Grid>
               </Grid>
-              <Box textAlign="center">
-                {!success ? (
-                  <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
-                    {loading ? <CircularProgress /> : 'Send Request'}
-                  </Button>
-                ) : (
-                  <>
-                    {success && (
-                      <Typography component="span" variant="subtitle1">
-                        Request sent click pay now to continue
-                      </Typography>
-                    )}
-                    <Link
-                      to={{
-                        pathname: '/checkout',
-                        state: {
-                          sitter: sitter._id,
-                          startDate,
-                          endDate,
-                        },
-                      }}
-                    >
-                      <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
-                        Pay now
-                      </Button>
-                    </Link>
-                  </>
-                )}
-              </Box>
+
+              {/*Show send request button only if user is logged in*/}
+              {loggedInUser ? (
+                <Box textAlign="center">
+                  {!success ? (
+                    <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
+                      {loading ? <CircularProgress /> : 'Send Request'}
+                    </Button>
+                  ) : (
+                    <>
+                      {success && (
+                        <Typography component="span" variant="subtitle1">
+                          Request sent click pay now to continue
+                        </Typography>
+                      )}
+                      <Link
+                        to={{
+                          pathname: '/checkout',
+                          state: {
+                            sitter: sitter._id,
+                            startDate,
+                            endDate,
+                          },
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className={classes.submitBtn}
+                          onClick={handleSubmit}
+                        >
+                          Pay now
+                        </Button>
+                      </Link>
+                    </>
+                  )}
+                </Box>
+              ) : (
+                <Box textAlign="center" className={classes.signInContainer}>
+                  <Typography variant="body1" className={classes.signInTitle}>
+                    Please &nbsp;
+                    <Link to="/login">Sign In</Link>
+                    &nbsp; to send a Request!
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Paper>
         </Fade>

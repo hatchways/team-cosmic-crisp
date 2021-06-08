@@ -1,4 +1,5 @@
 import { Box, CssBaseline, Typography } from '@material-ui/core';
+
 import useStyles from './useStyles';
 import ProfileSearch from '../../components/Listings/ProfileSearch/ProfileSearch';
 import ProfileList from '../../components/Listings/ProfileList/ProfileList';

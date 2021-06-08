@@ -24,6 +24,12 @@ const useStyles = makeStyles(() => ({
     minWidth: '10rem',
     height: '3rem',
   },
+  signInContainer: {
+    marginTop: '2.5rem',
+  },
+  signInTitle: {
+    fontSize: '1rem',
+  },
 }));
 
 export default useStyles;
