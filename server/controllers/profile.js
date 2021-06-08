@@ -7,13 +7,40 @@ const Profile = require('../models/Profile');
 // @route GET/profiles
 //Search for all profiles
 exports.searchProfiles = asyncHandler(async (req, res, next) => {
-  let sitterProfiles;
-  const { city, date } = req.query;
-  const weekDays = ['sun', 'mon', 'tues', 'wed', 'thrus', 'fri', 'sat'];
+  const { city, startDate, endDate } = req.query;
+  let sitterProfiles;  
   let profiles;
+
+  const treatAsUTC = (date) => {
+    var result = new Date(date);
+    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+    return result;
+  }
+
+  const daysBetween = (startDate, endDate) => {
+    var millisecondsPerDay = 24 * 60 * 60 * 1000;
+    return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
+  }
+
+  const daysServiceRequested = (startDate, dateDiff) => {
+    const weekDays = ['sun', 'mon', 'tues', 'wed', 'thrus', 'fri', 'sat'];
+    const offset = new Date(startDate).getDay();
+    const result = [];
+
+    if (dateDiff >= 7) {
+      return weekDays;
+    } 
+    else {
+      for (let i = 0; i <= dateDiff; i++) {
+        result.push(weekDays[(i + offset) % 7]);
+      }
+      return result;
+    }
+  }
+  
   try {
     //if no filter is provided i.e city and date is undefined
-    if (city === 'undefined' && date === 'undefined') {
+    if (city === 'undefined' && startDate === 'undefined' && endDate === 'undefined') {
       profiles = await Profile.aggregate([
         {
           $match: { isDogSitter: true, price: { $exists: true }, city: { $exists: true } },
@@ -21,8 +48,9 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
       ]);
     } else {
       // if either or one filter is provided
-      if (city !== 'undefined' && date !== 'undefined') {
-        let dayOfWeek = weekDays[new Date(date).getDay()];
+      if (city !== 'undefined' && startDate !== 'undefined' && endDate !== 'undefined') {
+        const dateDiff = daysBetween(startDate, endDate);
+        const serviceDays = daysServiceRequested(startDate, dateDiff)
         profiles = await Profile.aggregate([
           {
             $match: {
@@ -30,11 +58,11 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
               isAvailable: true,
               price: { $exists: true },
               city: { $regex: city, $options: 'i' },
-              availability: { $in: [dayOfWeek] },
+              availability: { $all: serviceDays },
             },
           },
         ]);
-      } else if (city !== 'undefined' && date === 'undefined')
+      } else if (city !== 'undefined' && startDate === 'undefined' && endDate === 'undefined')
         profiles = await Profile.aggregate([
           {
             $match: {
@@ -45,8 +73,9 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
             },
           },
         ]);
-      else if (date !== 'undefined' && city === 'undefined') {
-        let dayOfWeek = weekDays[new Date(date).getDay()];
+      else if (startDate !== 'undefined' && endDate !== 'undefined' && city === 'undefined') {
+        const dateDiff = daysBetween(startDate, endDate);
+        const serviceDays = daysServiceRequested(startDate, dateDiff)
         profiles = await Profile.aggregate([
           {
             $match: {
@@ -54,7 +83,7 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
               isAvailable: true,
               price: { $exists: true },
               city: { $exists: true },
-              availability: { $in: [dayOfWeek] },
+              availability: { $all: serviceDays },
             },
           },
         ]);
