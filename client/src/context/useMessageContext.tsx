@@ -57,8 +57,10 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
 
   useEffect(() => {
     if (activeConversation) {
-      const temp = conversations.find((convo) => convo.conversationId === activeConversation);
-      if (temp?.messages && temp.messages.length > 0) setMessages(temp?.messages);
+      const convo = conversations.find((convo) => convo.conversationId === activeConversation);
+      if (convo?.messages && convo.messages.length > 0) {
+        setMessages(convo?.messages);
+      }
     }
   }, [conversations, activeConversation]);
 
