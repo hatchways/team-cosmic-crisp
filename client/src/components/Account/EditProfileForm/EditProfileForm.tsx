@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography, TextField } from '@material-ui/core';
+import { Box, Button, Grid, Typography, TextField, GridList, GridListTile } from '@material-ui/core';
 import Grow from '@material-ui/core/Grow';
 
 import useStyles from './useStyles';
@@ -11,6 +11,7 @@ import { useSnackBar } from '../../../context/useSnackbarContext';
 
 import updateProfile from '../../../helpers/APICalls/updateProfile';
 import { OwnerFormProfile } from '../../../interface/Profile';
+import Gallery from './Gallery';
 
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
@@ -26,11 +27,13 @@ export default function EditProfileForm(): JSX.Element {
     description: '',
     isAvailable: false,
     availability: [],
+    gallery: [],
   });
   useEffect(() => {
     if (loggedInUserDetails !== undefined) {
       setProfile({
         ...profile,
+        _id: loggedInUserDetails?._id,
         firstName: loggedInUserDetails?.firstName,
         lastName: loggedInUserDetails?.lastName,
         email: loggedInUserDetails?.email,
@@ -42,6 +45,7 @@ export default function EditProfileForm(): JSX.Element {
         isAvailable: loggedInUserDetails?.isAvailable,
         availability: loggedInUserDetails?.availability,
         isDogSitter: loggedInUserDetails?.isDogSitter,
+        gallery: loggedInUserDetails?.gallery,
       });
     }
   }, [loggedInUserDetails]);
@@ -188,11 +192,21 @@ export default function EditProfileForm(): JSX.Element {
             }
             value={profile.description ? profile.description : ''}
             multiline={true}
-            rows={5}
+            rows={10}
             label="describe yourself"
             placeholder="About you"
           />
         </Grid>
+        <Grid container>
+          <Grid>
+            <Typography variant="body1" align="right" className={classes.formLabel}>
+              Gallery images
+            </Typography>
+          </Grid>
+
+          {profile.gallery && <Gallery gallery={profile.gallery} profile={profile} user={true} />}
+        </Grid>
+
         <Box textAlign="center">
           <Button
             color="primary"

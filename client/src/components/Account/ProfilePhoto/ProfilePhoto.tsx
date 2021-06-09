@@ -20,7 +20,6 @@ interface Image {
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
   const inputFile = useRef<HTMLInputElement>(null);
-  // const inputCoverImageFile = useRef<HTMLInputElement>(null);
   const { loggedInUserDetails, updateLoggedInUserDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
 

@@ -8,7 +8,7 @@ export interface Profile {
   email?: string;
   price: number;
   city: string;
-  gallery: [string];
+  gallery: string[];
   profilePhoto?: string;
   coverPhoto?: string;
   description?: string;
@@ -17,6 +17,7 @@ export interface Profile {
 }
 
 export interface OwnerFormProfile {
+  _id?: string;
   isDogSitter?: boolean;
   firstName?: string;
   lastName?: string;
@@ -30,4 +31,5 @@ export interface OwnerFormProfile {
   coverPhoto?: string;
   availability?: string[];
   isAvailable?: boolean;
+  gallery?: string[];
 }
