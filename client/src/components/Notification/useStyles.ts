@@ -70,6 +70,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     paddingTop: theme.spacing(3),
   },
+  viewAllBtn: {
+    color: '#2196f3',
+    marginRight: '0.6rem',
+    marginTop: '0.3rem',
+  },
 }));
 
 export default useStyles;

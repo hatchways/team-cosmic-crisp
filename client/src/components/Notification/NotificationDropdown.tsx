@@ -1,9 +1,10 @@
-import { Typography, Paper, Divider } from '@material-ui/core';
+import { Typography, Paper, Divider, Grid, Button } from '@material-ui/core';
 import NotificationItem from './NotificationItem';
 import { useEffect } from 'react';
 import { setReadNotifications } from '../../helpers/APICalls/notifications';
 import { useAuth } from '../../context/useAuthContext';
 import { NotificationApiData } from '../../interface/Notification';
+import { Link } from 'react-router-dom';
 
 import useStyles from './useStyles';
 
@@ -34,9 +35,14 @@ export default function NotificationDropdown(): JSX.Element {
   // so the dependency here is empty
   return (
     <Paper className={classes.dropdown}>
-      <Typography variant="h5" className={classes.notificationTitle}>
-        Notifications
-      </Typography>
+      <Grid container justify="space-between" alignItems="center">
+        <Typography variant="h5" className={classes.notificationTitle}>
+          Notifications
+        </Typography>
+        <Button component={Link} to="/notifications" className={classes.viewAllBtn}>
+          View All
+        </Button>
+      </Grid>
       <Divider />
       {notifications.length > 0 ? (
         <NotificationItem notifications={notifications} />

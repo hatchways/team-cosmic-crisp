@@ -11,6 +11,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
+import NotificationPage from './pages/NotificationPage/NotificationPage';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
@@ -46,6 +47,7 @@ function App(): JSX.Element {
                   <Route exact path="/listings" component={Listings} />
                   <Route exact path="/bookings" component={Bookings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
+                  <Route exact path="/notifications" component={NotificationPage} />
                 </Switch>
               </Layout>
             </SocketProvider>
