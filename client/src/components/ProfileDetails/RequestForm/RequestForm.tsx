@@ -8,6 +8,10 @@ import { Link } from 'react-router-dom';
 import { Profile } from '../../../interface/Profile';
 import useStyles from './useStyles';
 import { postRequest } from '../../../helpers/APICalls/bookings';
+import { useAuth } from '../../../context/useAuthContext';
+import { useMessages } from '../../../context/useMessageContext';
+import { createConversation } from '../../../helpers/APICalls/messages';
+import { useHistory } from 'react-router-dom';
 
 export interface Props {
   sitter: Profile | null | undefined;
@@ -23,15 +27,28 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
   const [success, setSuccess] = useState<boolean>(false);
   const classes = useStyles();
 
+  const { loggedInUserDetails } = useAuth();
+  const { addConversation } = useMessages();
+  const history = useHistory();
+
   const handleSubmit = () => {
     setLoading(true);
     if (sitter) {
       postRequest(sitter._id, startDate, endDate).then((data) => {
         setSuccess(true);
-        console.log(data);
       });
     }
     setLoading(false);
+  };
+
+  const sendMessage = () => {
+    if (loggedInUserDetails && sitter)
+      createConversation(loggedInUserDetails?._id, sitter?._id).then((res) => {
+        if (res.success) {
+          addConversation(res.success.conversation);
+          history.push(`/messages/${res.success.conversation.conversationId}`);
+        }
+      });
   };
 
   return (
@@ -136,6 +153,9 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                     </Link>
                   </>
                 )}
+                <Button variant="contained" color="primary" className={classes.submitBtn} onClick={sendMessage}>
+                  Message
+                </Button>
               </Box>
             </Box>
           </Paper>
