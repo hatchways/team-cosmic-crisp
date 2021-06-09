@@ -8,10 +8,12 @@ interface Props {
     firstName: string;
     profilePhoto: string;
   };
+  typing?: boolean;
 }
 
-const OtherUserBubble = ({ time, text, otherUser }: Props): JSX.Element => {
+const OtherUserBubble = ({ time, text, otherUser, typing }: Props): JSX.Element => {
   const classes = useStyles();
+
   return (
     <Box className={classes.root}>
       <Avatar alt={otherUser.firstName} src={otherUser.profilePhoto} className={classes.avatar}></Avatar>
@@ -22,6 +24,13 @@ const OtherUserBubble = ({ time, text, otherUser }: Props): JSX.Element => {
 
         <Box className={classes.bubble}>
           <Typography className={classes.text}>{text}</Typography>
+          {typing && (
+            <div className={classes.typingLoader}>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          )}
         </Box>
       </Box>
     </Box>

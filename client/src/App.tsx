@@ -36,8 +36,8 @@ function App(): JSX.Element {
       <BrowserRouter>
         <SnackBarProvider>
           <AuthProvider>
-            <SocketProvider>
-              <MessageContextProvider>
+            <MessageContextProvider>
+              <SocketProvider>
                 <Layout>
                   <Switch>
                     <Route exact path="/" component={LandingPage} />
@@ -53,8 +53,8 @@ function App(): JSX.Element {
                     <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
                   </Switch>
                 </Layout>
-              </MessageContextProvider>
-            </SocketProvider>
+              </SocketProvider>
+            </MessageContextProvider>
           </AuthProvider>
         </SnackBarProvider>
       </BrowserRouter>

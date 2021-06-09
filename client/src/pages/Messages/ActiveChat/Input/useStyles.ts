@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     justifySelf: 'flex-end',
     marginTop: 15,
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   },
   displayNone: {
-    display: 'none',
+    display: 'none !important',
   },
 }));
 

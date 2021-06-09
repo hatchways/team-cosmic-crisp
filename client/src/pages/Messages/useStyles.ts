@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiInput-underline:before': {
       borderBottom: '1.2px solid rgba(0, 0, 0, 0.2)',
     },
+    position: 'relative',
+    [theme.breakpoints.down('sm')]: {
+      overflowX: 'hidden',
+    },
   },
   dashboard: { backgroundColor: '#FFFFFF' },
   drawerWrapper: {
@@ -15,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       width: '300px',
     },
+  },
+  activeConvoContainer: {
+    // margin: '0 auto',
   },
 }));
 

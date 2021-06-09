@@ -13,12 +13,16 @@ interface Props {
   handleSendMessage: (text: string) => void;
 }
 
-const SideBar = ({ conversation, handleSendMessage }: Props): JSX.Element => {
+const ActiceChat = ({ conversation, handleSendMessage }: Props): JSX.Element => {
   const classes = useStyles();
   const { loggedInUserDetails } = useAuth();
   const { loading, messages } = useMessages();
   return (
-    <Grid container direction="column" className={classes.root}>
+    <Grid
+      container
+      direction="column"
+      className={`${classes.root} ${conversation ? classes.active : classes.notActive}`}
+    >
       {conversation && conversation.recipient && (
         <>
           <Header
@@ -26,9 +30,18 @@ const SideBar = ({ conversation, handleSendMessage }: Props): JSX.Element => {
             online={conversation.recipient.online}
           />
           <Grid container direction="column" justify="space-between" className={classes.chatContainer}>
-            {loading && <CircularProgress />}
-            {messages !== undefined && loggedInUserDetails !== undefined && (
-              <Messages messages={messages} otherUser={conversation.recipient} userId={loggedInUserDetails?._id} />
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              messages !== undefined &&
+              loggedInUserDetails !== undefined && (
+                <Messages
+                  messages={messages}
+                  conversationId={conversation.conversationId}
+                  otherUser={conversation.recipient}
+                  userId={loggedInUserDetails?._id}
+                />
+              )
             )}
           </Grid>
           <Input handleSendMessage={handleSendMessage} />
@@ -38,4 +51,4 @@ const SideBar = ({ conversation, handleSendMessage }: Props): JSX.Element => {
   );
 };
 
-export default SideBar;
+export default ActiceChat;

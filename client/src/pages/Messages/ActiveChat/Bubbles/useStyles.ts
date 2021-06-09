@@ -48,6 +48,45 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 11,
     color: '#BECCE2',
   },
+  typingLoader: {
+    position: 'relative',
+    height: '2rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 'auto',
+    padding: '0 0.5rem',
+    '& div': {
+      display: 'inline-block',
+      width: '0.6rem',
+      height: '0.6rem',
+      borderRadius: '50%',
+      background: '#ddd',
+      margin: '0 0.3rem',
+      animation: 'typing-loader-animation 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite',
+      position: 'relative',
+      '&:nth-child(1)': {
+        animationDelay: '-0.24s',
+      },
+      '&:nth-child(2)': {
+        animationDelay: '-0.12s',
+      },
+      '&:nth-child(3)': {
+        animationDelay: '-0',
+      },
+    },
+  },
+  '@keyframes typing-loader-animation': {
+    '0%': {
+      top: '0rem',
+    },
+    '25%': {
+      top: '0.5rem',
+    },
+    '100%': {
+      top: '-0.5rem',
+    },
+  },
 }));
 
 export default useStyles;

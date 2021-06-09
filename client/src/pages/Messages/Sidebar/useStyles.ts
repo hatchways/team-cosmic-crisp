@@ -5,6 +5,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    maxHeight: 'calc( 100vh - 90px )',
+    overflow: 'auto',
     padding: '1rem 1rem',
     [theme.breakpoints.up('md')]: {
       padding: '2rem 2rem',

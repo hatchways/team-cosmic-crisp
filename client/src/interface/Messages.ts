@@ -6,10 +6,12 @@ export interface Conversation {
     lastName: string;
     profilePhoto: string;
     online?: boolean;
+    typing?: boolean;
   };
   lastMessage: string;
   seen: boolean;
   messages?: Message[];
+  getNewMessages?: boolean; // value to save if we should get new messages from server
 }
 
 export interface Message {
@@ -18,6 +20,8 @@ export interface Message {
   content: string;
   sender: string;
   createdAt: Date;
+  receiver?: string;
+  conversationId?: string;
 }
 
 export interface CreateConversationAPIDataSuccess {
