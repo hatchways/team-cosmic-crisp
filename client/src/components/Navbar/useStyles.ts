@@ -71,6 +71,23 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     top: '-10px',
   },
+  modal: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: `translate(-50%, -50%)`,
+    width: 'auto',
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: '2rem 2rem 3rem 2rem',
+  },
+  modelHeader: {
+    marginBottom: '1rem',
+  },
+  modalBtn: {
+    marginTop: '2rem',
+  },
+  modelBody: {},
 }));
 
 export default useStyles;

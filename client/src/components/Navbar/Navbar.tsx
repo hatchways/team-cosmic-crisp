@@ -1,25 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import useStyles from './useStyles';
-import { Button, IconButton, Grid, Menu, MenuItem } from '@material-ui/core';
+import { Button, IconButton, Grid, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
 import Logo from '../../Images/logo.png';
 import { User } from '../../interface/User';
 import { Profile } from '../../interface/Profile';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Availability from '../Account/EditProfileForm/Availability';
+import CustomTextField from '../Account/EditProfileForm/CustomTextField';
+import updateProfile from '../../helpers/APICalls/updateProfile';
+import { useAuth } from '../../context/useAuthContext';
+import { useSnackBar } from '../../context/useSnackbarContext';
 
 interface Props {
   user: User | null | undefined;
-  profile: Profile | null | undefined;
+  userProfile: Profile | null | undefined;
   logout(): void;
 }
 
-export default function Navbar({ user, profile, logout }: Props): JSX.Element {
+export default function Navbar({ user, userProfile, logout }: Props): JSX.Element {
   const classes = useStyles();
   const history = useHistory();
+  const { updateLoggedInUserDetails } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
   const { pathname } = useLocation();
+  const [profile, setProfile] = useState<Profile | null>(null);
+  useEffect(() => {
+    if (userProfile) setProfile(userProfile);
+  }, [userProfile]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -35,6 +46,83 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
     handleClose();
     logout();
   };
+
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const handleBecomeSitter = () => {
+    setOpenModal(!openModal);
+  };
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+    property: string,
+    value?: string,
+  ): void => {
+    switch (property) {
+      case 'isAvailable':
+        profile && setProfile({ ...profile, isAvailable: !profile.isAvailable });
+        break;
+      case 'availability': {
+        if (value && profile?.availability) {
+          setProfile({
+            ...profile,
+            availability: profile.availability?.includes(value)
+              ? profile.availability.filter((day) => day !== value)
+              : [...profile?.availability, value],
+          });
+        }
+        break;
+      }
+      default:
+        profile && setProfile({ ...profile, [property]: e.target.value });
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    const id = profile ? profile._id : '';
+    try {
+      if (profile && profile.isAvailable) {
+        const res = await updateProfile(id, { ...profile, isDogSitter: true });
+        updateLoggedInUserDetails(res);
+        updateSnackBarMessage('Profile updated you are a sitter now');
+      }
+    } catch (error) {
+      updateSnackBarMessage(`Error updating user profile ${error}`);
+    }
+  };
+
+  const BecomeSitterModal = ({ profile }: { profile: Profile }) => (
+    <Modal open={openModal} onClose={() => setOpenModal(false)}>
+      <Grid container direction="column" alignItems="flex-start" className={classes.modal}>
+        <Grid className={classes.modelHeader}>
+          <Typography variant="h4" align="center">
+            Become a sitter
+          </Typography>
+        </Grid>
+        <Grid className={classes.modelBody}>
+          <Typography component="div" variant="h6" className={classes.modelHeader}>
+            Please set your availability to become a sitter
+          </Typography>
+          <form>
+            <Availability profile={profile} handleChange={handleChange} />
+            <CustomTextField
+              onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+                handleChange(e, 'price')
+              }
+              value={profile.price ? profile.price : 0}
+              label="price"
+              placeholder="price"
+              required={profile.isAvailable}
+              type="number"
+            />
+            <Grid container justify="center" className={classes.modalBtn}>
+              <Button variant="contained" color="primary" onClick={handleSaveProfile}>
+                Save
+              </Button>
+            </Grid>
+          </form>
+        </Grid>
+      </Grid>
+    </Modal>
+  );
 
   const Nav = () => (
     <>
@@ -60,25 +148,23 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
 
   const UserNav = () => (
     <Grid>
-      <Link to="/checkout" className={classes.link}>
-        <Button color="primary" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
-          Checkout
-        </Button>
-      </Link>
+      {profile && !profile?.isDogSitter && (
+        <>
+          <Button className={classes.userNavItem} onClick={handleBecomeSitter}>
+            Become a Sitter
+          </Button>
+          <BecomeSitterModal profile={profile} />
+        </>
+      )}
       <Button variant="text" className={classes.userNavItem}>
         Notifications <span className={classes.active} />
-      </Button>
-      <Button variant="text" className={classes.userNavItem}>
-        My Jobs
       </Button>
       <Button component={Link} to="/messages" variant="text" className={classes.userNavItem}>
         Messages <span className={classes.active} />
       </Button>
-      <Link to="/bookings" className={classes.link}>
-        <Button variant="text" className={classes.userNavItem}>
-          {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
-        </Button>
-      </Link>        
+      <Button variant="text" component={Link} to="/bookings" className={classes.userNavItem}>
+        {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
+      </Button>
     </Grid>
   );
 
