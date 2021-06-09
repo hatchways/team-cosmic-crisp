@@ -40,7 +40,7 @@ export default function LandingPage(): JSX.Element {
           <Typography variant="h2" className={classes.title}>
             Find the care your dog deserves
           </Typography>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className={classes.form}>
             <Typography className={classes.label}>Where</Typography>
             <TextField
               onChange={(e) => setCity(e.target.value)}
@@ -86,7 +86,7 @@ export default function LandingPage(): JSX.Element {
           </form>
         </Box>
       </Box>
-      <Box flex={1}>
+      <Box flex={1} className={classes.imageContainer}>
         <img src={cover} alt="Landing Page" className={classes.image} />
       </Box>
     </Box>
