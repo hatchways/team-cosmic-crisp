@@ -78,7 +78,7 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
         <Button variant="text" className={classes.userNavItem}>
           {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
         </Button>
-      </Link>        
+      </Link>
     </Grid>
   );
 

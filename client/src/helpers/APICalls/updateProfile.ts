@@ -1,6 +1,6 @@
 import { UserProfileApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
-import { OwnerFormProfile } from '../../interface/Profile';
+import { OwnerFormProfile, Profile } from '../../interface/Profile';
 
 const updateProfiles = async (profileId: string, profile: OwnerFormProfile): Promise<UserProfileApiData> => {
   const fetchOptions: FetchOptions = {

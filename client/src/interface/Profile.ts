@@ -27,6 +27,7 @@ export interface OwnerFormProfile {
   address?: string;
   description?: string;
   profilePhoto?: string;
+  coverPhoto?: string;
   availability?: string[];
   isAvailable?: boolean;
 }
