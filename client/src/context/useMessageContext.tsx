@@ -102,6 +102,7 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
           getMessages(convo?.conversationId)
             .then((res) => {
               if (res.success) {
+                setMessages(res.success.messages);
                 saveMessages(convo.conversationId, res.success.messages);
               } else if (res.error) setError(res.error.message);
             })
