@@ -69,7 +69,7 @@ exports.getUnreadNotificaiton = asyncHandler(async (req, res, next) => {
 
 exports.setReadNotifications = asyncHandler(async (req, res, next) => {
   try{
-    const updatedNotifications = await Notification.updateMany(
+    await Notification.updateMany(
       {read: false}, {read: true});
     res.status(200).json({
       message: 'Notification update successed'

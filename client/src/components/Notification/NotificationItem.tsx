@@ -1,4 +1,4 @@
-import { Avatar, Grid, Typography } from '@material-ui/core';
+import { Avatar, Grid, Typography, List, ListItem } from '@material-ui/core';
 import useStyles from './useStyles';
 import { Notification } from '../../interface/Notification';
 import moment from 'moment';
@@ -12,9 +12,9 @@ interface Props {
 export default function NotificationItem({ notifications }: Props): JSX.Element {
   const classes = useStyles();
   return (
-    <ul className={classes.listItemContainer}>
+    <List className={classes.listItemContainer}>
       {notifications.map((notification) => (
-        <li className={classes.listItem} key={notification._id}>
+        <ListItem className={classes.listItem} key={notification._id}>
           <Grid container direction="row" alignItems="center" className={classes.listContainer}>
             <Grid item xs={2}>
               {notification.thumbnail ? (
@@ -41,8 +41,8 @@ export default function NotificationItem({ notifications }: Props): JSX.Element 
               {!notification.read ? <div className={classes.unReadNotification}></div> : null}
             </Grid>
           </Grid>
-        </li>
+        </ListItem>
       ))}
-    </ul>
+    </List>
   );
 }
