@@ -133,11 +133,9 @@ export const MessageContextProvider: FunctionComponent = ({ children }): JSX.Ele
       //if message is already added
       const convo = conversations.find((convo) => convo.conversationId === message.conversationId);
       if (convo?.messages && convo.messages.find((msg) => msg._id === message._id)) {
-        console.log('already present');
         return conversations;
       }
       // add messages to conversation
-      console.log('adding present');
       const temp = conversations.map((convo) =>
         convo.conversationId === message.conversationId && convo.messages //if messages are already present in conversation
           ? {

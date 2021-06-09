@@ -17,7 +17,6 @@ const ActiceChat = ({ conversation, handleSendMessage }: Props): JSX.Element => 
   const classes = useStyles();
   const { loggedInUserDetails } = useAuth();
   const { loading, messages } = useMessages();
-  // if (conversation?.recipient.typing) console.log('typing from message');
   return (
     <Grid
       container
