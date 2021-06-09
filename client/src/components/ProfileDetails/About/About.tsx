@@ -50,7 +50,7 @@ export default function About({ sitter }: Props): JSX.Element {
               </Box>
               {sitter.gallery.length > 0 && (
                 <>
-                  <Typography component="div" variant="h4" className={classes.galleryHeader}>
+                  <Typography component="div" variant="h5" align="left" className={classes.aboutTitle}>
                     Gallery
                   </Typography>
                   <Gallery gallery={sitter.gallery} />

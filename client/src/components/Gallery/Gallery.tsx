@@ -80,7 +80,7 @@ export default function Gallery({ gallery, user = false, profile }: Props): JSX.
   useEffect(() => {
     async function handleUpdateImage() {
       const formData = new FormData();
-      raw.map((rawImg, i) => formData.append(`photos`, rawImg));
+      raw.map((rawImg) => formData.append(`photos`, rawImg));
 
       try {
         const result = await uploadPhoto(formData);
@@ -148,6 +148,11 @@ export default function Gallery({ gallery, user = false, profile }: Props): JSX.
   return (
     <Grid className={classes.root}>
       {user && (
+        <Typography variant="body2" component="div" style={{ margin: '1rem 0' }}>
+          *you can only add 5 images at one time
+        </Typography>
+      )}
+      {user && (
         <input
           type="file"
           id="file"
@@ -189,11 +194,7 @@ export default function Gallery({ gallery, user = false, profile }: Props): JSX.
           </GridListTile>
         )}
       </GridList>
-      {user && (
-        <Typography variant="caption" style={{ marginTop: '1rem' }}>
-          *you can only add 5 images at one time
-        </Typography>
-      )}
+
       {lightBoxOpen && (
         <Lightbox
           mainSrc={gallery[photoIndex]}

@@ -1,14 +1,17 @@
-import { Box, CssBaseline, Paper } from '@material-ui/core';
+import { Box, CssBaseline, Grid, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 
 import useStyles from './useStyles';
 import SideBar from '../../components/Account/Sidebar/Sidebar';
 import EditProfileForm from '../../components/Account/EditProfileForm/EditProfileForm';
 import ProfilePhoto from '../../components/Account/ProfilePhoto/ProfilePhoto';
+import Gallery from '../../components/Gallery/Gallery';
+import { useAuth } from '../../context/useAuthContext';
 
 export default function ProfileSettings(): JSX.Element {
   const classes = useStyles();
   const { path } = useParams<{ path?: string }>();
+  const { loggedInUserDetails } = useAuth();
 
   const renderSwitch = (pathname: string): JSX.Element | null => {
     switch (pathname) {
@@ -16,6 +19,17 @@ export default function ProfileSettings(): JSX.Element {
         return <EditProfileForm />;
       case 'profile-photo':
         return <ProfilePhoto />;
+      case 'gallery':
+        return loggedInUserDetails ? (
+          <Grid container>
+            <Grid>
+              <Typography variant="h5" component="div" align="right" className={classes.label}>
+                Gallery images
+              </Typography>
+            </Grid>
+            <Gallery gallery={loggedInUserDetails?.gallery} profile={loggedInUserDetails} user={true} />
+          </Grid>
+        ) : null;
 
       default:
         return null;

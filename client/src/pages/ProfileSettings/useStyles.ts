@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     padding: '2.25rem 2.5rem',
   },
+  label: {
+    fontWeight: 700,
+    textTransform: 'uppercase',
+  },
 }));
 
 export default useStyles;

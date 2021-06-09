@@ -12,11 +12,6 @@ import useStyles from './useStyles';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
-interface Image {
-  preview: string;
-  raw: File;
-}
-
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
   const inputFile = useRef<HTMLInputElement>(null);
