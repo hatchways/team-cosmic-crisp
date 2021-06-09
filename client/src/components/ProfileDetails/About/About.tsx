@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Avatar, Button, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
+import { Avatar, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import Pagination from '@material-ui/lab/Pagination';
 
 import { Profile } from '../../../interface/Profile';
 import { useAuth } from '../../../context/useAuthContext';
@@ -16,8 +15,10 @@ export interface Props {
 }
 
 export default function About({ sitter }: Props): JSX.Element {
-  const [toggle, setToggle] = useState<boolean>(false);
   const { loggedInUser } = useAuth();
+  const [page, setPage] = useState<number>(1);
+  const itemsPerPage = 5;
+  const noOfPages = Math.ceil(sitter.reviews.length / itemsPerPage);
   const classes = useStyles();
 
   return (
@@ -64,34 +65,44 @@ export default function About({ sitter }: Props): JSX.Element {
           </GridList>
         </Box>
         <Box className={classes.reviewsContainer}>
-          <Button
-            variant="text"
-            className={classes.reviewBtn}
-            onClick={() => setToggle((prevToggle) => !prevToggle)}
-            endIcon={toggle ? <RemoveIcon /> : <AddIcon />}
-          >
-            Ratings and Reviews ({sitter.reviews.length})
-          </Button>
-
-          {toggle && (
-            <Fade in={true}>
-              <Box>
-                {sitter.reviews.map((review) => (
-                  <SitterReview review={review} key={review._id} />
-                ))}
-              </Box>
-            </Fade>
-          )}
+          <Box>
+            <Typography variant="h5" className={classes.reviewMainTitle}>
+              Ratings and Reviews ({sitter.reviews.length})
+            </Typography>
+          </Box>
 
           {loggedInUser ? (
             <CreateReview sitterId={sitter._id} />
           ) : (
-            <Typography variant="body1">
+            <Typography align="right" variant="body1" className={classes.signInTitle}>
               Please &nbsp;
               <Link to="/login">Sign In</Link>
               &nbsp; to create a Review
             </Typography>
           )}
+
+          <Box>
+            {[...sitter.reviews]
+              .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((review) => (
+                <SitterReview review={review} key={review._id} />
+              ))}
+          </Box>
+          <Box display="flex" justifyContent="center" className={classes.paginationContainer}>
+            <Pagination
+              count={noOfPages}
+              page={page}
+              onChange={(event, value) => setPage(value)}
+              defaultPage={1}
+              siblingCount={0}
+              shape="rounded"
+              size="large"
+              color="primary"
+              showFirstButton
+              showLastButton
+            />
+          </Box>
         </Box>
       </Paper>
     </Fade>
