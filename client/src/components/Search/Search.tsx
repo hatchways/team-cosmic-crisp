@@ -27,6 +27,7 @@ const Search = ({ search, handleChange }: Props): JSX.Element => {
   useEffect(() => {
     let active = true;
 
+    // eslint-disable-next-line
     async function searchAndSaveUsers() {
       // send request to backend API to get users limited to 20.
       setLoading(true);
@@ -40,8 +41,6 @@ const Search = ({ search, handleChange }: Props): JSX.Element => {
       }
       setLoading(false);
     }
-
-    searchAndSaveUsers();
 
     return () => {
       active = false;

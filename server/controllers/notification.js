@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
-
 const Notification = require('../models/Notification');
 
 // @route GET /notification
@@ -45,7 +43,8 @@ exports.updateNotification = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const notification = req.body;
   try{
-    const result = await Notification.findByIdAndUpdate(id, notification, {new:true});
+    const result = await Notification.findByIdAndUpdate(
+      id, notification, {new:true});
     res.status(200)
       .json({notification:result})
   } catch(error){

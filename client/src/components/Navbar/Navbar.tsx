@@ -61,9 +61,6 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
 
   const UserNav = () => (
     <Grid>
-      <Button variant="text" className={classes.userNavItem}>
-        My Jobs
-      </Button>
       <Link to="/checkout" className={classes.link}>
         <Button color="primary" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
           Checkout
@@ -71,14 +68,14 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
       </Link>
       <NotificationComponent />
 
+      <Button component={Link} to="/messages" variant="text" className={classes.userNavItem}>
+        Messages <span className={classes.active} />
+      </Button>
       <Link to="/bookings" className={classes.link}>
         <Button variant="text" className={classes.userNavItem}>
           {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
         </Button>
       </Link>
-      <Button variant="text" className={classes.userNavItem}>
-        Messages <span className={classes.active} />
-      </Button>
     </Grid>
   );
 
