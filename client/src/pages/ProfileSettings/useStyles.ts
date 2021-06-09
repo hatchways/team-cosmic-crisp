@@ -20,8 +20,9 @@ const useStyles = makeStyles((theme) => ({
     padding: '2.25rem 2.5rem',
   },
   label: {
+    paddingTop: '1.5rem',
+    paddingBottom: '1.5rem',
     fontWeight: 700,
-    textTransform: 'uppercase',
   },
 }));
 

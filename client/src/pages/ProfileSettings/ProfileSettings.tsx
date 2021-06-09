@@ -21,12 +21,10 @@ export default function ProfileSettings(): JSX.Element {
         return <ProfilePhoto />;
       case 'gallery':
         return loggedInUserDetails ? (
-          <Grid container>
-            <Grid>
-              <Typography variant="h5" component="div" align="right" className={classes.label}>
-                Gallery images
-              </Typography>
-            </Grid>
+          <Grid>
+            <Typography variant="h4" align="center" className={classes.label}>
+              Image Gallery
+            </Typography>
             <Gallery gallery={loggedInUserDetails?.gallery} profile={loggedInUserDetails} user={true} />
           </Grid>
         ) : null;
