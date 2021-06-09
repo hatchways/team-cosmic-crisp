@@ -2,11 +2,11 @@ import { Button, Grid, GridList, GridListTile, Typography } from '@material-ui/c
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { useState, useRef, useEffect } from 'react';
-import { useAuth } from '../../../context/useAuthContext';
-import { useSnackBar } from '../../../context/useSnackbarContext';
-import { deletePhotos, uploadPhoto } from '../../../helpers/APICalls/updatePhotos';
-import updateProfile from '../../../helpers/APICalls/updateProfile';
-import { OwnerFormProfile } from '../../../interface/Profile';
+import { useAuth } from '../../context/useAuthContext';
+import { useSnackBar } from '../../context/useSnackbarContext';
+import { deletePhotos, uploadPhoto } from '../../helpers/APICalls/updatePhotos';
+import updateProfile from '../../helpers/APICalls/updateProfile';
+import { OwnerFormProfile } from '../../interface/Profile';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
@@ -160,7 +160,7 @@ export default function Gallery({ gallery, user = false, profile }: Props): JSX.
       )}
       <GridList cellHeight={160} cols={3}>
         {gallery.map((image, i) => (
-          <GridListTile key={image}>
+          <GridListTile cols={1} key={image}>
             {user && (
               <DeleteForeverIcon
                 className={`${classes.deleteIcon} deleteIcon`}
@@ -180,7 +180,7 @@ export default function Gallery({ gallery, user = false, profile }: Props): JSX.
           </GridListTile>
         ))}
         {user && (
-          <GridListTile>
+          <GridListTile cols={1}>
             <Grid className={classes.lastTile}>
               <Button onClick={clickInput}>
                 <AddIcon /> new images

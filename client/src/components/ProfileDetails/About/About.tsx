@@ -1,7 +1,8 @@
-import { Avatar, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
+import { Avatar, Box, Fade, Grid, Paper, Typography } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 import { Profile } from '../../../interface/Profile';
+import Gallery from '../../Gallery/Gallery';
 import useStyles from './useStyles';
 
 export interface Props {
@@ -47,13 +48,14 @@ export default function About({ sitter }: Props): JSX.Element {
                   {sitter.description}
                 </Typography>
               </Box>
-              <GridList cellHeight={115} cols={5}>
-                {sitter.gallery.map((photo, index) => (
-                  <GridListTile cols={1} className={classes.galleryTile} key={index}>
-                    <img src={photo} alt="Profile" />
-                  </GridListTile>
-                ))}
-              </GridList>
+              {sitter.gallery.length > 0 && (
+                <>
+                  <Typography component="div" variant="h4" className={classes.galleryHeader}>
+                    Gallery
+                  </Typography>
+                  <Gallery gallery={sitter.gallery} />
+                </>
+              )}
             </Box>
           </Paper>
         </Fade>

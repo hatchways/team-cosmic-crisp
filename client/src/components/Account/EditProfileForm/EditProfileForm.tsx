@@ -11,7 +11,7 @@ import { useSnackBar } from '../../../context/useSnackbarContext';
 
 import updateProfile from '../../../helpers/APICalls/updateProfile';
 import { OwnerFormProfile } from '../../../interface/Profile';
-import Gallery from './Gallery';
+import Gallery from '../../Gallery/Gallery';
 
 export default function EditProfileForm(): JSX.Element {
   const classes = useStyles();
