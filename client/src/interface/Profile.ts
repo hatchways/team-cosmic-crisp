@@ -33,3 +33,9 @@ export interface OwnerFormProfile {
   availability?: string[];
   isAvailable?: boolean;
 }
+
+export interface Filter {
+  city?: string;
+  startDate?: Date;
+  endDate?: Date;
+}

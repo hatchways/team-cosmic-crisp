@@ -9,6 +9,10 @@ import { Profile } from '../../../interface/Profile';
 import { useAuth } from '../../../context/useAuthContext';
 import useStyles from './useStyles';
 import { postRequest } from '../../../helpers/APICalls/bookings';
+import { useAuth } from '../../../context/useAuthContext';
+import { useMessages } from '../../../context/useMessageContext';
+import { createConversation } from '../../../helpers/APICalls/messages';
+import { useHistory } from 'react-router-dom';
 
 export interface Props {
   sitter: Profile;
@@ -16,6 +20,7 @@ export interface Props {
 
 export default function RequestForm({ sitter }: Props): JSX.Element {
   const { calculateAvgRating } = useAuth();
+  const { loggedInUser } = useAuth();
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -25,15 +30,28 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
   const [success, setSuccess] = useState<boolean>(false);
   const classes = useStyles();
 
+  const { loggedInUserDetails } = useAuth();
+  const { addConversation } = useMessages();
+  const history = useHistory();
+
   const handleSubmit = () => {
     setLoading(true);
     if (sitter) {
       postRequest(sitter._id, startDate, endDate).then((data) => {
         setSuccess(true);
-        console.log(data);
       });
     }
     setLoading(false);
+  };
+
+  const sendMessage = () => {
+    if (loggedInUserDetails && sitter)
+      createConversation(loggedInUserDetails?._id, sitter?._id).then((res) => {
+        if (res.success) {
+          addConversation(res.success.conversation);
+          history.push(`/messages/${res.success.conversation.conversationId}`);
+        }
+      });
   };
 
   return (
@@ -61,7 +79,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   value={startDate}
                   InputAdornmentProps={{ position: 'start' }}
                   onChange={(date) => date && setStartDate(date)}
-                />
+                  />
               </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={4}>
@@ -73,7 +91,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   inputVariant="outlined"
                   value={startDate}
                   onChange={(time) => time && setStartDate(time)}
-                />
+                  />
               </MuiPickersUtilsProvider>
             </Grid>
           </Grid>
@@ -92,7 +110,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   value={endDate}
                   InputAdornmentProps={{ position: 'start' }}
                   onChange={(date) => date && setEndDate(date)}
-                />
+                  />
               </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={4}>
@@ -104,39 +122,58 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   inputVariant="outlined"
                   value={endDate}
                   onChange={(time) => time && setEndDate(time)}
-                />
+                  />
               </MuiPickersUtilsProvider>
             </Grid>
           </Grid>
-          <Box textAlign="center">
-            {!success ? (
-              <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
-                {loading ? <CircularProgress /> : 'Send Request'}
-              </Button>
-            ) : (
-              <>
-                {success && (
-                  <Typography component="span" variant="subtitle1">
-                    Request sent click pay now to continue
-                  </Typography>
-                )}
-                <Link
-                  to={{
-                    pathname: '/checkout',
-                    state: {
-                      sitter: sitter._id,
-                      startDate,
-                      endDate,
-                    },
-                  }}
-                >
-                  <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
-                    Pay now
-                  </Button>
-                </Link>
-              </>
-            )}
-          </Box>
+          {/*Show send request button only if user is logged in*/}
+          {loggedInUser ? (
+            <Box textAlign="center">
+              {!success ? (
+                <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
+                  {loading ? <CircularProgress /> : 'Send Request'}
+                </Button>
+              ) : (
+                <>
+                  {success && (
+                    <Typography component="span" variant="subtitle1">
+                      Request sent click pay now to continue
+                    </Typography>
+                  )}
+                  <Link
+                    to={{
+                      pathname: '/checkout',
+                        state: {
+                          sitter: sitter._id,
+                          startDate,
+                          endDate,
+                        },
+                      }}
+                    >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.submitBtn}
+                      onClick={handleSubmit}
+                    >
+                      Pay now
+                    </Button>
+                  </Link>
+                </>
+              )}
+              <Button variant="contained" color="primary" className={classes.submitBtn} onClick={sendMessage}>
+                Message
+              </Button>          
+            </Box>
+          ) : (
+            <Box textAlign="center" className={classes.signInContainer}>
+              <Typography variant="body1" className={classes.signInTitle}>
+                Please &nbsp;
+                <Link to="/login">Sign In</Link>
+                &nbsp; to send a Request!
+              </Typography>
+            </Box>
+          )}          
         </Box>
       </Paper>
     </Fade>

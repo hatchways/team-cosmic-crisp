@@ -1,4 +1,5 @@
 import { Profile } from '../interface/Profile';
+import { Filter } from '../interface/Profile';
 
 export const mockProfile: Profile = {
   _id: '1abc',
@@ -25,3 +26,9 @@ export const mockProfile: Profile = {
 };
 
 export const mockProfiles: Profile[] = [mockProfile];
+
+export const mockFilter: Filter = {
+  city: 'Vancouver',
+  startDate: new Date(),
+  endDate: new Date(),
+};
