@@ -14,10 +14,6 @@ const notificationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  title: {
-    type: String,
-    required: true
-  },
   thumbnail:{
     type: String
   },

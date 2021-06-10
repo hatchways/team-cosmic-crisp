@@ -2,7 +2,6 @@ const colors = require("colors");
 const path = require("path");
 const http = require("http");
 const express = require("express");
-const socketio = require("socket.io");
 const { notFound, errorHandler } = require("./middleware/error");
 const connectDB = require("./db");
 const { join } = require("path");
@@ -17,22 +16,14 @@ const profileRouter = require("./routes/profile");
 const reviewRouter = require('./routes/review');
 const requestRouter = require("./routes/request");
 const notificationRouter = require("./routes/notification");
+const conversationRouter = require('./routes/conversation');
+const messageRouter = require('./routes/message');
 
 const { json, urlencoded } = express;
 
 connectDB();
 const app = express();
 const server = http.createServer(app);
-
-const io = socketio(server, {
-  cors: {
-    origin: "*"
-  }
-});
-
-io.on("connection", socket => {
-  console.log("connected");
-});
 
 if (process.env.NODE_ENV === "development") {
   app.use(logger("dev"));
@@ -42,11 +33,6 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
-
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profiles", profileRouter);
@@ -54,6 +40,8 @@ app.use("/api", photoRouter);
 app.use("/reviews", reviewRouter);
 app.use("/requests", requestRouter);
 app.use("/notification", notificationRouter);
+app.use("/conversations", conversationRouter);
+app.use("/messages", messageRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));

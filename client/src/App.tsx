@@ -11,6 +11,8 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
+import NotificationPage from './pages/NotificationPage/NotificationPage';
+import Messages from './pages/Messages/Messages';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
@@ -19,6 +21,7 @@ import Checkout from './pages/Checkout/Checkout';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import Request from './pages/Request/Request';
+import { MessageContextProvider } from './context/useMessageContext';
 
 const stripePromise = loadStripe(
   'pk_test_51Ite41ETXh1tPNGoqqdONIoPnTfqTTKF7AXARKRrMqmqDzL6jP0dpaD2jQgCVf1NpnId9ZHTC5cTiQZiTlLSHUU100Md0Rj9EK',
@@ -35,22 +38,26 @@ function App(): JSX.Element {
       <BrowserRouter>
         <SnackBarProvider>
           <AuthProvider>
-            <SocketProvider>
-              <Layout>
-                <Switch>
-                  <Route exact path="/" component={LandingPage} />
-                  <Route exact path="/profile/:id" component={ProfileDetails} />
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/signup" component={Signup} />
-                  <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
-                  <ProtectedRoute exact path="/listings" component={Listings} />
-                  <Route exact path="/listings" component={Listings} />
-                  <ProtectedRoute exact path="/bookings" component={Bookings} />
-                  <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
-                  <ProtectedRoute exact path="/requests" component={Request} />
-                </Switch>
-              </Layout>
-            </SocketProvider>
+            <MessageContextProvider>
+              <SocketProvider>
+                <Layout>
+                  <Switch>
+                    <Route exact path="/" component={LandingPage} />
+                    <Route exact path="/listings" component={Listings} />
+                    <Route exact path="/profile/:id" component={ProfileDetails} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/signup" component={Signup} />
+                    <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
+                    <ProtectedRoute exact path="/bookings" component={Bookings} />
+                    <ProtectedRoute exact path="/messages" component={Messages} />
+                    <ProtectedRoute exact path="/messages/:conversationId" component={Messages} />
+                    <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
+                    <Route exact path="/notifications" component={NotificationPage} />
+                    <ProtectedRoute exact path="/requests" component={Request} />
+                  </Switch>
+                </Layout>
+              </SocketProvider>
+            </MessageContextProvider>
           </AuthProvider>
         </SnackBarProvider>
       </BrowserRouter>

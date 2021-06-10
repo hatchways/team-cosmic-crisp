@@ -21,10 +21,10 @@ export default function ProfileDetails(): JSX.Element {
       <Box maxWidth={1500}>
         <Grid container spacing={6} className={classes.mainGrid}>
           <Grid item xs={12} sm={12} md={8}>
-            <About sitter={sitterProfile} />
+            {sitterProfile && <About sitter={sitterProfile} />}
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <RequestForm sitter={sitterProfile} />
+            {sitterProfile && <RequestForm sitter={sitterProfile} />}
           </Grid>
         </Grid>
       </Box>

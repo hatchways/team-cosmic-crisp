@@ -53,14 +53,14 @@ exports.createReview = asyncHandler(async (req,res,next) => {
         profilePhoto: user.profile.profilePhoto,
       }
     });
-
     sitterProfile.reviews.push(newReview._id); 
-
     await sitterProfile.save();
     await newReview.save();
+
+    const updatedProfile = await Profile.findById(sitterId).populate('reviews');
     res.status(201).json({
       success: {
-        review: newReview
+        profile: updatedProfile
       }
     });
   } catch (error) {

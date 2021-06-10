@@ -1,3 +1,5 @@
+import { Review } from './Review';
+
 export interface Profile {
   _id: string;
   isDogSitter: boolean;
@@ -14,7 +16,7 @@ export interface Profile {
   description?: string;
   phoneNumber?: string;
   address?: string;
-  rating?: number;
+  reviews: Review[];
 }
 
 export interface OwnerFormProfile {
@@ -30,4 +32,10 @@ export interface OwnerFormProfile {
   profilePhoto?: string;
   availability?: string[];
   isAvailable?: boolean;
+}
+
+export interface Filter {
+  city?: string;
+  startDate?: Date;
+  endDate?: Date;
 }

@@ -3,6 +3,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Rating from '@material-ui/lab/Rating';
 import { Link } from 'react-router-dom';
 
+import { useAuth } from '../../../context/useAuthContext';
 import { Profile } from '../../../interface/Profile';
 import useStyles from './useStyles';
 import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function ProfileCard({ sitter }: Props): JSX.Element {
+  const { calculateAvgRating } = useAuth();
   const classes = useStyles();
 
   if (!sitter) return <LoadingSpinner />;
@@ -30,7 +32,7 @@ export default function ProfileCard({ sitter }: Props): JSX.Element {
               Professional Dog Sitter
             </Typography>
           </Box>
-          <Rating value={4.5} precision={0.5} readOnly />
+          <Rating value={calculateAvgRating(sitter.reviews)} name="card-rating" precision={0.1} readOnly />
           <Box className={classes.description}>
             <Typography variant="body1" className={classes.boldFont}>
               {sitter.description?.substr(0, 60)}...

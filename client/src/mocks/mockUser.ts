@@ -1,5 +1,4 @@
 import { User } from '../interface/User';
-import { mockProfile } from './mockProfile';
 
 const mockLoggedInUser: User = {
   _id: '1a',
