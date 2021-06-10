@@ -22,8 +22,9 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
 // @route POST /notification
 // @access Private
 exports.postNotification = asyncHandler(async (req, res, next) => {
-  const { types,description } = req.body;
+  const { types,description, targetId } = req.body;
   const { id } = req.user;
+  console.log('targetId is ', targetId);
 
   const newNotification = new Notification({
     types,
@@ -32,12 +33,19 @@ exports.postNotification = asyncHandler(async (req, res, next) => {
 
   try {
     const currentUser = await User.findById(id);
-    const currentProfile = await Profile.findById(currentUser.profile);
+    const currentProfile = !targetId ? 
+      await Profile.findById(currentUser.profile):
+      await Profile.findById(targetId);
     currentProfile.notifications.push(newNotification._id);
     await currentProfile.save();
     await newNotification.save();
     const result = await Profile.findById(currentProfile._id).populate('notifications');
-    res.status(201).json({ notifications:result.notifications  });
+    const newNotifications = result.notifications.filter(
+      notification=>(
+        notification.read === false
+        )
+      )
+    res.status(201).json({ notifications:newNotifications});
   } catch (error) {
     res.status(500);
     res.send(error);

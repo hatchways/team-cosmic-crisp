@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, CircularProgress, Fade, Grid, Paper, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, Fade, Grid, Paper, responsiveFontSizes, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Rating from '@material-ui/lab/Rating';
 import DateFnsUtils from '@date-io/date-fns';
@@ -19,7 +19,7 @@ export interface Props {
 
 export default function RequestForm({ sitter }: Props): JSX.Element {
   const { calculateAvgRating } = useAuth();
-  const { loggedInUser } = useAuth();
+  const { loggedInUser, updateNotificationsContext } = useAuth();
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -43,14 +43,28 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
         setLoading(false);
         return;
       }
-      const newNotification = {
+      const newOwnerNotification = {
         types: 'system',
-        description: `${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName} has created a new sitting request to ${sitter.firstName} ${sitter.lastName}`,
-        targetProfile: sitter._id,
+        description: `You just created a new sitting request to ${sitter.firstName} ${sitter.lastName}`,
       };
-      await createNewNotification(newNotification.types, newNotification.description, newNotification.targetProfile);
+      const newSitterNotification = {
+        types: 'system',
+        description: `You received a new sitting request from ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName}`,
+      };
+
+      // createNotification(newOwnerNotification.types, newOwnerNotification.description);
+      createNotification(newSitterNotification.types, newSitterNotification.description, sitter._id);
     }
     setLoading(false);
+  };
+
+  const createNotification = async (types: string, description: string, targetId?: string) => {
+    try {
+      const res = await createNewNotification(types, description, targetId);
+      res && res.notifications && updateNotificationsContext(res?.notifications);
+    } catch (error) {
+      throw new Error(`error updating notifications, ${error}`);
+    }
   };
 
   const sendMessage = () => {
