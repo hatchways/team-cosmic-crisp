@@ -31,3 +31,8 @@
     transform: rotate(360deg);
   }
 }
+
+/* Light box styles */
+.ReactModal__Overlay {
+  z-index: 1200 !important;
+}

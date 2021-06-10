@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
-  root: {},
 
   lastTile: {
     height: '100%',
@@ -146,7 +145,7 @@ export default function Gallery({ gallery, user = false, profile }: Props): JSX.
   };
 
   return (
-    <Grid className={classes.root}>
+    <Grid>
       {user && (
         <Typography variant="body2" component="div" style={{ margin: '1rem 0' }}>
           *you can only add 5 images at one time
@@ -163,7 +162,7 @@ export default function Gallery({ gallery, user = false, profile }: Props): JSX.
           onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleImageChange(e)}
         />
       )}
-      <GridList cellHeight={160} cols={3}>
+      <GridList cellHeight={160} cols={3} spacing={10}>
         {gallery.map((image, i) => (
           <GridListTile cols={1} key={image}>
             {user && (

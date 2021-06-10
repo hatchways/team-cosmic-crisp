@@ -8,7 +8,6 @@ exports.errorHandler = (err, req, res, next) => {
   //  set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.log(err.message);
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
   res.json({ error: { message: err.message } });

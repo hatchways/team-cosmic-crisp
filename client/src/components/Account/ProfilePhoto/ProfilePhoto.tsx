@@ -179,12 +179,14 @@ export default function UploadPhoto(): JSX.Element {
                 </ListItemIcon>
                 <ListItemText primary="New Cover Image" />
               </MenuItem>
-              <MenuItem className={classes.menuItem} onClick={() => handleDeletePhoto('cover')}>
-                <ListItemIcon>
-                  <DeleteForeverIcon />
-                </ListItemIcon>
-                <ListItemText primary="Delete Cover Image" />
-              </MenuItem>
+              {loggedInUserDetails?.coverPhoto && (
+                <MenuItem className={classes.menuItem} onClick={() => handleDeletePhoto('cover')}>
+                  <ListItemIcon>
+                    <DeleteForeverIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Delete Cover Image" />
+                </MenuItem>
+              )}
             </Menu>
           </Grid>
           <Grid className={classes.avatarContainer}>
@@ -213,12 +215,14 @@ export default function UploadPhoto(): JSX.Element {
                 </ListItemIcon>
                 <ListItemText primary="New Profile Photo" />
               </MenuItem>
-              <MenuItem className={classes.menuItem} onClick={() => handleDeletePhoto('profile')}>
-                <ListItemIcon>
-                  <DeleteForeverIcon />
-                </ListItemIcon>
-                <ListItemText primary=" Delete Profile Photo" />
-              </MenuItem>
+              {loggedInUserDetails?.profilePhoto && (
+                <MenuItem className={classes.menuItem} onClick={() => handleDeletePhoto('profile')}>
+                  <ListItemIcon>
+                    <DeleteForeverIcon />
+                  </ListItemIcon>
+                  <ListItemText primary=" Delete Profile Photo" />
+                </MenuItem>
+              )}
             </Menu>
           </Grid>
         </Grid>
