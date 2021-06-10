@@ -29,7 +29,7 @@ export const setReadNotifications = async (): Promise<NotificationApiData> => {
 export const createNewNotification = async (
   types: string,
   description: string,
-  targetId?: string,
+  targetId: string,
 ): Promise<NotificationApiData> => {
   const fetchOptions: FetchOptions = {
     method: 'POST',

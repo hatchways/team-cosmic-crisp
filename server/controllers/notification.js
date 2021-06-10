@@ -24,8 +24,7 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
 exports.postNotification = asyncHandler(async (req, res, next) => {
   const { types,description, targetId } = req.body;
   const { id } = req.user;
-  console.log('targetId is ', targetId);
-
+  console.log('requst id is ', targetId);
   const newNotification = new Notification({
     types,
     description,
@@ -33,7 +32,7 @@ exports.postNotification = asyncHandler(async (req, res, next) => {
 
   try {
     const currentUser = await User.findById(id);
-    const currentProfile = !targetId ? 
+    const currentProfile = targetId==='' ? 
       await Profile.findById(currentUser.profile):
       await Profile.findById(targetId);
     currentProfile.notifications.push(newNotification._id);

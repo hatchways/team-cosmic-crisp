@@ -27,7 +27,7 @@ import logoutAPI from '../helpers/APICalls/logout';
 import searchSitterProfilesAPI from '../helpers/APICalls/searchProfiles';
 import getUserProfileDetailsAPI from '../helpers/APICalls/getUserProfileDetails';
 import { boolean } from 'yup';
-import { getUnreadNotifications } from '../helpers/APICalls/notifications';
+import { getUnreadNotifications, createNewNotification } from '../helpers/APICalls/notifications';
 
 interface IAuthContext {
   loggedInUser: User | null | undefined;
@@ -41,6 +41,7 @@ interface IAuthContext {
   updateLoggedInUserDetails: (data: UserProfileApiData) => void;
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
   updateNotificationsContext: (data: Notification[]) => void;
+  createNotification: (types: string, description: string, targetId: string) => void;
   updateReviewsContext: (data: ReviewsApiDataSuccess) => void;
   logout: () => void;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -62,6 +63,7 @@ export const AuthContext = createContext<IAuthContext>({
   updateLoggedInUserDetails: () => null,
   updateSitterProfilesContext: () => null,
   updateNotificationsContext: () => null,
+  createNotification: () => null,
   updateReviewsContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
@@ -143,6 +145,18 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     [history],
   );
 
+  const createNotification = useCallback(
+    async (types: string, description: string, targetId) => {
+      try {
+        const res = await createNewNotification(types, description, targetId);
+        res && res.notifications && updateNotificationsContext(res?.notifications);
+      } catch (error) {
+        throw new Error(`error updating notifications, ${error}`);
+      }
+    },
+    [history],
+  );
+
   const logout = useCallback(async () => {
     // needed to remove token cookie
     await logoutAPI()
@@ -217,6 +231,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         updateLoggedInUserDetails,
         updateLoginContext,
         updateNotificationsContext,
+        createNotification,
         updateSitterProfilesContext,
         updateReviewsContext,
         logout,

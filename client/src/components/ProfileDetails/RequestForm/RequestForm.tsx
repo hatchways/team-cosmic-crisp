@@ -11,7 +11,6 @@ import { postRequest } from '../../../helpers/APICalls/bookings';
 import { useMessages } from '../../../context/useMessageContext';
 import { createConversation } from '../../../helpers/APICalls/messages';
 import { useHistory, Link } from 'react-router-dom';
-import { createNewNotification } from '../../../helpers/APICalls/notifications';
 
 export interface Props {
   sitter: Profile;
@@ -19,7 +18,7 @@ export interface Props {
 
 export default function RequestForm({ sitter }: Props): JSX.Element {
   const { calculateAvgRating } = useAuth();
-  const { loggedInUser, updateNotificationsContext } = useAuth();
+  const { loggedInUser, createNotification } = useAuth();
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -51,20 +50,10 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
         types: 'system',
         description: `You received a new sitting request from ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName}`,
       };
-
-      // createNotification(newOwnerNotification.types, newOwnerNotification.description);
       createNotification(newSitterNotification.types, newSitterNotification.description, sitter._id);
+      createNotification(newOwnerNotification.types, newOwnerNotification.description, '');
     }
     setLoading(false);
-  };
-
-  const createNotification = async (types: string, description: string, targetId?: string) => {
-    try {
-      const res = await createNewNotification(types, description, targetId);
-      res && res.notifications && updateNotificationsContext(res?.notifications);
-    } catch (error) {
-      throw new Error(`error updating notifications, ${error}`);
-    }
   };
 
   const sendMessage = () => {
