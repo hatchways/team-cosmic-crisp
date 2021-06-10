@@ -3,6 +3,7 @@ WORKDIR /app
 COPY ./server/package*.json ./
 RUN npm install
 COPY ./server ./
+COPY ./client ./client
 RUN npm install --prefix client
 RUN npm run build --prefix client
 EXPOSE 5002
