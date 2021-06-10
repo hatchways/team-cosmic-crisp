@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    ports:
+      - 5002:5002
+	restart: unless-stopped
+	env_file: .env
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      MONGO_URI: ${MONGO_URI}
+      NODE_ENV: ${NODE_ENV}
+	  STRIPE_PUBLIC_KEY: ${STRIPE_PUBLIC_KEY}
+	  STRPIE_PRIVATE_KEY: ${STRPIE_PRIVATE_KEY}
+	  ACCESS_KEY_ID: ${ACCESS_KEY_ID}
+	  SECRET_ACCESS_KEY: ${SECRET_ACCESS_KEY}
+	  REGION: ${REGION}
+	  BUCKET_NAME: ${BUCKET_NAME}
+	  PORT: ${PORT}
+    container_name: lovingsitter
+networks:
+  default:
+    external:
+      name: lovingsitter_network
