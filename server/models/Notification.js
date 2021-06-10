@@ -2,14 +2,6 @@ const mongoose = require("mongoose");
 
 
 const notificationSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-  },
-  targetProfile:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'profile',
-  },
   types: {
     type: String,
     required: true,
@@ -17,9 +9,6 @@ const notificationSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true
-  },
-  thumbnail:{
-    type: String
   },
   read: {
     type: Boolean,

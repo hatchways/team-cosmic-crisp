@@ -68,15 +68,18 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
 
   const UserNav = () => (
     <Grid>
+      <NotificationComponent />
       {profile?.isDogSitter ? (
         <Button component={Link} to="/requests" variant="text" className={classes.userNavItem}>
           Request
         </Button>
       ) : null}
-      <NotificationComponent />
-      <Button component={Link} to="/bookings" variant="text" className={classes.userNavItem}>
-        My Bookings
-      </Button>
+      {!profile?.isDogSitter ? (
+        <Button component={Link} to="/bookings" variant="text" className={classes.userNavItem}>
+          My Bookings
+        </Button>
+      ) : null}
+
       <Button component={Link} to="/messages" variant="text" className={classes.userNavItem}>
         Messages <span className={classes.active} />
       </Button>

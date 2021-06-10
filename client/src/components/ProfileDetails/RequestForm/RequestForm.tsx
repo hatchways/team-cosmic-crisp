@@ -39,9 +39,13 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
       postRequest(sitter._id, startDate, endDate).then(() => {
         setSuccess(true);
       });
+      if (loggedInUserDetails === null) {
+        setLoading(false);
+        return;
+      }
       const newNotification = {
         types: 'system',
-        description: `${sitter.firstName} ${sitter.lastName} created a new sitting request`,
+        description: `${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName} has created a new sitting request to ${sitter.firstName} ${sitter.lastName}`,
         targetProfile: sitter._id,
       };
       await createNewNotification(newNotification.types, newNotification.description, newNotification.targetProfile);

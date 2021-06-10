@@ -1,5 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Notification = require('../models/Notification');
+const Profile = require('../models/Profile');
+const User = require('../models/User');
 
 // @route GET /notification
 // @access Private
@@ -7,11 +9,10 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
   
   try{
-    //find all the notifcations for current user, or notifcation targeted for 
-    //current user
-    const notifications = await Notification.find({ $or: [{ user: id }, { targetProfile: userProfile.profile._id }] });
+    const currentUser = await User.findById(id);
+    const result = await Profile.findById(currentUser.profile).populate('notifications');
     res.status(200).json({
-      notifications
+      notifications: result.notifications
     })} catch(error){
       res.status(500);
       throw new Error(error.message);
@@ -21,25 +22,28 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
 // @route POST /notification
 // @access Private
 exports.postNotification = asyncHandler(async (req, res, next) => {
-  const { types,description,targetProfile, thumbnail } = req.body;
+  const { types,description } = req.body;
   const { id } = req.user;
 
   const newNotification = new Notification({
-    user:id,
-    targetProfile,
     types,
     description,
-    thumbnail
   });
 
   try {
+    const currentUser = await User.findById(id);
+    const currentProfile = await Profile.findById(currentUser.profile);
+    currentProfile.notifications.push(newNotification._id);
+    await currentProfile.save();
     await newNotification.save();
-    res.status(201).json({ notification: newNotification });
+    const result = await Profile.findById(currentProfile._id).populate('notifications');
+    res.status(201).json({ notifications:result.notifications  });
   } catch (error) {
     res.status(500);
     res.send(error);
     throw new Error(error.message);
   }
+  
 });
 
 // @route PATCH /notificaiton/:id
@@ -62,27 +66,40 @@ exports.updateNotification = asyncHandler(async (req, res, next) => {
 // @access Private
 exports.getUnreadNotificaiton = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
-  const userProfile = await User.findById(req.user.id).populate('profile');
+  
   try{
-    const notifications = await Notification.find({ $or: [{ user: id }, { targetProfile: userProfile.profile._id }], read:false });
-
+    const currentUser = await User.findById(id);
+    const result = await Profile.findById(currentUser.profile).populate('notifications');
+    const newNotifications = result.notifications.filter(
+      notification=>(
+        notification.read === false
+        )
+      )
     res.status(200).json({
-      notifications
-    })}catch(error){
+      notifications: newNotifications
+    })} catch(error){
       res.status(500);
       throw new Error(error.message);
     }
 });
 
 exports.setReadNotifications = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+  
   try{
-    await Notification.updateMany(
-      {read: false}, {read: true});
-    res.status(200).json({
-      message: 'Notification update successed'
+    const currentUser = await User.findById(id);
+    const result = await Profile.findById(currentUser.profile).populate('notifications');
+    const newNotifications = result.notifications.map(
+      notification=>{
+        if(notification.read === false){
+          notification.read = true;
+          return notification;
+        }
     })
-  } catch(error){
-    res.status(500);
-    throw new Error(error.message);
-  }
+    res.status(200).json({
+      notifications: newNotifications
+    })} catch(error){
+      res.status(500);
+      throw new Error(error.message);
+    }
 })
