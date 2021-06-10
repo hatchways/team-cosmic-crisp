@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ./server
-      dockerfile: ./Dockerfile
+      dockerfile: ./server/Dockerfile
     ports:
       - 5002:5002
 	restart: unless-stopped
