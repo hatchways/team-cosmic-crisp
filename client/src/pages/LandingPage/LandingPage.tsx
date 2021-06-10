@@ -36,7 +36,7 @@ export default function LandingPage(): JSX.Element {
     <Box display="flex" className={classes.mainContainer}>
       <CssBaseline />
       <Box flex={1} display="flex" alignItems="center" justifyContent="center">
-        <Box maxWidth={650} maxHeight={500} className={classes.searchFormContainer}>
+        <Box maxWidth={650} maxHeight={575} className={classes.searchFormContainer}>
           <Typography variant="h2" className={classes.title}>
             Find the care your dog deserves
           </Typography>
