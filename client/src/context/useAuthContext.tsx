@@ -19,7 +19,7 @@ import {
 import { ReviewsApiDataSuccess } from '../interface/ReviewApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/Profile';
-import { Notification } from '../interface/Notification';
+import { Notification, createNotificationData } from '../interface/Notification';
 import { Review } from '../interface/Review';
 import { Filter } from '../interface/Profile';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
@@ -41,7 +41,7 @@ interface IAuthContext {
   updateLoggedInUserDetails: (data: UserProfileApiData) => void;
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
   updateNotificationsContext: (data: Notification[]) => void;
-  createNotification: (types: string, description: string, targetId: string) => void;
+  createNotification: ({ types, description, targetId }: createNotificationData) => void;
   updateReviewsContext: (data: ReviewsApiDataSuccess) => void;
   logout: () => void;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -146,7 +146,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   );
 
   const createNotification = useCallback(
-    async (types: string, description: string, targetId) => {
+    async ({ types, description, targetId }: createNotificationData) => {
       try {
         const res = await createNewNotification(types, description, targetId);
         res && res.notifications && updateNotificationsContext(res?.notifications);

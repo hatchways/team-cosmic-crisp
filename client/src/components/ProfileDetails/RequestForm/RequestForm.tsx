@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, CircularProgress, Fade, Grid, Paper, responsiveFontSizes, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, Fade, Grid, Paper, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Rating from '@material-ui/lab/Rating';
 import DateFnsUtils from '@date-io/date-fns';
@@ -11,6 +11,7 @@ import { postRequest } from '../../../helpers/APICalls/bookings';
 import { useMessages } from '../../../context/useMessageContext';
 import { createConversation } from '../../../helpers/APICalls/messages';
 import { useHistory, Link } from 'react-router-dom';
+import { createNotificationData } from '../../../interface/Notification';
 
 export interface Props {
   sitter: Profile;
@@ -42,16 +43,18 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
         setLoading(false);
         return;
       }
-      const newOwnerNotification = {
+      const newOwnerNotification: createNotificationData = {
         types: 'system',
         description: `You just created a new sitting request to ${sitter.firstName} ${sitter.lastName}`,
+        targetId: '',
       };
-      const newSitterNotification = {
+      const newSitterNotification: createNotificationData = {
         types: 'system',
         description: `You received a new sitting request from ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName}`,
+        targetId: sitter._id,
       };
-      createNotification(newSitterNotification.types, newSitterNotification.description, sitter._id);
-      createNotification(newOwnerNotification.types, newOwnerNotification.description, '');
+      createNotification(newSitterNotification);
+      createNotification(newOwnerNotification);
     }
     setLoading(false);
   };

@@ -13,6 +13,8 @@ import { Request } from '../../interface/Bookings';
 import useStyles from './useStyles';
 import moment from 'moment';
 import { acceptRequest, declineRequest } from '../../helpers/APICalls/bookings';
+import { useAuth } from '../../context/useAuthContext';
+import { createNotificationData } from '../../interface/Notification';
 
 interface Props {
   request: Request;
@@ -21,6 +23,7 @@ interface Props {
 
 export default function RequestModal({ request, updateRequest }: Props): JSX.Element {
   const classes = useStyles();
+  const { createNotification } = useAuth();
 
   const [open, setOpen] = useState(false);
   const { start, end, _id } = request;
@@ -44,6 +47,16 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
       if (data.request) {
         updateRequest(data.request);
         handleClose();
+        const senderNotification: createNotificationData = {
+          types: 'system',
+          description: '',
+          targetId: '',
+        };
+        const receiverNotification: createNotificationData = {
+          types: 'system',
+          description: '',
+          targetId: '',
+        };
       }
     });
   };
