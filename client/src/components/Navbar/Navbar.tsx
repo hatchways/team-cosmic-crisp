@@ -9,6 +9,7 @@ import { Profile } from '../../interface/Profile';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import NotificationComponent from '../Notification/Notification';
 import { useSocket } from '../../context/useSocketContext';
 
 interface Props {
@@ -68,9 +69,8 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
           Checkout
         </Button>
       </Link>
-      <Button variant="text" className={classes.userNavItem}>
-        Notifications <span className={classes.active} />
-      </Button>
+      <NotificationComponent />
+
       <Button component={Link} to="/bookings" variant="text" className={classes.userNavItem}>
         {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
       </Button>

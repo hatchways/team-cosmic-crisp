@@ -19,6 +19,7 @@ import {
 import { ReviewsApiDataSuccess } from '../interface/ReviewApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/Profile';
+import { Notification } from '../interface/Notification';
 import { Review } from '../interface/Review';
 import { Filter } from '../interface/Profile';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
@@ -26,17 +27,20 @@ import logoutAPI from '../helpers/APICalls/logout';
 import searchSitterProfilesAPI from '../helpers/APICalls/searchProfiles';
 import getUserProfileDetailsAPI from '../helpers/APICalls/getUserProfileDetails';
 import { boolean } from 'yup';
+import { getUnreadNotifications } from '../helpers/APICalls/notifications';
 
 interface IAuthContext {
   loggedInUser: User | null | undefined;
   loggedInUserDetails: Profile | null | undefined;
   sitterProfiles: Profile[];
+  notifications: Notification[];
   filters: Filter;
   loading: boolean;
   errorMsg: string;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
   updateLoggedInUserDetails: (data: UserProfileApiData) => void;
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
+  updateNotificationsContext: (data: Notification[]) => void;
   updateReviewsContext: (data: ReviewsApiDataSuccess) => void;
   logout: () => void;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -50,12 +54,14 @@ export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
   loggedInUserDetails: undefined,
   sitterProfiles: [],
+  notifications: [],
   filters: {},
   loading: true,
   errorMsg: '',
   updateLoginContext: () => null,
   updateLoggedInUserDetails: () => null,
   updateSitterProfilesContext: () => null,
+  updateNotificationsContext: () => null,
   updateReviewsContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
@@ -69,6 +75,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   // default undefined before loading, once loaded provide user or null if logged out
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const [loggedInUserDetails, setLoggedInUserDetails] = useState<Profile | null | undefined>();
+  const [notifications, setNotification] = useState<Notification[]>([]);
   const [sitterProfiles, setSitterProfiles] = useState<Profile[]>([]);
   const [filters, setFilters] = useState<Filter>({});
   const [loading, setLoading] = useState<boolean>(true);
@@ -129,6 +136,13 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     [history],
   );
 
+  const updateNotificationsContext = useCallback(
+    (data: Notification[]) => {
+      setNotification(data);
+    },
+    [history],
+  );
+
   const logout = useCallback(async () => {
     // needed to remove token cookie
     await logoutAPI()
@@ -159,6 +173,18 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     fetchSitterProfiles(filters);
   }, [loggedInUser, filters]);
 
+  useEffect(() => {
+    async function fetchNotification() {
+      try {
+        const res = await getUnreadNotifications();
+        res.notifications && updateNotificationsContext(res.notifications);
+      } catch (error) {
+        console.log('error occurred getting notifications', error);
+      }
+    }
+    fetchNotification();
+  }, [loggedInUser]);
+
   // use our cookies to check if we can login straight away
   useEffect(() => {
     const checkLoginWithCookies = async () => {
@@ -182,6 +208,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         loggedInUser,
         loggedInUserDetails,
         sitterProfiles,
+        notifications,
         filters,
         loading,
         errorMsg,
@@ -189,6 +216,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         setFilters,
         updateLoggedInUserDetails,
         updateLoginContext,
+        updateNotificationsContext,
         updateSitterProfilesContext,
         updateReviewsContext,
         logout,

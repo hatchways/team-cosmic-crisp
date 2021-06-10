@@ -11,6 +11,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
+import NotificationPage from './pages/NotificationPage/NotificationPage';
 import Messages from './pages/Messages/Messages';
 
 import './App.css';
@@ -50,6 +51,7 @@ function App(): JSX.Element {
                     <ProtectedRoute exact path="/messages" component={Messages} />
                     <ProtectedRoute exact path="/messages/:conversationId" component={Messages} />
                     <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
+                    <Route exact path="/notifications" component={NotificationPage} />
                   </Switch>
                 </Layout>
               </SocketProvider>
