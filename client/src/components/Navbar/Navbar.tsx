@@ -19,7 +19,7 @@ import NotificationComponent from '../Notification/Notification';
 
 interface Props {
   user: User | null | undefined;
-  userProfile: Profile | null | undefined;
+  userProfile: Profile;
   logout(): void;
 }
 
@@ -29,10 +29,16 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
   const { updateLoggedInUserDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
   const { pathname } = useLocation();
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState<Profile>(userProfile);
+  const [isDogSitter, setIsDogSitter] = useState<boolean>(false);
+
   useEffect(() => {
-    if (userProfile) setProfile(userProfile);
+    if (userProfile) {
+      setProfile(userProfile);
+      setIsDogSitter(userProfile.isDogSitter);
+    }
   }, [userProfile]);
+
   const { socket } = useSocket();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -55,84 +61,85 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
   const handleBecomeSitter = () => {
     setOpenModal(!openModal);
   };
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-    property: string,
-    value?: string,
-  ): void => {
-    switch (property) {
-      case 'isAvailable':
-        profile && setProfile({ ...profile, isAvailable: !profile.isAvailable });
-        break;
-      case 'availability': {
-        if (value && profile?.availability) {
-          setProfile({
-            ...profile,
-            availability: profile.availability?.includes(value)
-              ? profile.availability.filter((day) => day !== value)
-              : [...profile?.availability, value],
-          });
+
+  const BecomeSitterModal = ({ profile }: { profile: Profile }) => {
+    const [userProfile, setUserProfile] = useState<Profile>(profile);
+    const handleChange = (
+      e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+      property: string,
+      value?: string,
+    ): void => {
+      switch (property) {
+        case 'isAvailable': {
+          setUserProfile((profile) => ({ ...profile, isAvailable: !profile.isAvailable }));
+          break;
         }
-        break;
+        case 'availability': {
+          if (value && profile?.availability) {
+            setUserProfile((profile) => ({
+              ...profile,
+              availability: profile.availability?.includes(value)
+                ? profile.availability.filter((day) => day !== value)
+                : [...profile?.availability, value],
+            }));
+          }
+          break;
+        }
+        default:
+          setUserProfile((profile) => ({ ...profile, price: Number(e.target.value) < 0 ? 0 : Number(e.target.value) }));
       }
-      default:
-        profile && setProfile({ ...profile, [property]: e.target.value });
-    }
-  };
-
-  const handleSaveProfile = async () => {
-    const id = profile ? profile._id : '';
-    try {
-      if (profile && profile.isAvailable) {
-        const res = await updateProfile(id, { ...profile, isDogSitter: true });
-        updateLoggedInUserDetails(res);
-        updateSnackBarMessage('Profile updated you are a sitter now');
+    };
+    const handleSaveProfile = async () => {
+      const id = userProfile ? userProfile._id : '';
+      try {
+        if (userProfile.isAvailable) {
+          const res = await updateProfile(id, { ...userProfile, isDogSitter: true });
+          updateLoggedInUserDetails(res);
+          updateSnackBarMessage('Profile updated you are a sitter now');
+        }
+      } catch (error) {
+        updateSnackBarMessage(`Error updating user profile ${error}`);
       }
-    } catch (error) {
-      updateSnackBarMessage(`Error updating user profile ${error}`);
-    }
+    };
+    return (
+      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+        <Grid container direction="column" alignItems="flex-start" className={classes.modal}>
+          <Grid className={classes.modelHeader}>
+            <Typography variant="h4" align="center">
+              Become a sitter
+            </Typography>
+          </Grid>
+          <Grid>
+            <Typography component="div" variant="h6" className={classes.modelHeader}>
+              Please set your availability to become a sitter
+            </Typography>
+            <form>
+              <Availability profile={userProfile} handleChange={handleChange} />
+              <CustomTextField
+                onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
+                  handleChange(e, 'price')
+                }
+                value={userProfile.price ? userProfile.price : 0}
+                label="price"
+                placeholder="price"
+                required={userProfile.isAvailable}
+                type="number"
+                key="priceInput"
+              />
+              <Grid container justify="center" className={classes.modalBtn}>
+                <Button variant="contained" color="primary" onClick={handleSaveProfile}>
+                  Save
+                </Button>
+              </Grid>
+            </form>
+          </Grid>
+        </Grid>
+      </Modal>
+    );
   };
-
-  const BecomeSitterModal = ({ profile }: { profile: Profile }) => (
-    <Modal open={openModal} onClose={() => setOpenModal(false)}>
-      <Grid container direction="column" alignItems="flex-start" className={classes.modal}>
-        <Grid className={classes.modelHeader}>
-          <Typography variant="h4" align="center">
-            Become a sitter
-          </Typography>
-        </Grid>
-        <Grid className={classes.modelBody}>
-          <Typography component="div" variant="h6" className={classes.modelHeader}>
-            Please set your availability to become a sitter
-          </Typography>
-          <form>
-            <Availability profile={profile} handleChange={handleChange} />
-            <CustomTextField
-              onChange={(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) =>
-                handleChange(e, 'price')
-              }
-              value={profile.price ? profile.price : 0}
-              label="price"
-              placeholder="price"
-              required={profile.isAvailable}
-              type="number"
-            />
-            <Grid container justify="center" className={classes.modalBtn}>
-              <Button variant="contained" color="primary" onClick={handleSaveProfile}>
-                Save
-              </Button>
-            </Grid>
-          </form>
-        </Grid>
-      </Grid>
-    </Modal>
-  );
 
   const Nav = () => (
     <>
-      <Button color="inherit" className={`${classes.btn} ${classes.sitterBtn}`} variant="text">
-        become a sitter
-      </Button>
       <Link to="/login" className={classes.link}>
         <Button
           color="inherit"
@@ -152,9 +159,9 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
 
   const UserNav = () => (
     <Grid>
-      {profile && !profile?.isDogSitter && (
+      {!isDogSitter && (
         <>
-          <Button className={classes.userNavItem} onClick={handleBecomeSitter}>
+          <Button className={`${classes.userNavItem}  ${classes.sitterBtn}`} onClick={handleBecomeSitter}>
             Become a Sitter
           </Button>
           <BecomeSitterModal profile={profile} />

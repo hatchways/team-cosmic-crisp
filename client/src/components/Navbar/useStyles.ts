@@ -87,7 +87,6 @@ const useStyles = makeStyles((theme) => ({
   modalBtn: {
     marginTop: '2rem',
   },
-  modelBody: {},
 }));
 
 export default useStyles;
