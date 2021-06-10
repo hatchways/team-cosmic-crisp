@@ -8,6 +8,7 @@ export default function RequestTableHead(): JSX.Element {
         <TableCell align="center">Status</TableCell>
         <TableCell align="center">Dropoff Time</TableCell>
         <TableCell align="center">Pickup Time</TableCell>
+        <TableCell align="center">Payment status</TableCell>
         <TableCell align="center">Action</TableCell>
       </TableRow>
     </TableHead>

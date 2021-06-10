@@ -66,6 +66,9 @@ export default function RequestTableBody(): JSX.Element {
               <TableCell align="center">{checkLabel(request.accepted, request.declined)}</TableCell>
               <TableCell align="center">{moment(request.start).format('MMMM Do YYYY, h:mm a')}</TableCell>
               <TableCell align="center">{moment(request.start).format('MMMM Do YYYY, h:mm a')}</TableCell>
+              <TableCell align="center">
+                {request.paid ? <Chip color="primary" label="Paid" /> : <Chip color="secondary" label="Unpaid" />}
+              </TableCell>
               <RequestModal request={request} updateRequest={updateRequest} />
             </TableRow>
           ))
