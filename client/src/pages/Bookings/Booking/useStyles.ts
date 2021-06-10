@@ -43,6 +43,9 @@ const useStyles = makeStyles(() => ({
   checkoutLink: {
     pointerEvents: 'none',
   },
+  paidText: {
+    fontWeight: 600,
+  },
 }));
 
 export default useStyles;

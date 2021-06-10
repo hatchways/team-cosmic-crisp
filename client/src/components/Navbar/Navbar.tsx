@@ -41,41 +41,40 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
       <Button color="inherit" className={`${classes.btn} ${classes.sitterBtn}`} variant="text">
         become a sitter
       </Button>
-      <Link to="/login" className={classes.link}>
-        <Button
-          color="inherit"
-          className={` ${pathname === '/' ? classes.landingBtn : ''} ${classes.btn} ${classes.loginBtn}`}
-          variant="outlined"
-        >
-          Login
-        </Button>
-      </Link>
-      <Link to="/signup" className={classes.link}>
-        <Button color="primary" className={`${classes.btn} ${classes.signupbtn}`} variant="contained">
-          signup
-        </Button>
-      </Link>
+      <Button
+        color="inherit"
+        component={Link}
+        to="/login"
+        className={` ${pathname === '/' ? classes.landingBtn : ''} ${classes.btn} ${classes.loginBtn}`}
+        variant="outlined"
+      >
+        Login
+      </Button>
+      <Button
+        component={Link}
+        to="/signup"
+        color="primary"
+        className={`${classes.btn} ${classes.signupbtn}`}
+        variant="contained"
+      >
+        signup
+      </Button>
     </>
   );
 
   const UserNav = () => (
     <Grid>
       {profile?.isDogSitter ? (
-        <Link to="/requests" className={classes.link}>
-          <Button variant="text" className={classes.userNavItem}>
-            Request
-          </Button>
-        </Link>
+        <Button component={Link} to="/requests" variant="text" className={classes.userNavItem}>
+          Request
+        </Button>
       ) : null}
       <Button variant="text" className={classes.userNavItem}>
         Notifications <span className={classes.active} />
       </Button>
-
-      <Link to="/bookings" className={classes.link}>
-        <Button variant="text" className={classes.userNavItem}>
-          My Bookings
-        </Button>
-      </Link>
+      <Button component={Link} to="/bookings" variant="text" className={classes.userNavItem}>
+        My Bookings
+      </Button>
       <Button variant="text" className={classes.userNavItem}>
         Messages <span className={classes.active} />
       </Button>

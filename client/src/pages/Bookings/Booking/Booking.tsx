@@ -17,7 +17,7 @@ export default function Bookings({ bookingDetails }: Props): JSX.Element {
   const classes = useStyles();
 
   if (!bookingDetails) return <></>;
-  const { start, accepted, declined, sitter } = bookingDetails;
+  const { start, accepted, declined, sitter, paid } = bookingDetails;
 
   return (
     <>
@@ -43,24 +43,37 @@ export default function Bookings({ bookingDetails }: Props): JSX.Element {
               {`${sitter?.firstName} ${sitter?.lastName}`}
             </Typography>
           </Grid>
-          <Button size="large" disabled className={classes.button}>
-            {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
-          </Button>
+          {!paid ? (
+            <Typography color="secondary" className={classes.paidText}>
+              {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
+            </Typography>
+          ) : (
+            <Typography color="primary" className={classes.paidText}>
+              Paid
+            </Typography>
+          )}
 
-          <Link
-            to={{
-              pathname: '/checkout',
-              state: {
-                bookingDetails: bookingDetails,
-              },
-            }}
-            style={{ textDecoration: 'none' }}
-            className={declined || !accepted ? classes.checkoutLink : ''}
-          >
-            <Button variant="contained" color="primary" className={classes.btnDisplay} disabled={declined || !accepted}>
-              Checkout
-            </Button>
-          </Link>
+          {!paid ? (
+            <Link
+              to={{
+                pathname: '/checkout',
+                state: {
+                  bookingDetails: bookingDetails,
+                },
+              }}
+              style={{ textDecoration: 'none' }}
+              className={declined || !accepted ? classes.checkoutLink : ''}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.btnDisplay}
+                disabled={declined || !accepted}
+              >
+                Checkout
+              </Button>
+            </Link>
+          ) : null}
         </Grid>
       </Paper>
     </>

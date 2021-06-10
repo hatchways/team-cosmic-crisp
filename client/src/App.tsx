@@ -42,12 +42,12 @@ function App(): JSX.Element {
                   <Route exact path="/profile/:id" component={ProfileDetails} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
-                  <Route exact path="/checkout" component={CheckoutContainer} />
+                  <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
                   <ProtectedRoute exact path="/listings" component={Listings} />
                   <Route exact path="/listings" component={Listings} />
-                  <Route exact path="/bookings" component={Bookings} />
+                  <ProtectedRoute exact path="/bookings" component={Bookings} />
                   <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
-                  <Route exact path="/requests" component={Request} />
+                  <ProtectedRoute exact path="/requests" component={Request} />
                 </Switch>
               </Layout>
             </SocketProvider>

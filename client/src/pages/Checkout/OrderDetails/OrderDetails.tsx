@@ -31,8 +31,6 @@ export default function OrderDetails({
   totalHours,
   subTotal,
   serviceFee,
-  setStartDate,
-  setEndDate,
   checkout,
 }: Props): JSX.Element {
   const classes = useStyles();
@@ -41,7 +39,7 @@ export default function OrderDetails({
     <>
       <Grid container direction="row" className={classes.order}>
         <Grid className={classes.orderDetailsContainer}>
-          <Typography variant="h4">Customise Your Order</Typography>
+          <Typography variant="h4">Your Order Details</Typography>
           <Grid container justify="space-between" className={classes.orderDetails}>
             <Grid>
               <Grid container>
@@ -70,14 +68,16 @@ export default function OrderDetails({
                       inputVariant="outlined"
                       format="MM/dd/yyyy"
                       value={startDate}
-                      onChange={(date) => setStartDate(date)}
+                      onChange={() => null}
                       InputAdornmentProps={{ position: 'start' }}
+                      readOnly
                     />
                     <TimePicker
                       variant="inline"
                       inputVariant="outlined"
                       value={startDate}
-                      onChange={(time) => setStartDate(time)}
+                      onChange={() => null}
+                      readOnly
                     />
                   </Grid>
                   <Grid>
@@ -88,15 +88,17 @@ export default function OrderDetails({
                       inputVariant="outlined"
                       format="MM/dd/yyyy"
                       value={endDate}
-                      onChange={(date) => setEndDate(date)}
+                      onChange={() => null}
                       InputAdornmentProps={{ position: 'start' }}
+                      readOnly
                     />
 
                     <TimePicker
                       variant="inline"
                       inputVariant="outlined"
                       value={endDate}
-                      onChange={(time) => setEndDate(time)}
+                      onChange={() => null}
+                      readOnly
                     />
                   </Grid>
                 </Grid>

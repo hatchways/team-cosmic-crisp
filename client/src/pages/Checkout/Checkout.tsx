@@ -24,6 +24,7 @@ export default function Order(): JSX.Element {
   const [subTotal, setSubTotal] = useState<number>(0);
   const [serviceFee, setServiceFee] = useState<number>(0);
   const { bookingDetails } = location.state;
+  const [requestId, setRequestId] = useState<string>('');
   const [userProfile, setUserProfile] = useState<Profile>({
     _id: '',
     firstName: '',
@@ -41,6 +42,7 @@ export default function Order(): JSX.Element {
   useEffect(() => {
     if (bookingDetails && bookingDetails.sitter) {
       setUserProfile(bookingDetails.sitter);
+      setRequestId(bookingDetails._id);
       setStartDate(new Date(bookingDetails.start));
       setEndDate(new Date(bookingDetails.end));
     }
@@ -74,7 +76,7 @@ export default function Order(): JSX.Element {
               <Payment
                 userProfile={userProfile}
                 hours={totalHours}
-                requestId={'60a7f6713407a107aeda5b46'}
+                requestId={requestId}
                 start={startDate}
                 end={endDate}
               />
