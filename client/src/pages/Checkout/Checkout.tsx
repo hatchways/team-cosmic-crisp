@@ -37,6 +37,7 @@ export default function Order(): JSX.Element {
     price: 0,
     city: '',
     gallery: [''],
+    reviews: [],
   });
 
   useEffect(() => {
