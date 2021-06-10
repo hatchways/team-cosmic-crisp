@@ -14,6 +14,7 @@ import CustomTextField from '../Account/EditProfileForm/CustomTextField';
 import updateProfile from '../../helpers/APICalls/updateProfile';
 import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
+import { useSocket } from '../../context/useSocketContext';
 
 interface Props {
   user: User | null | undefined;
@@ -31,6 +32,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
   useEffect(() => {
     if (userProfile) setProfile(userProfile);
   }, [userProfile]);
+  const { socket } = useSocket();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -43,6 +45,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
   };
 
   const handleLogout = () => {
+    socket?.emit('logout', profile?._id);
     handleClose();
     logout();
   };
@@ -159,11 +162,11 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
       <Button variant="text" className={classes.userNavItem}>
         Notifications <span className={classes.active} />
       </Button>
-      <Button component={Link} to="/messages" variant="text" className={classes.userNavItem}>
-        Messages <span className={classes.active} />
-      </Button>
       <Button variant="text" component={Link} to="/bookings" className={classes.userNavItem}>
         {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
+      </Button>
+      <Button component={Link} to="/messages" variant="text" className={classes.userNavItem}>
+        Messages <span className={classes.active} />
       </Button>
     </Grid>
   );

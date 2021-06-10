@@ -6,14 +6,20 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Link } from 'react-router-dom';
 
 import { Profile } from '../../../interface/Profile';
+import { useAuth } from '../../../context/useAuthContext';
 import useStyles from './useStyles';
 import { postRequest } from '../../../helpers/APICalls/bookings';
+import { useMessages } from '../../../context/useMessageContext';
+import { createConversation } from '../../../helpers/APICalls/messages';
+import { useHistory } from 'react-router-dom';
 
 export interface Props {
-  sitter: Profile | null | undefined;
+  sitter: Profile;
 }
 
 export default function RequestForm({ sitter }: Props): JSX.Element {
+  const { calculateAvgRating } = useAuth();
+  const { loggedInUser } = useAuth();
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -23,124 +29,147 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
   const [success, setSuccess] = useState<boolean>(false);
   const classes = useStyles();
 
+  const { loggedInUserDetails } = useAuth();
+  const { addConversation } = useMessages();
+  const history = useHistory();
+
   const handleSubmit = () => {
     setLoading(true);
     if (sitter) {
       postRequest(sitter._id, startDate, endDate).then((data) => {
         setSuccess(true);
-        console.log(data);
       });
     }
     setLoading(false);
   };
 
+  const sendMessage = () => {
+    if (loggedInUserDetails && sitter)
+      createConversation(loggedInUserDetails?._id, sitter?._id).then((res) => {
+        if (res.success) {
+          addConversation(res.success.conversation);
+          history.push(`/messages/${res.success.conversation.conversationId}`);
+        }
+      });
+  };
+
   return (
-    <>
-      {sitter && (
-        <Fade in={true}>
-          <Paper elevation={6} className={classes.requestContainer}>
+    <Fade in={true}>
+      <Paper elevation={6} className={classes.requestContainer}>
+        <Box textAlign="center">
+          <Typography align="center" variant="body1" className={classes.price}>
+            ${sitter.price}/hr
+          </Typography>
+          <Rating value={calculateAvgRating(sitter.reviews)} precision={0.1} name="profile-details-rating" readOnly />
+        </Box>
+        <Box className={classes.dateContainer}>
+          <Typography variant="body1" className={classes.title}>
+            DROP-IN
+          </Typography>
+          <Grid container>
+            <Grid item xs={8}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  color="secondary"
+                  variant="inline"
+                  inputVariant="outlined"
+                  format="MM/dd/yyyy"
+                  value={startDate}
+                  InputAdornmentProps={{ position: 'start' }}
+                  onChange={(date) => date && setStartDate(date)}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={4}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <TimePicker
+                  autoOk
+                  color="secondary"
+                  variant="inline"
+                  inputVariant="outlined"
+                  value={startDate}
+                  onChange={(time) => time && setStartDate(time)}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+          </Grid>
+          <Typography variant="body1" className={classes.title}>
+            DROP-OFF
+          </Typography>
+          <Grid container>
+            <Grid item xs={8}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  autoOk
+                  color="secondary"
+                  variant="inline"
+                  inputVariant="outlined"
+                  format="MM/dd/yyyy"
+                  value={endDate}
+                  InputAdornmentProps={{ position: 'start' }}
+                  onChange={(date) => date && setEndDate(date)}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={4}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <TimePicker
+                  autoOk
+                  color="secondary"
+                  variant="inline"
+                  inputVariant="outlined"
+                  value={endDate}
+                  onChange={(time) => time && setEndDate(time)}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+          </Grid>
+          {/*Show send request button only if user is logged in*/}
+          {loggedInUser ? (
             <Box textAlign="center">
-              <Typography align="center" variant="body1" className={classes.price}>
-                ${sitter.price}/hr
-              </Typography>
-              <Rating value={4.5} precision={0.5} readOnly />
+              {!success ? (
+                <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
+                  {loading ? <CircularProgress /> : 'Send Request'}
+                </Button>
+              ) : (
+                <>
+                  {success && (
+                    <Typography component="span" variant="subtitle1">
+                      Request sent click pay now to continue
+                    </Typography>
+                  )}
+                  <Link
+                    to={{
+                      pathname: '/checkout',
+                      state: {
+                        sitter: sitter._id,
+                        startDate,
+                        endDate,
+                      },
+                    }}
+                  >
+                    <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
+                      Pay now
+                    </Button>
+                  </Link>
+                </>
+              )}
+              <Button variant="contained" color="primary" className={classes.submitBtn} onClick={sendMessage}>
+                Message
+              </Button>
             </Box>
-            <Box className={classes.dateContainer}>
-              <Typography variant="body1" className={classes.title}>
-                DROP-IN
+          ) : (
+            <Box textAlign="center" className={classes.signInContainer}>
+              <Typography variant="body1" className={classes.signInTitle}>
+                Please &nbsp;
+                <Link to="/login">Sign In</Link>
+                &nbsp; to send a Request!
               </Typography>
-              <Grid container>
-                <Grid item xs={8}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      autoOk
-                      color="secondary"
-                      variant="inline"
-                      inputVariant="outlined"
-                      format="MM/dd/yyyy"
-                      value={startDate}
-                      InputAdornmentProps={{ position: 'start' }}
-                      onChange={(date) => date && setStartDate(date)}
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={4}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <TimePicker
-                      autoOk
-                      color="secondary"
-                      variant="inline"
-                      inputVariant="outlined"
-                      value={startDate}
-                      onChange={(time) => time && setStartDate(time)}
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-              </Grid>
-              <Typography variant="body1" className={classes.title}>
-                DROP-OFF
-              </Typography>
-              <Grid container>
-                <Grid item xs={8}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      autoOk
-                      color="secondary"
-                      variant="inline"
-                      inputVariant="outlined"
-                      format="MM/dd/yyyy"
-                      value={endDate}
-                      InputAdornmentProps={{ position: 'start' }}
-                      onChange={(date) => date && setEndDate(date)}
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={4}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <TimePicker
-                      autoOk
-                      color="secondary"
-                      variant="inline"
-                      inputVariant="outlined"
-                      value={endDate}
-                      onChange={(time) => time && setEndDate(time)}
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-              </Grid>
-              <Box textAlign="center">
-                {!success ? (
-                  <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
-                    {loading ? <CircularProgress /> : 'Send Request'}
-                  </Button>
-                ) : (
-                  <>
-                    {success && (
-                      <Typography component="span" variant="subtitle1">
-                        Request sent click pay now to continue
-                      </Typography>
-                    )}
-                    <Link
-                      to={{
-                        pathname: '/checkout',
-                        state: {
-                          sitter: sitter._id,
-                          startDate,
-                          endDate,
-                        },
-                      }}
-                    >
-                      <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
-                        Pay now
-                      </Button>
-                    </Link>
-                  </>
-                )}
-              </Box>
             </Box>
-          </Paper>
-        </Fade>
-      )}
-    </>
+          )}
+        </Box>
+      </Paper>
+    </Fade>
   );
 }

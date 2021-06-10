@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   requestContainer: {
     height: '100%',
-    maxHeight: 450,
+    maxHeight: 500,
     padding: '1.5rem 2rem',
   },
   price: {
@@ -23,6 +23,12 @@ const useStyles = makeStyles(() => ({
     marginTop: '2rem',
     minWidth: '10rem',
     height: '3rem',
+  },
+  signInContainer: {
+    marginTop: '2.5rem',
+  },
+  signInTitle: {
+    fontSize: '1rem',
   },
 }));
 
