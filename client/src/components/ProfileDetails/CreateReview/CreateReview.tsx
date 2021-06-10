@@ -26,16 +26,20 @@ export default function CreateReview({ sitterId }: Props): JSX.Element {
   const classes = useStyles();
 
   const handleSubmit = () => {
-    createReview(sitterId, review).then((data: ReviewsApiData) => {
-      if (data.success) {
-        updateReviewsContext(data.success);
-        updateSnackBarMessage('Successfully Created Review!');
-      } else if (data.error) {
-        updateSnackBarMessage(`Error creating a review: ${data.error}`);
-      }
-    });
-    setToggle(false);
-    setReview({ rating: 0, message: '' });
+    if (review.rating) {
+      createReview(sitterId, review).then((data: ReviewsApiData) => {
+        if (data.success) {
+          updateReviewsContext(data.success);
+          updateSnackBarMessage('Successfully Created Review!');
+        } else if (data.error) {
+          updateSnackBarMessage(`Error creating a review: ${data.error}`);
+        }
+      });
+      setToggle(false);
+      setReview({ rating: 0, message: '' });
+    } else {
+      updateSnackBarMessage(`Please Select a Rating!`);
+    }
   };
 
   return (
