@@ -15,6 +15,7 @@ import updateProfile from '../../helpers/APICalls/updateProfile';
 import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { useSocket } from '../../context/useSocketContext';
+import NotificationComponent from '../Notification/Notification';
 
 interface Props {
   user: User | null | undefined;
@@ -159,9 +160,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
           <BecomeSitterModal profile={profile} />
         </>
       )}
-      <Button variant="text" className={classes.userNavItem}>
-        Notifications <span className={classes.active} />
-      </Button>
+      <NotificationComponent />
       <Button variant="text" component={Link} to="/bookings" className={classes.userNavItem}>
         {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
       </Button>
