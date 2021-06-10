@@ -10,13 +10,14 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 
 export default function NotificationItem(): JSX.Element {
   const classes = useStyles();
-  const { notifications, updateNotificationsContext } = useAuth();
+  const { loggedInUserDetails, notifications, updateNotificationsContext } = useAuth();
   const history = useHistory();
   const handleClick = async (id: string) => {
     try {
       const res = await markSingleNotification(id);
       res.notifications && updateNotificationsContext(res.notifications);
-      history.push('/bookings');
+      loggedInUserDetails?.isDogSitter && history.push('/requests');
+      !loggedInUserDetails?.isDogSitter && history.push('/bookings');
     } catch (error) {
       console.log('Error update notification', error);
     }

@@ -27,15 +27,15 @@ export const setReadNotifications = async (): Promise<NotificationApiData> => {
 };
 
 export const createNewNotification = async (
-  type: string,
+  types: string,
   description: string,
-  thumbnail?: string,
   targetProfile?: string,
+  thumbnail?: string,
 ): Promise<NotificationApiData> => {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ type, description, thumbnail, targetProfile }),
+    body: JSON.stringify({ types, description, thumbnail, targetProfile }),
     credentials: 'include',
   };
   return await fetch(`/notification`, fetchOptions)

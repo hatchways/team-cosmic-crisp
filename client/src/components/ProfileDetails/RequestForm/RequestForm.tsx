@@ -11,6 +11,7 @@ import { postRequest } from '../../../helpers/APICalls/bookings';
 import { useMessages } from '../../../context/useMessageContext';
 import { createConversation } from '../../../helpers/APICalls/messages';
 import { useHistory, Link } from 'react-router-dom';
+import { createNewNotification } from '../../../helpers/APICalls/notifications';
 
 export interface Props {
   sitter: Profile;
@@ -32,12 +33,18 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
   const { addConversation } = useMessages();
   const history = useHistory();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
     if (sitter) {
       postRequest(sitter._id, startDate, endDate).then(() => {
         setSuccess(true);
       });
+      const newNotification = {
+        types: 'system',
+        description: `${sitter.firstName} ${sitter.lastName} created a new sitting request`,
+        targetProfile: sitter._id,
+      };
+      await createNewNotification(newNotification.types, newNotification.description, newNotification.targetProfile);
     }
     setLoading(false);
   };
@@ -135,23 +142,9 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                 <>
                   {success && (
                     <Typography component="span" variant="subtitle1">
-                      Request sent click pay now to continue
+                      Request sent, waiting for sitter&apos;s approve
                     </Typography>
                   )}
-                  <Link
-                    to={{
-                      pathname: '/checkout',
-                      state: {
-                        sitter: sitter._id,
-                        startDate,
-                        endDate,
-                      },
-                    }}
-                  >
-                    <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
-                      Pay now
-                    </Button>
-                  </Link>
                 </>
               )}
               <Button variant="contained" color="primary" className={classes.submitBtn} onClick={sendMessage}>

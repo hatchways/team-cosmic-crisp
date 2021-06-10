@@ -183,7 +183,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       }
     }
     fetchNotification();
-  }, [loggedInUser]);
+  }, [loggedInUser, history]);
 
   // use our cookies to check if we can login straight away
   useEffect(() => {
