@@ -1,4 +1,4 @@
-import { Box, CssBaseline, Grid } from '@material-ui/core';
+import { Box, CssBaseline } from '@material-ui/core';
 import { useParams } from 'react-router';
 
 import useStyles from './useStyles';
