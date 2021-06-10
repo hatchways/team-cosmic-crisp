@@ -25,7 +25,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
   const handleSubmit = () => {
     setLoading(true);
     if (sitter) {
-      postRequest(sitter._id, startDate, endDate).then((data) => {
+      postRequest(sitter._id, startDate, endDate).then(() => {
         setSuccess(true);
       });
     }
