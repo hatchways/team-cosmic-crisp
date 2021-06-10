@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import { AuthContext } from '../context/useAuthContext';
 import { mockLoggedInUser } from './mockUser';
+import { mockNotification } from './mockNotifications';
 import { mockProfile, mockProfiles, mockFilter } from './mockProfile';
 
 const MockUseAuthProvider: FunctionComponent = ({ children }) => {
@@ -20,6 +21,8 @@ const MockUseAuthProvider: FunctionComponent = ({ children }) => {
         updateReviewsContext: jest.fn(),
         updateLoggedInUserDetails: jest.fn(),
         logout: jest.fn(),
+        notifications: mockNotification,
+        updateNotificationsContext: jest.fn(),
         getUserProfileDetails: jest.fn(),
         calculateAvgRating: jest.fn(),
         fetchSitterProfiles: jest.fn(),
