@@ -22,6 +22,4 @@ services:
       PORT: ${PORT}
     container_name: lovingsitter
 networks:
-  default:
-    external:
-      name: lovingsitter_network
+  - lovingsitter_network
