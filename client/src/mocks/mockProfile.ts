@@ -12,6 +12,17 @@ export const mockProfile: Profile = {
   price: 20,
   city: 'New York',
   gallery: [''],
+  reviews: [
+    {
+      _id: '123a',
+      createdAt: new Date(),
+      rating: 5,
+      creator: {
+        firstName: 'Bob',
+        lastName: 'Builder',
+      },
+    },
+  ],
 };
 
 export const mockProfiles: Profile[] = [mockProfile];

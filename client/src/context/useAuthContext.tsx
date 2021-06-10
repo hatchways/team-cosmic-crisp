@@ -16,8 +16,10 @@ import {
   SitterProfilesApiData,
   SitterProfilesApiDataSuccess,
 } from '../interface/AuthApiData';
+import { ReviewsApiDataSuccess } from '../interface/ReviewApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/Profile';
+import { Review } from '../interface/Review';
 import { Filter } from '../interface/Profile';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
@@ -35,10 +37,12 @@ interface IAuthContext {
   updateLoginContext: (data: AuthApiDataSuccess) => void;
   updateLoggedInUserDetails: (data: UserProfileApiData) => void;
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
+  updateReviewsContext: (data: ReviewsApiDataSuccess) => void;
   logout: () => void;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setFilters: Dispatch<SetStateAction<Filter>>;
   getUserProfileDetails: (id: string) => void;
+  calculateAvgRating: (reviews: Review[]) => number;
   fetchSitterProfiles: ({ city, startDate, endDate }: Filter) => void;
 }
 
@@ -52,10 +56,12 @@ export const AuthContext = createContext<IAuthContext>({
   updateLoginContext: () => null,
   updateLoggedInUserDetails: () => null,
   updateSitterProfilesContext: () => null,
+  updateReviewsContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
   setFilters: () => null,
   getUserProfileDetails: () => null,
+  calculateAvgRating: () => 0,
   fetchSitterProfiles: () => null,
 });
 
@@ -89,6 +95,23 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       if (data.success !== undefined) {
         setLoggedInUserDetails(data.success.profile);
       }
+    },
+    [history],
+  );
+
+  const updateReviewsContext = useCallback(
+    (data: ReviewsApiDataSuccess) => {
+      const reviewedProfiles = sitterProfiles.map((profile) => {
+        return profile._id !== data.profile._id ? profile : data.profile;
+      });
+      setSitterProfiles(reviewedProfiles);
+    },
+    [history, sitterProfiles],
+  );
+
+  const calculateAvgRating = useCallback(
+    (reviews: Review[]) => {
+      return reviews.reduce((a, { rating }) => a + rating, 0) / reviews.length;
     },
     [history],
   );
@@ -167,8 +190,10 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         updateLoggedInUserDetails,
         updateLoginContext,
         updateSitterProfilesContext,
+        updateReviewsContext,
         logout,
         getUserProfileDetails,
+        calculateAvgRating,
         fetchSitterProfiles,
       }}
     >
