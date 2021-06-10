@@ -4,7 +4,7 @@ import { io, Socket } from 'socket.io-client';
 import { useAuth } from '../context/useAuthContext';
 import { useMessages } from './useMessageContext';
 
-const ENDPOINT = 'ws://localhost:3001';
+const ENDPOINT = 'ws://lovingsitter.gursharansingh.ca';
 
 interface ISocketContext {
   socket: Socket | undefined;
