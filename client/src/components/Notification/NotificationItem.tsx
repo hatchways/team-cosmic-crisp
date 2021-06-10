@@ -2,19 +2,29 @@ import { Avatar, Grid, Typography, List, ListItem } from '@material-ui/core';
 import useStyles from './useStyles';
 import { Notification } from '../../interface/Notification';
 import moment from 'moment';
+import { markSingleNotification } from '../../helpers/APICalls/notifications';
+import { useAuth } from '../../context/useAuthContext';
+import { useHistory } from 'react-router-dom';
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-interface Props {
-  notifications: Notification[];
-}
-
-export default function NotificationItem({ notifications }: Props): JSX.Element {
+export default function NotificationItem(): JSX.Element {
   const classes = useStyles();
+  const { notifications, updateNotificationsContext } = useAuth();
+  const history = useHistory();
+  const handleClick = async (id: string) => {
+    try {
+      const res = await markSingleNotification(id);
+      res.notifications && updateNotificationsContext(res.notifications);
+      history.push('/bookings');
+    } catch (error) {
+      console.log('Error update notification', error);
+    }
+  };
   return (
     <List className={classes.listItemContainer}>
       {notifications.map((notification) => (
-        <ListItem className={classes.listItem} key={notification._id}>
+        <ListItem className={classes.listItem} key={notification._id} onClick={() => handleClick(notification._id)}>
           <Grid container direction="row" alignItems="center" className={classes.listContainer}>
             <Grid item xs={2}>
               {notification.thumbnail ? (

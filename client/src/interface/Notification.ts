@@ -17,3 +17,8 @@ export interface ReadNotificationApiData {
   error?: { message: string };
   message?: string;
 }
+
+// export interface SingleNotificationApiData {
+//   error?: { message: string };
+//   notification?: Notification;
+// }

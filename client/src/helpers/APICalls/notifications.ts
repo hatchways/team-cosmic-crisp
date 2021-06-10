@@ -30,11 +30,12 @@ export const createNewNotification = async (
   type: string,
   description: string,
   thumbnail?: string,
+  targetProfile?: string,
 ): Promise<NotificationApiData> => {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ type, description, thumbnail }),
+    body: JSON.stringify({ type, description, thumbnail, targetProfile }),
     credentials: 'include',
   };
   return await fetch(`/notification`, fetchOptions)
@@ -42,4 +43,19 @@ export const createNewNotification = async (
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
     }));
+};
+
+export const markSingleNotification = async (id: string): Promise<NotificationApiData> => {
+  const fetchOptions: FetchOptions = {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ read: true }),
+    credentials: 'include',
+  };
+  try {
+    await fetch(`/notification/${id}`, fetchOptions);
+  } catch (error) {
+    console.log('error trying to update notification', error);
+  }
+  return getUnreadNotifications();
 };

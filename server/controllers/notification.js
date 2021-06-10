@@ -5,8 +5,11 @@ const Notification = require('../models/Notification');
 // @access Private
 exports.getNotifications = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
+  const userProfile = await User.findById(req.user.id).populate('profile');
   try{
-    const notifications = await Notification.find({user:id});
+    //find all the notifcations for current user, or notifcation targeted for 
+    //current user
+    const notifications = await Notification.find({ $or: [{ user: id }, { targetProfile: userProfile.profile._id }] });
     res.status(200).json({
       notifications
     })} catch(error){
@@ -18,10 +21,11 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
 // @route POST /notification
 // @access Private
 exports.postNotification = asyncHandler(async (req, res, next) => {
-  const { types,title,description,thumbnail } = req.body;
+  const { types,title,description,thumbnail,targetProfile } = req.body;
   const { id } = req.user;
   const newNotification = new Notification({
     user:id,
+    targetProfile,
     types,
     title,
     description,

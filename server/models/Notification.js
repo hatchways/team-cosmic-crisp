@@ -6,6 +6,10 @@ const notificationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
+  targetProfile:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'profile',
+  },
   types: {
     type: String,
     required: true,
