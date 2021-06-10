@@ -36,24 +36,24 @@ function App(): JSX.Element {
       <BrowserRouter>
         <SnackBarProvider>
           <AuthProvider>
-           <MessageContextProvider>
-            <SocketProvider>
-              <Layout>
-                <Switch>
-                  <Route exact path="/" component={LandingPage} />
-                  <Route exact path="/listings" component={Listings} />
-                  <Route exact path="/profile/:id" component={ProfileDetails} />
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/signup" component={Signup} />
-                  <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
-                  <ProtectedRoute exact path="/bookings" component={Bookings} />
-                  <ProtectedRoute exact path="/messages" component={Messages} />
-                  <ProtectedRoute exact path="/messages/:conversationId" component={Messages} />
-                  <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
-                </Switch>
-              </Layout>
-            </SocketProvider>
-           </MessageContextProvider>
+            <MessageContextProvider>
+              <SocketProvider>
+                <Layout>
+                  <Switch>
+                    <Route exact path="/" component={LandingPage} />
+                    <Route exact path="/listings" component={Listings} />
+                    <Route exact path="/profile/:id" component={ProfileDetails} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/signup" component={Signup} />
+                    <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
+                    <ProtectedRoute exact path="/bookings" component={Bookings} />
+                    <ProtectedRoute exact path="/messages" component={Messages} />
+                    <ProtectedRoute exact path="/messages/:conversationId" component={Messages} />
+                    <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
+                  </Switch>
+                </Layout>
+              </SocketProvider>
+            </MessageContextProvider>
           </AuthProvider>
         </SnackBarProvider>
       </BrowserRouter>

@@ -9,7 +9,6 @@ import { Profile } from '../../../interface/Profile';
 import { useAuth } from '../../../context/useAuthContext';
 import useStyles from './useStyles';
 import { postRequest } from '../../../helpers/APICalls/bookings';
-import { useAuth } from '../../../context/useAuthContext';
 import { useMessages } from '../../../context/useMessageContext';
 import { createConversation } from '../../../helpers/APICalls/messages';
 import { useHistory } from 'react-router-dom';
@@ -79,7 +78,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   value={startDate}
                   InputAdornmentProps={{ position: 'start' }}
                   onChange={(date) => date && setStartDate(date)}
-                  />
+                />
               </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={4}>
@@ -91,7 +90,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   inputVariant="outlined"
                   value={startDate}
                   onChange={(time) => time && setStartDate(time)}
-                  />
+                />
               </MuiPickersUtilsProvider>
             </Grid>
           </Grid>
@@ -110,7 +109,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   value={endDate}
                   InputAdornmentProps={{ position: 'start' }}
                   onChange={(date) => date && setEndDate(date)}
-                  />
+                />
               </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={4}>
@@ -122,7 +121,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   inputVariant="outlined"
                   value={endDate}
                   onChange={(time) => time && setEndDate(time)}
-                  />
+                />
               </MuiPickersUtilsProvider>
             </Grid>
           </Grid>
@@ -143,19 +142,14 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   <Link
                     to={{
                       pathname: '/checkout',
-                        state: {
-                          sitter: sitter._id,
-                          startDate,
-                          endDate,
-                        },
-                      }}
-                    >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.submitBtn}
-                      onClick={handleSubmit}
-                    >
+                      state: {
+                        sitter: sitter._id,
+                        startDate,
+                        endDate,
+                      },
+                    }}
+                  >
+                    <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
                       Pay now
                     </Button>
                   </Link>
@@ -163,7 +157,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
               )}
               <Button variant="contained" color="primary" className={classes.submitBtn} onClick={sendMessage}>
                 Message
-              </Button>          
+              </Button>
             </Box>
           ) : (
             <Box textAlign="center" className={classes.signInContainer}>
@@ -173,7 +167,7 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                 &nbsp; to send a Request!
               </Typography>
             </Box>
-          )}          
+          )}
         </Box>
       </Paper>
     </Fade>
