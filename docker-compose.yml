@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  backend:
+  lovingsitter:
     build:
       context: ./server
       dockerfile: ./server/Dockerfile
@@ -21,5 +21,3 @@ services:
       BUCKET_NAME: ${BUCKET_NAME}
       PORT: ${PORT}
     container_name: lovingsitter
-networks:
-  - lovingsitter_network
