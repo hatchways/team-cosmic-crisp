@@ -1,35 +1,100 @@
 #!/usr/bin/env node
 
 /* Sets up the environment variables from your .env file*/
-require("dotenv").config();
+require('dotenv').config();
 
 /**
  * Module dependencies.
  */
 
-var app = require("../app").app;
-var http = require("http");
+var app = require('../app').app;
+const jwt = require('jsonwebtoken');
+const cookie = require('cookie');
+const User = require('../models/User');
+const onlineUsers = require('../onlineUsers');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "3001");
-app.set("port", port);
+var port = normalizePort(process.env.PORT || '3001');
+app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = require("../app").server;
+var server = require('../app').server;
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
+const io = require('socket.io')(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
+  },
+});
+
+io.use((socket, next) => {
+  const token = cookie.parse(socket.handshake.headers?.cookie || '').token;
+
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        next(new Error('Invalid Token'));
+      } else {
+        const user = await User.findById(decoded.id);
+        if (!user) {
+          next(new Error('User not found!'));
+        }
+        next();
+      }
+    });
+  } else {
+    next(new Error('User Authentication Failed!'));
+  }
+}).on('connection', (socket) => {
+  socket.on('go-online', (id) => {
+    onlineUsers[id] = socket.id;
+    // send the user who just went online to everyone else who is already online
+    socket.broadcast.emit('add-online-user', id);
+  });
+
+  socket.on('new-message', (data) => {
+    if (onlineUsers?.[data.receiver]) {
+      io.to(onlineUsers[data.receiver]).emit('new-message', data);
+    }
+  });
+
+  socket.on('user-typing', (data) => {
+    if (onlineUsers?.[data.recipient]) {
+      io.to(onlineUsers[data.recipient]).emit('user-typing', data.conversationId);
+    }
+  });
+
+  socket.on('user-stop-typing', (data) => {
+    if (onlineUsers?.[data.recipient]) {
+      io.to(onlineUsers[data.recipient]).emit('user-stop-typing', data.conversationId);
+    }
+  });
+
+  socket.on('logout', (id) => {
+    delete onlineUsers[id];
+    socket.broadcast.emit('remove-offline-user', id);
+  });
+
+  socket.on('disconnect', () => {
+    const id = Object.keys(onlineUsers).find((key) => onlineUsers[key] === socket.id);
+    delete onlineUsers[id];
+    socket.broadcast.emit('remove-offline-user', id);
+  });
+});
+
 server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -56,20 +121,20 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== "listen") {
+  if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case "EACCES":
-      console.error(bind + " requires elevated privileges");
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
       process.exit(1);
       break;
-    case "EADDRINUSE":
-      console.error(bind + " is already in use");
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
       process.exit(1);
       break;
     default:
@@ -83,7 +148,7 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
 
   console.log(`Listening on ${bind}`.red.underline.bold);
 }

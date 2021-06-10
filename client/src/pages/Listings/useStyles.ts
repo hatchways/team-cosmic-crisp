@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
   },
   profilesContainer: {
     marginTop: '3.5rem',
+    marginBottom: '2.5rem',
   },
 }));
 

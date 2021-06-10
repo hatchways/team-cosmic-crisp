@@ -1,4 +1,13 @@
-import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
+import {
+  useState,
+  useContext,
+  createContext,
+  FunctionComponent,
+  useEffect,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   AuthApiData,
@@ -11,6 +20,7 @@ import { ReviewsApiDataSuccess } from '../interface/ReviewApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/Profile';
 import { Review } from '../interface/Review';
+import { Filter } from '../interface/Profile';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
 import searchSitterProfilesAPI from '../helpers/APICalls/searchProfiles';
@@ -21,6 +31,7 @@ interface IAuthContext {
   loggedInUser: User | null | undefined;
   loggedInUserDetails: Profile | null | undefined;
   sitterProfiles: Profile[];
+  filters: Filter;
   loading: boolean;
   errorMsg: string;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
@@ -28,15 +39,18 @@ interface IAuthContext {
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
   updateReviewsContext: (data: ReviewsApiDataSuccess) => void;
   logout: () => void;
-  setLoading: (value: boolean) => void;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setFilters: Dispatch<SetStateAction<Filter>>;
   getUserProfileDetails: (id: string) => void;
   calculateAvgRating: (reviews: Review[]) => number;
+  fetchSitterProfiles: ({ city, startDate, endDate }: Filter) => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
   loggedInUserDetails: undefined,
   sitterProfiles: [],
+  filters: {},
   loading: true,
   errorMsg: '',
   updateLoginContext: () => null,
@@ -45,8 +59,10 @@ export const AuthContext = createContext<IAuthContext>({
   updateReviewsContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
+  setFilters: () => null,
   getUserProfileDetails: () => null,
   calculateAvgRating: () => 0,
+  fetchSitterProfiles: () => null,
 });
 
 export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
@@ -54,6 +70,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const [loggedInUserDetails, setLoggedInUserDetails] = useState<Profile | null | undefined>();
   const [sitterProfiles, setSitterProfiles] = useState<Profile[]>([]);
+  const [filters, setFilters] = useState<Filter>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const history = useHistory();
@@ -123,21 +140,24 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       .catch((error) => console.error(error));
   }, [history]);
 
-  useEffect(() => {
-    const fetchSitterProfiles = async () => {
+  const fetchSitterProfiles = useCallback(
+    async ({ city, startDate, endDate }: Filter) => {
       setLoading(true);
-      await searchSitterProfilesAPI().then((data: SitterProfilesApiData) => {
+      await searchSitterProfilesAPI({ city, startDate, endDate }).then((data: SitterProfilesApiData) => {
         if (data.success) {
-          setErrorMsg('');
           updateSitterProfilesContext(data.success);
         } else if (data.error) {
           setErrorMsg(data.error.message);
         }
         setLoading(false);
       });
-    };
-    fetchSitterProfiles();
-  }, [loggedInUser]);
+    },
+    [history],
+  );
+
+  useEffect(() => {
+    fetchSitterProfiles(filters);
+  }, [loggedInUser, filters]);
 
   // use our cookies to check if we can login straight away
   useEffect(() => {
@@ -162,9 +182,11 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         loggedInUser,
         loggedInUserDetails,
         sitterProfiles,
+        filters,
         loading,
         errorMsg,
         setLoading,
+        setFilters,
         updateLoggedInUserDetails,
         updateLoginContext,
         updateSitterProfilesContext,
@@ -172,6 +194,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         logout,
         getUserProfileDetails,
         calculateAvgRating,
+        fetchSitterProfiles,
       }}
     >
       {children}
