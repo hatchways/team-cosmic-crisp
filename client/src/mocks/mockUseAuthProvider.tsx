@@ -23,6 +23,7 @@ const MockUseAuthProvider: FunctionComponent = ({ children }) => {
         getUserProfileDetails: jest.fn(),
         calculateAvgRating: jest.fn(),
         fetchSitterProfiles: jest.fn(),
+        sortByPrice: jest.fn(),
       }}
     >
       {children}

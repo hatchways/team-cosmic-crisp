@@ -18,15 +18,11 @@ export default function ProfileDetails(): JSX.Element {
   return (
     <Box display="flex" justifyContent="center" className={classes.mainContainer}>
       <CssBaseline />
-      <Box maxWidth={1500}>
-        <Grid container spacing={6} className={classes.mainGrid}>
-          <Grid item xs={12} sm={12} md={8}>
-            {sitterProfile && <About sitter={sitterProfile} />}
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            {sitterProfile && <RequestForm sitter={sitterProfile} />}
-          </Grid>
-        </Grid>
+      <Box display="flex" maxWidth={1625} className={classes.secondaryContainer}>
+        <Box flex={2}>{sitterProfile && <About sitter={sitterProfile} />}</Box>
+        <Box flex={1} className={classes.formContainer}>
+          {sitterProfile && <RequestForm sitter={sitterProfile} />}
+        </Box>
       </Box>
     </Box>
   );

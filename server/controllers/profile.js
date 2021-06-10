@@ -43,7 +43,7 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
     if (city === 'undefined' && startDate === 'undefined' && endDate === 'undefined') {
       profiles = await Profile.aggregate([
         {
-          $match: { isDogSitter: true, price: { $exists: true }, city: { $exists: true } },
+          $match: { isDogSitter: true, isAvailable: true, price: { $exists: true }, city: { $exists: true } },
         },
         {
           $lookup: {from: 'reviews', localField:'reviews', foreignField: '_id', as: 'reviews'}

@@ -24,7 +24,7 @@ export default function SitterReview({ review }: Props): JSX.Element {
           </Box>
           <Rating value={review.rating} name="sitter-rating" readOnly />
         </Box>
-        <Box>
+        <Box className={classes.desc}>
           <Typography variant="body1">{review?.message}</Typography>
         </Box>
         <Box display="flex" justifyContent="flex-end">

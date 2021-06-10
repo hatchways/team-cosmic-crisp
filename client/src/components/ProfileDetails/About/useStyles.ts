@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   detailsContainer: {
     minHeight: '75vh',
     overflow: 'hidden',
@@ -24,8 +24,11 @@ const useStyles = makeStyles(() => ({
     objectFit: 'cover',
   },
   aboutContainer: {
-    marginTop: '7.5%',
+    marginTop: '8.25%',
     padding: '2.5rem',
+    [theme.breakpoints.down('xs')]: {
+      padding: '1.5rem',
+    },
   },
   name: {
     fontWeight: 600,
@@ -34,9 +37,10 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    textTransform: 'capitalize',
     gap: '0.25rem',
     marginTop: '1rem',
-    marginBottom: '2rem',
+    marginBottom: '1rem',
   },
   aboutTitle: {
     fontWeight: 600,
@@ -53,10 +57,13 @@ const useStyles = makeStyles(() => ({
   },
   dayAvailable: {
     textTransform: 'capitalize',
-    margin: '0 0.25rem',
+    margin: '0.25rem 0.25rem 1.25rem 0.25rem',
   },
   reviewsContainer: {
     padding: '0.5rem 2.5rem 2.5rem 2.5rem',
+    [theme.breakpoints.down('xs')]: {
+      padding: '0.5rem 1.5rem 2.5rem 1.5rem',
+    },
   },
   signInTitle: {
     marginBottom: '2.5rem',
@@ -64,7 +71,7 @@ const useStyles = makeStyles(() => ({
   reviewMainTitle: {
     fontWeight: 600,
     fontSize: '1rem',
-    marginBottom: '1.5rem',
+    marginBottom: '1.75rem',
     textDecoration: 'underline',
   },
   paginationContainer: {

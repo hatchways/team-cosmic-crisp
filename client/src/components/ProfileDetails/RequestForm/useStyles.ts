@@ -4,7 +4,7 @@ const useStyles = makeStyles(() => ({
   requestContainer: {
     height: '100%',
     maxHeight: 500,
-    padding: '1.5rem 2rem',
+    padding: '1.75rem 2rem',
   },
   price: {
     fontWeight: 600,

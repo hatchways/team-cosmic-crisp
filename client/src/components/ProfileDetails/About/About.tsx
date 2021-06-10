@@ -56,7 +56,7 @@ export default function About({ sitter }: Props): JSX.Element {
               {sitter.description}
             </Typography>
           </Box>
-          <GridList cellHeight={115} cols={5}>
+          <GridList cellHeight={120} cols={5}>
             {sitter.gallery.map((photo, index) => (
               <GridListTile cols={1} className={classes.galleryTile} key={index}>
                 <img src={photo} alt="Profile" />
@@ -95,7 +95,7 @@ export default function About({ sitter }: Props): JSX.Element {
               page={page}
               onChange={(event, value) => setPage(value)}
               defaultPage={1}
-              siblingCount={0}
+              siblingCount={1}
               shape="rounded"
               size="large"
               color="primary"

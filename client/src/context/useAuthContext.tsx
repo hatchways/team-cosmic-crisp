@@ -44,6 +44,7 @@ interface IAuthContext {
   getUserProfileDetails: (id: string) => void;
   calculateAvgRating: (reviews: Review[]) => number;
   fetchSitterProfiles: ({ city, startDate, endDate }: Filter) => void;
+  sortByPrice: (sortAsc: boolean) => Profile[];
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -63,6 +64,7 @@ export const AuthContext = createContext<IAuthContext>({
   getUserProfileDetails: () => null,
   calculateAvgRating: () => 0,
   fetchSitterProfiles: () => null,
+  sortByPrice: () => [],
 });
 
 export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
@@ -155,6 +157,17 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     [history],
   );
 
+  const sortByPrice = useCallback(
+    (sortAsc: boolean) => {
+      if (sortAsc) {
+        return [...sitterProfiles].sort((a, b) => a.price - b.price);
+      } else {
+        return [...sitterProfiles].sort((a, b) => b.price - a.price);
+      }
+    },
+    [history, sitterProfiles],
+  );
+
   useEffect(() => {
     fetchSitterProfiles(filters);
   }, [loggedInUser, filters]);
@@ -195,6 +208,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         getUserProfileDetails,
         calculateAvgRating,
         fetchSitterProfiles,
+        sortByPrice,
       }}
     >
       {children}
