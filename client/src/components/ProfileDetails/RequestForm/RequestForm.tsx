@@ -18,6 +18,7 @@ export interface Props {
 }
 
 export default function RequestForm({ sitter }: Props): JSX.Element {
+  const { loggedInUser } = useAuth();
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -125,6 +126,51 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
                   </MuiPickersUtilsProvider>
                 </Grid>
               </Grid>
+              {/*Show send request button only if user is logged in*/}
+              {loggedInUser ? (
+                <Box textAlign="center">
+                  {!success ? (
+                    <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
+                      {loading ? <CircularProgress /> : 'Send Request'}
+                    </Button>
+                  ) : (
+                    <>
+                      {success && (
+                        <Typography component="span" variant="subtitle1">
+                          Request sent click pay now to continue
+                        </Typography>
+                      )}
+                      <Link
+                        to={{
+                          pathname: '/checkout',
+                          state: {
+                            sitter: sitter._id,
+                            startDate,
+                            endDate,
+                          },
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className={classes.submitBtn}
+                          onClick={handleSubmit}
+                        >
+                          Pay now
+                        </Button>
+                      </Link>
+                    </>
+                  )}
+                </Box>
+              ) : (
+                <Box textAlign="center" className={classes.signInContainer}>
+                  <Typography variant="body1" className={classes.signInTitle}>
+                    Please &nbsp;
+                    <Link to="/login">Sign In</Link>
+                    &nbsp; to send a Request!
+                  </Typography>
+                </Box>
+              )}
               <Box textAlign="center">
                 {!success ? (
                   <Button variant="contained" color="primary" className={classes.submitBtn} onClick={handleSubmit}>
