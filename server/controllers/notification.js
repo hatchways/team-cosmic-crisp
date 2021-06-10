@@ -9,7 +9,7 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
     const notifications = await Notification.find({user:id});
     res.status(200).json({
       notifications
-    })}catch(error){
+    })} catch(error){
       res.status(500);
       throw new Error(error.message);
     }
@@ -66,3 +66,16 @@ exports.getUnreadNotificaiton = asyncHandler(async (req, res, next) => {
       throw new Error(error.message);
     }
 });
+
+exports.setReadNotifications = asyncHandler(async (req, res, next) => {
+  try{
+    await Notification.updateMany(
+      {read: false}, {read: true});
+    res.status(200).json({
+      message: 'Notification update successed'
+    })
+  } catch(error){
+    res.status(500);
+    throw new Error(error.message);
+  }
+})
