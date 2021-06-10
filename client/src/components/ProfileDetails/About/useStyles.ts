@@ -58,6 +58,21 @@ const useStyles = makeStyles(() => ({
   galleryHeader: {
     margin: '1rem 0',
   },
+  reviewsContainer: {
+    padding: '0.5rem 2.5rem 2.5rem 2.5rem',
+  },
+  signInTitle: {
+    marginBottom: '2.5rem',
+  },
+  reviewMainTitle: {
+    fontWeight: 600,
+    fontSize: '1rem',
+    marginBottom: '1.5rem',
+    textDecoration: 'underline',
+  },
+  paginationContainer: {
+    marginTop: '3.5rem',
+  },
 }));
 
 export default useStyles;

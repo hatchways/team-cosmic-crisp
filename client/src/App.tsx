@@ -41,15 +41,14 @@ function App(): JSX.Element {
                 <Layout>
                   <Switch>
                     <Route exact path="/" component={LandingPage} />
+                    <Route exact path="/listings" component={Listings} />
                     <Route exact path="/profile/:id" component={ProfileDetails} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
-                    <Route exact path="/checkout" component={CheckoutContainer} />
-                    <ProtectedRoute exact path="/listings" component={Listings} />
+                    <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
+                    <ProtectedRoute exact path="/bookings" component={Bookings} />
                     <ProtectedRoute exact path="/messages" component={Messages} />
                     <ProtectedRoute exact path="/messages/:conversationId" component={Messages} />
-                    <Route exact path="/listings" component={Listings} />
-                    <Route exact path="/bookings" component={Bookings} />
                     <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
                   </Switch>
                 </Layout>

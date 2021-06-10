@@ -1,22 +1,37 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { Box, TextField, InputAdornment, Button } from '@material-ui/core';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import SearchIcon from '@material-ui/icons/Search';
 import DateFnsUtils from '@date-io/date-fns';
 
 import useStyles from './useStyles';
+import { Filter } from '../../../interface/Profile';
 
 interface Props {
   city?: string;
-  date?: Date;
-  setFilters: Dispatch<SetStateAction<{ city?: string | undefined; date?: Date | undefined }>>;
-  reset: () => void;
+  startDate?: Date;
+  endDate?: Date;
+  setFilters: Dispatch<SetStateAction<Filter>>;
 }
 
-export default function ProfileSearch({ city, date, setFilters, reset }: Props): JSX.Element {
-  const today = new Date();
-  const [startDate, setStartDate] = useState<Date | null>(today);
+interface Filters {
+  dropIn?: Date | null;
+  dropOff?: Date | null;
+}
+
+export default function ProfileSearch({ city, startDate, endDate, setFilters }: Props): JSX.Element {
+  const [dateFilters, setDateFilters] = useState<Filters>({
+    dropIn: startDate,
+    dropOff: endDate,
+  });
   const classes = useStyles();
+
+  useEffect(() => {
+    if (dateFilters.dropIn && dateFilters.dropOff) {
+      setFilters({ city, startDate: dateFilters.dropIn, endDate: dateFilters.dropOff });
+    }
+  }, [dateFilters]);
+
   return (
     <Box maxWidth={675} display="flex" margin="auto">
       <Box flex={2}>
@@ -25,7 +40,7 @@ export default function ProfileSearch({ city, date, setFilters, reset }: Props):
           color="secondary"
           label="Search by city"
           value={city || ''}
-          onChange={(e) => setFilters({ city: e.target.value, date })}
+          onChange={(e) => setFilters({ city: e.target.value, startDate, endDate })}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -39,25 +54,46 @@ export default function ProfileSearch({ city, date, setFilters, reset }: Props):
           fullWidth
         />
       </Box>
-      <Box flex={1}>
+      <Box flex={1} display="flex">
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
+          <DatePicker
             color="secondary"
             autoOk
             variant="inline"
             inputVariant="outlined"
-            format="MM/dd/yyyy"
-            value={startDate}
-            InputAdornmentProps={{ position: 'start' }}
+            format="MM/dd"
+            label="Drop In"
+            value={dateFilters.dropIn || null}
             onChange={(date) => {
-              setStartDate(date);
-              date !== null && setFilters({ city, date });
+              date !== null && setDateFilters((prevState) => ({ ...prevState, dropIn: date }));
+            }}
+          />
+        </MuiPickersUtilsProvider>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <DatePicker
+            color="secondary"
+            autoOk
+            variant="inline"
+            inputVariant="outlined"
+            format="MM/dd"
+            label="Drop Off"
+            value={dateFilters.dropOff || null}
+            onChange={(date) => {
+              date !== null && setDateFilters((prevState) => ({ ...prevState, dropOff: date }));
             }}
           />
         </MuiPickersUtilsProvider>
       </Box>
-      <Button variant="text" color="primary" disabled={city === undefined && date === undefined} onClick={reset}>
-        reset
+      <Button
+        variant="text"
+        color="primary"
+        disabled={city === undefined && startDate === undefined && endDate === undefined}
+        onClick={() => {
+          setFilters({});
+          setDateFilters({});
+        }}
+      >
+        Reset
       </Button>
     </Box>
   );
