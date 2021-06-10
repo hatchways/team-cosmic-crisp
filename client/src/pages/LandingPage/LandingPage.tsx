@@ -49,7 +49,7 @@ export default function LandingPage(): JSX.Element {
               color="secondary"
               placeholder="Anywhere"
               className={classes.input}
-              required={true}
+              required
             />
             <Typography className={classes.label}>Drop In / Drop Off</Typography>
             <Box display="flex">
@@ -63,7 +63,7 @@ export default function LandingPage(): JSX.Element {
                   format="MM/dd/yyyy"
                   value={startDate}
                   onChange={(date) => setStartDate(date)}
-                  required={true}
+                  required
                 />
               </MuiPickersUtilsProvider>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -76,7 +76,7 @@ export default function LandingPage(): JSX.Element {
                   format="MM/dd/yyyy"
                   value={endDate}
                   onChange={(date) => setEndDate(date)}
-                  required={true}
+                  required
                 />
               </MuiPickersUtilsProvider>
             </Box>
