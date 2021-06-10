@@ -1,8 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
-  gridItem: {
-    display: 'flex',
+  profilesGrid: {
+    minHeight: '50vh',
+  },
+  paginationContainer: {
+    marginTop: '3.5rem',
   },
 }));
 

@@ -10,6 +10,7 @@ import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import NotificationComponent from '../Notification/Notification';
+import { useSocket } from '../../context/useSocketContext';
 
 interface Props {
   user: User | null | undefined;
@@ -21,6 +22,7 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
   const classes = useStyles();
   const history = useHistory();
   const { pathname } = useLocation();
+  const { socket } = useSocket();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -33,6 +35,7 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
   };
 
   const handleLogout = () => {
+    socket?.emit('logout', profile?._id);
     handleClose();
     logout();
   };
@@ -68,14 +71,12 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
       </Link>
       <NotificationComponent />
 
+      <Button component={Link} to="/bookings" variant="text" className={classes.userNavItem}>
+        {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
+      </Button>
       <Button component={Link} to="/messages" variant="text" className={classes.userNavItem}>
         Messages <span className={classes.active} />
       </Button>
-      <Link to="/bookings" className={classes.link}>
-        <Button variant="text" className={classes.userNavItem}>
-          {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
-        </Button>
-      </Link>
     </Grid>
   );
 

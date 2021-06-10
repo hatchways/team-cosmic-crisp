@@ -1,4 +1,13 @@
-import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
+import {
+  useState,
+  useContext,
+  createContext,
+  FunctionComponent,
+  useEffect,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   AuthApiData,
@@ -7,9 +16,12 @@ import {
   SitterProfilesApiData,
   SitterProfilesApiDataSuccess,
 } from '../interface/AuthApiData';
+import { ReviewsApiDataSuccess } from '../interface/ReviewApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/Profile';
 import { Notification } from '../interface/Notification';
+import { Review } from '../interface/Review';
+import { Filter } from '../interface/Profile';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
 import searchSitterProfilesAPI from '../helpers/APICalls/searchProfiles';
@@ -22,15 +34,20 @@ interface IAuthContext {
   loggedInUserDetails: Profile | null | undefined;
   sitterProfiles: Profile[];
   notifications: Notification[];
+  filters: Filter;
   loading: boolean;
   errorMsg: string;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
   updateLoggedInUserDetails: (data: UserProfileApiData) => void;
   updateSitterProfilesContext: (data: SitterProfilesApiDataSuccess) => void;
   updateNotificationsContext: (data: Notification[]) => void;
+  updateReviewsContext: (data: ReviewsApiDataSuccess) => void;
   logout: () => void;
-  setLoading: (value: boolean) => void;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setFilters: Dispatch<SetStateAction<Filter>>;
   getUserProfileDetails: (id: string) => void;
+  calculateAvgRating: (reviews: Review[]) => number;
+  fetchSitterProfiles: ({ city, startDate, endDate }: Filter) => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -38,15 +55,20 @@ export const AuthContext = createContext<IAuthContext>({
   loggedInUserDetails: undefined,
   sitterProfiles: [],
   notifications: [],
+  filters: {},
   loading: true,
   errorMsg: '',
   updateLoginContext: () => null,
   updateLoggedInUserDetails: () => null,
   updateSitterProfilesContext: () => null,
   updateNotificationsContext: () => null,
+  updateReviewsContext: () => null,
   logout: () => null,
   setLoading: () => boolean,
+  setFilters: () => null,
   getUserProfileDetails: () => null,
+  calculateAvgRating: () => 0,
+  fetchSitterProfiles: () => null,
 });
 
 export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
@@ -55,6 +77,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loggedInUserDetails, setLoggedInUserDetails] = useState<Profile | null | undefined>();
   const [notifications, setNotification] = useState<Notification[]>([]);
   const [sitterProfiles, setSitterProfiles] = useState<Profile[]>([]);
+  const [filters, setFilters] = useState<Filter>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const history = useHistory();
@@ -79,6 +102,23 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       if (data.success !== undefined) {
         setLoggedInUserDetails(data.success.profile);
       }
+    },
+    [history],
+  );
+
+  const updateReviewsContext = useCallback(
+    (data: ReviewsApiDataSuccess) => {
+      const reviewedProfiles = sitterProfiles.map((profile) => {
+        return profile._id !== data.profile._id ? profile : data.profile;
+      });
+      setSitterProfiles(reviewedProfiles);
+    },
+    [history, sitterProfiles],
+  );
+
+  const calculateAvgRating = useCallback(
+    (reviews: Review[]) => {
+      return reviews.reduce((a, { rating }) => a + rating, 0) / reviews.length;
     },
     [history],
   );
@@ -114,21 +154,24 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
       .catch((error) => console.error(error));
   }, [history]);
 
-  useEffect(() => {
-    const fetchSitterProfiles = async () => {
+  const fetchSitterProfiles = useCallback(
+    async ({ city, startDate, endDate }: Filter) => {
       setLoading(true);
-      await searchSitterProfilesAPI().then((data: SitterProfilesApiData) => {
+      await searchSitterProfilesAPI({ city, startDate, endDate }).then((data: SitterProfilesApiData) => {
         if (data.success) {
-          setErrorMsg('');
           updateSitterProfilesContext(data.success);
         } else if (data.error) {
           setErrorMsg(data.error.message);
         }
         setLoading(false);
       });
-    };
-    fetchSitterProfiles();
-  }, [loggedInUser]);
+    },
+    [history],
+  );
+
+  useEffect(() => {
+    fetchSitterProfiles(filters);
+  }, [loggedInUser, filters]);
 
   useEffect(() => {
     async function fetchNotification() {
@@ -166,15 +209,20 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         loggedInUserDetails,
         sitterProfiles,
         notifications,
+        filters,
         loading,
         errorMsg,
         setLoading,
+        setFilters,
         updateLoggedInUserDetails,
         updateLoginContext,
         updateNotificationsContext,
         updateSitterProfilesContext,
+        updateReviewsContext,
         logout,
         getUserProfileDetails,
+        calculateAvgRating,
+        fetchSitterProfiles,
       }}
     >
       {children}
