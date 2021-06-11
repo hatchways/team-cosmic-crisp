@@ -1,4 +1,6 @@
-## Project Name
+![alt text](https://i1.wp.com/southeastproduceweekly.com/wp-content/uploads/2019/08/cosmic-crisp.jpg?fit=1148%2C563&quality=90&strip=all&ssl=1)
+
+## Loving Sitter
 
 This is a little description about your project.
 
@@ -30,13 +32,3 @@ This is a little description about your project.
 3. Run `npm start` to start the client side
 
 ---
-
-### Demo
-
-1. Registration. Users will be able to create a new account using their email and password
-
-![Signup Demo](demo/images/signup.png)
-
-2. Dashboard. Here is a description about what a user can expect to see
-
-![Dashboard](demo/images/dashboard.png)

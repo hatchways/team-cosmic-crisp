@@ -70,17 +70,35 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
     <Grid>
       <NotificationComponent />
       {profile?.isDogSitter ? (
-        <Button component={Link} to="/requests" variant="text" className={classes.userNavItem}>
+        <Button
+          component={Link}
+          to="/requests"
+          variant="text"
+          id="product_tour_sitter_button"
+          className={classes.userNavItem}
+        >
           Request
         </Button>
       ) : null}
       {!profile?.isDogSitter ? (
-        <Button component={Link} to="/bookings" variant="text" className={classes.userNavItem}>
+        <Button
+          component={Link}
+          to="/bookings"
+          id="product_tour_sitter_button'"
+          variant="text"
+          className={classes.userNavItem}
+        >
           My Bookings
         </Button>
       ) : null}
 
-      <Button component={Link} to="/messages" variant="text" className={classes.userNavItem}>
+      <Button
+        id="product_tour_message_button"
+        component={Link}
+        to="/messages"
+        variant="text"
+        className={classes.userNavItem}
+      >
         Messages <span className={classes.active} />
       </Button>
     </Grid>
@@ -94,13 +112,18 @@ export default function Navbar({ user, profile, logout }: Props): JSX.Element {
       >
         <Toolbar>
           <Link to="/listings" className={classes.link}>
-            <img src={Logo} alt="logo" />
+            <img src={Logo} alt="logo" id="product_tour_logo" />
           </Link>
           <div className={classes.grow} />
           {user ? (
             <>
               <UserNav />
-              <IconButton onClick={handleClick} aria-controls="user-menu" aria-haspopup="true">
+              <IconButton
+                onClick={handleClick}
+                aria-controls="user-menu"
+                aria-haspopup="true"
+                id="product_tour_profile_button"
+              >
                 {user !== null && user !== undefined && <AvatarDisplay loggedIn={true} profile={profile} />}
               </IconButton>
               <Menu

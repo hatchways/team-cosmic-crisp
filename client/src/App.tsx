@@ -6,12 +6,12 @@ import Signup from './pages/SignUp/SignUp';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
+import { ReactourProvider } from './context/useReactourContext';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Listings from './pages/Listings/Listings';
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
-import NotificationPage from './pages/NotificationPage/NotificationPage';
 import Messages from './pages/Messages/Messages';
 
 import './App.css';
@@ -40,22 +40,23 @@ function App(): JSX.Element {
           <AuthProvider>
             <MessageContextProvider>
               <SocketProvider>
-                <Layout>
-                  <Switch>
-                    <Route exact path="/" component={LandingPage} />
-                    <Route exact path="/listings" component={Listings} />
-                    <Route exact path="/profile/:id" component={ProfileDetails} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/signup" component={Signup} />
-                    <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
-                    <ProtectedRoute exact path="/bookings" component={Bookings} />
-                    <ProtectedRoute exact path="/messages" component={Messages} />
-                    <ProtectedRoute exact path="/messages/:conversationId" component={Messages} />
-                    <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
-                    <Route exact path="/notifications" component={NotificationPage} />
-                    <ProtectedRoute exact path="/requests" component={Request} />
-                  </Switch>
-                </Layout>
+                <ReactourProvider>
+                  <Layout>
+                    <Switch>
+                      <Route exact path="/" component={LandingPage} />
+                      <Route exact path="/listings" component={Listings} />
+                      <Route exact path="/profile/:id" component={ProfileDetails} />
+                      <Route exact path="/login" component={Login} />
+                      <Route exact path="/signup" component={Signup} />
+                      <ProtectedRoute exact path="/checkout" component={CheckoutContainer} />
+                      <ProtectedRoute exact path="/bookings" component={Bookings} />
+                      <ProtectedRoute exact path="/messages" component={Messages} />
+                      <ProtectedRoute exact path="/messages/:conversationId" component={Messages} />
+                      <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
+                      <ProtectedRoute exact path="/requests" component={Request} />
+                    </Switch>
+                  </Layout>
+                </ReactourProvider>
               </SocketProvider>
             </MessageContextProvider>
           </AuthProvider>

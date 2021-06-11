@@ -43,7 +43,14 @@ export default function ProfileList(): JSX.Element {
         </Button>
       </Box>
       <Grow in={true}>
-        <Grid container spacing={4} justify="center" alignItems="center" className={classes.profilesGrid}>
+        <Grid
+          id="product_tour_sitters"
+          container
+          spacing={4}
+          justify="center"
+          alignItems="center"
+          className={classes.profilesGrid}
+        >
           {sortedProfiles.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((sitterProfile) => (
             <Grid item xs={12} sm={6} md={4} xl={3} key={sitterProfile._id}>
               <ProfileCard sitter={sitterProfile} />

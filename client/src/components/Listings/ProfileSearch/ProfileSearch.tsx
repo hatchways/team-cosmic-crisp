@@ -33,7 +33,7 @@ export default function ProfileSearch({ city, startDate, endDate, setFilters }: 
   }, [dateFilters]);
 
   return (
-    <Box maxWidth={675} display="flex" margin="auto" className={classes.mainContainer}>
+    <Box id="product_tour_search_box" maxWidth={675} display="flex" margin="auto" className={classes.mainContainer}>
       <Box flex={2}>
         <TextField
           variant="outlined"
