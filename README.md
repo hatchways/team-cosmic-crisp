@@ -14,10 +14,10 @@
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
-## View Live(https://lovingsitter.gursharansingh.ca)
+### View Live[https://lovingsitter.gursharansingh.ca]
 
 ### Contents
-* Overview
+* Overview(# Overview)
 * Features
   * User
   * Sitter
