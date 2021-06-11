@@ -47,11 +47,6 @@
 
 ## Screenshots
 
-<h3 align="center">
-  Landing Page
-  <img src="https://user-images.githubusercontent.com/75184965/121703601-de113f00-ca87-11eb-940b-f871cd2ac8f0.PNG" />
-</h3>
-
 ### Landing Page
 ![1](https://user-images.githubusercontent.com/75184965/121703601-de113f00-ca87-11eb-940b-f871cd2ac8f0.PNG)
 
@@ -68,9 +63,10 @@
 ![Capture](https://user-images.githubusercontent.com/75184965/121704900-077e9a80-ca89-11eb-9f1e-d053b5e53d85.PNG)
 
 ### Profile Settings
-![Capture](https://user-images.githubusercontent.com/75184965/121705225-49a7dc00-ca89-11eb-99c7-3e8b19113ba5.PNG)
-
-![1](https://user-images.githubusercontent.com/75184965/121705241-4c0a3600-ca89-11eb-9d4c-1c8b291d7872.PNG)
+<p>
+  <img src="https://user-images.githubusercontent.com/75184965/121705225-49a7dc00-ca89-11eb-99c7-3e8b19113ba5.PNG" />
+  <img src="https://user-images.githubusercontent.com/75184965/121705241-4c0a3600-ca89-11eb-9d4c-1c8b291d7872.PNG" />
+</p>
 
 ---
 
