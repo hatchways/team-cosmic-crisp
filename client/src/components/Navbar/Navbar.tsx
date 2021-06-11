@@ -19,7 +19,7 @@ import NotificationComponent from '../Notification/Notification';
 
 interface Props {
   user: User | null | undefined;
-  userProfile: Profile;
+  userProfile: Profile | null | undefined;
   logout(): void;
 }
 
@@ -29,7 +29,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
   const { updateLoggedInUserDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
   const { pathname } = useLocation();
-  const [profile, setProfile] = useState<Profile>(userProfile);
+  const [profile, setProfile] = useState<Profile | null | undefined>(userProfile);
   const [isDogSitter, setIsDogSitter] = useState<boolean>(false);
 
   useEffect(() => {
