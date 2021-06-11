@@ -11,15 +11,18 @@
 </p>
 
 ### Tech Stack: MongoDB, Express.js, React.js, Node.js, Typescript
+
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
+
 [View Live Project](https://lovingsitter.gursharansingh.ca)
 
 
 # Contents
 * [Overview](#Overview)
-* [Features](#Features)
-  * [User](#User)
-  * [Sitter](#Sitter)
+* [Features](#Features-User)
+  * [User](#Features-User)
+  * [Sitter](#Features-Sitter)
+* [Screenshots](#Screenshots)
 * [Project Setup](#Project-Setup)
 
 # Overview
@@ -41,6 +44,8 @@
 * Accept or decline requests
 * Instant messaging
 * Notifications
+
+## Screenshots
 
 ---
 
