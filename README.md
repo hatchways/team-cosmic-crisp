@@ -55,22 +55,28 @@
 
 ### Landing Page
 <p>
-  <img src="https://user-images.githubusercontent.com/75184965/121703601-de113f00-ca87-11eb-940b-f871cd2ac8f0.PNG" width="500" />
+  <img src="https://user-images.githubusercontent.com/75184965/121703601-de113f00-ca87-11eb-940b-f871cd2ac8f0.PNG" width="750" />
 </p>
 
-![1](https://user-images.githubusercontent.com/75184965/121703601-de113f00-ca87-11eb-940b-f871cd2ac8f0.PNG)
-
 ### Dashboard
-![Capture](https://user-images.githubusercontent.com/75184965/121704245-6bed2a00-ca88-11eb-875d-9acf30799148.PNG)
+<p>
+  <img src="https://user-images.githubusercontent.com/75184965/121704245-6bed2a00-ca88-11eb-875d-9acf30799148.PNG" width="750" />
+</p>
 
 ### Profile Details
-![Capture](https://user-images.githubusercontent.com/75184965/121704396-9808ab00-ca88-11eb-8a63-c7bc75b8ed75.PNG)
+<p>
+  <img src="https://user-images.githubusercontent.com/75184965/121704396-9808ab00-ca88-11eb-8a63-c7bc75b8ed75.PNG" width="750" />
+</p>
 
 ### Bookings
-![Capture](https://user-images.githubusercontent.com/75184965/121704667-cedec100-ca88-11eb-8f6c-9d82214b27d4.PNG)
+<p>
+  <img src="https://user-images.githubusercontent.com/75184965/121704667-cedec100-ca88-11eb-8f6c-9d82214b27d4.PNG" width="750" />
+</p>
 
 ### Messaging
-![Capture](https://user-images.githubusercontent.com/75184965/121704900-077e9a80-ca89-11eb-9f1e-d053b5e53d85.PNG)
+<p>
+  <img src="https://user-images.githubusercontent.com/75184965/121704900-077e9a80-ca89-11eb-9f1e-d053b5e53d85.PNG" width="750" />
+</p>
 
 ### Profile Settings
 <p>
