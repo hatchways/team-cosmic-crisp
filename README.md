@@ -2,13 +2,13 @@
   <img src="https://w7.pngwing.com/pngs/924/504/png-transparent-dog-paw-computer-icons-paw-print.png" width="25" />
   Loving Sitter
 </h1>
-  
+
 <p align="right">
-  <p align="right">Developed By Cosmic Crisp Studios</p>
+  Developed By
   <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="150" />
 </p>
 
-# Loving Sitter
+# Overview
 
 * A reliable two-way marketplace for dog owners and sitters
 * Individuals who own dogs can request for a dog sitter in real-time 
