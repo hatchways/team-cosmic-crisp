@@ -19,7 +19,9 @@ export default function ProfileDetails(): JSX.Element {
     <Box display="flex" justifyContent="center" className={classes.mainContainer}>
       <CssBaseline />
       <Box display="flex" maxWidth={1625} className={classes.secondaryContainer}>
-        <Box flex={2}>{sitterProfile && <About sitter={sitterProfile} />}</Box>
+        <Box id="product_tour_about_me" flex={2}>
+          {sitterProfile && <About sitter={sitterProfile} />}
+        </Box>
         <Box flex={1} className={classes.formContainer}>
           {sitterProfile && <RequestForm sitter={sitterProfile} />}
         </Box>

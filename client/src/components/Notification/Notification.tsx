@@ -20,7 +20,7 @@ export default function NotificationComponent(): JSX.Element {
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <span className={classes.root}>
+      <span className={classes.root} id="product_tour_navigation_button">
         <Button variant="text" className={`${classes.userNavItem}`} onClick={handleClick}>
           Notifications {notifications.length > 0 ? <span className={classes.active} /> : null}
         </Button>

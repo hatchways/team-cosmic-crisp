@@ -29,8 +29,12 @@ export const ReactourProvider: FunctionComponent = ({ children }): JSX.Element =
       action: () => {
         history.push('/profile/60ad24ea2c5adf3bccd916fa');
       },
-      selector: '#product_tour_request_form',
+      selector: '*',
       content: 'Select Drop In and Drop Off time, send request',
+    },
+    {
+      selector: '#product_tour_logo',
+      content: 'Show all the listings here',
     },
     {
       action: () => {
