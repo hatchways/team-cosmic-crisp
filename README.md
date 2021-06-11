@@ -14,7 +14,7 @@
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
-[View Live Project](https://lovingsitter.gursharansingh.ca)
+**Project Link**: [Loving Sitter](https://lovingsitter.gursharansingh.ca)
 
 
 # Contents
