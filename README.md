@@ -1,8 +1,10 @@
 ![alt text](https://i1.wp.com/southeastproduceweekly.com/wp-content/uploads/2019/08/cosmic-crisp.jpg?fit=1148%2C563&quality=90&strip=all&ssl=1)
 
-## Loving Sitter
-
-This is a little description about your project.
+# Loving Sitter
+---
+* A reliable two-way marketplace for dog owners and sitters
+* Individuals who own dogs can request for a dog sitter in real-time 
+* Individuals who are passionate about furry ones can partake in their care while earning extra cash
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
