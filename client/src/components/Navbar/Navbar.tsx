@@ -140,6 +140,9 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
 
   const Nav = () => (
     <>
+      <Button component={Link} to="/listings" variant="text" className={`${classes.btn}`}>
+        Listings
+      </Button>
       <Link to="/login" className={classes.link}>
         <Button
           color="inherit"
@@ -210,7 +213,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
         className={`${pathname === '/' ? classes.landingNav : ''} ${classes.appBar} ${!user && classes.transparentNav}`}
       >
         <Toolbar>
-          <Link to="/listings" className={classes.link}>
+          <Link to={`${profile?._id ? '/listings' : '/'}`} className={classes.link}>
             <img src={Logo} alt="logo" id="product_tour_logo" />
           </Link>
           <div className={classes.grow} />

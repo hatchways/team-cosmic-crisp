@@ -31,7 +31,7 @@ export default function Availability({ profile, handleChange }: Props): JSX.Elem
         </Grid>
       </Grid>
       <Grid item hidden={profile.isAvailable} className={classes.availability}>
-        <Grid xs={12} sm={3}>
+        <Grid item xs={12} sm={3}>
           <Typography variant="body1" align="right" className={classes.formLabel}>
             AVAILABILITY:{' '}
           </Typography>
