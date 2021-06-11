@@ -8,6 +8,8 @@ This is a little description about your project.
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
+[Live Demo](https://lovingsitter.gursharansingh.ca)
+
 ---
 
 ### Getting Started
