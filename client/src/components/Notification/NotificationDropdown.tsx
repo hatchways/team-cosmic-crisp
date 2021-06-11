@@ -1,10 +1,8 @@
 import { Typography, Paper, Divider, Grid, Button } from '@material-ui/core';
 import NotificationItem from './NotificationItem';
-import { useEffect } from 'react';
 import { setReadNotifications } from '../../helpers/APICalls/notifications';
 import { useAuth } from '../../context/useAuthContext';
 import { NotificationApiData } from '../../interface/Notification';
-import { Link } from 'react-router-dom';
 
 import useStyles from './useStyles';
 

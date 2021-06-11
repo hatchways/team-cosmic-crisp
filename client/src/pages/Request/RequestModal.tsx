@@ -23,7 +23,7 @@ interface Props {
 
 export default function RequestModal({ request, updateRequest }: Props): JSX.Element {
   const classes = useStyles();
-  const { createNotification } = useAuth();
+  const { createNotification, loggedInUserDetails } = useAuth();
 
   const [open, setOpen] = useState(false);
   const { start, end, _id } = request;
@@ -46,17 +46,17 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
     declineRequest(_id).then((data) => {
       if (data.request) {
         updateRequest(data.request);
+        if (request && request.user) {
+          const receiverNotification: createNotificationData = {
+            types: 'default',
+            description: `You request to ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName} has been declined!`,
+            targetProfileId: '',
+            targetUserId: data.request.user,
+          };
+          console.log(receiverNotification);
+          createNotification(receiverNotification);
+        }
         handleClose();
-        const senderNotification: createNotificationData = {
-          types: 'system',
-          description: '',
-          targetId: '',
-        };
-        const receiverNotification: createNotificationData = {
-          types: 'system',
-          description: '',
-          targetId: '',
-        };
       }
     });
   };
@@ -64,6 +64,16 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
     acceptRequest(_id).then((data) => {
       if (data.request) {
         updateRequest(data.request);
+        if (request && request.user) {
+          const receiverNotification: createNotificationData = {
+            types: 'default',
+            description: `You request to ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName} has been accepted!`,
+            targetProfileId: '',
+            targetUserId: data.request.user,
+          };
+          console.log(receiverNotification);
+          createNotification(receiverNotification);
+        }
         handleClose();
       }
     });

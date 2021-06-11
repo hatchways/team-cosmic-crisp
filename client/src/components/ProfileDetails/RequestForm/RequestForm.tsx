@@ -43,17 +43,12 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
         setLoading(false);
         return;
       }
-      const newOwnerNotification: createNotificationData = {
-        types: 'request',
-        description: `You just created a new sitting request to ${sitter.firstName} ${sitter.lastName}`,
-        targetId: '',
-      };
       const newSitterNotification: createNotificationData = {
         types: 'request',
         description: `You received a new sitting request from ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName}`,
-        targetId: sitter._id,
+        targetProfileId: sitter._id,
       };
-      createNotification(newOwnerNotification);
+
       createNotification(newSitterNotification);
     }
     setLoading(false);

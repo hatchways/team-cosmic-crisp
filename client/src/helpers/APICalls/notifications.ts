@@ -1,5 +1,6 @@
 import { NotificationApiData } from '../../interface/Notification';
 import { FetchOptions } from '../../interface/FetchOptions';
+import { User } from '../../interface/User';
 
 export const getUnreadNotifications = async (): Promise<NotificationApiData> => {
   const fetchOptions: FetchOptions = {
@@ -29,12 +30,13 @@ export const setReadNotifications = async (): Promise<NotificationApiData> => {
 export const createNewNotification = async (
   types: string,
   description: string,
-  targetId: string,
+  targetProfileId: string,
+  targetUserId?: User,
 ): Promise<NotificationApiData> => {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ types, description, targetId }),
+    body: JSON.stringify({ types, description, targetProfileId, targetUserId }),
     credentials: 'include',
   };
   return await fetch(`/notification`, fetchOptions)

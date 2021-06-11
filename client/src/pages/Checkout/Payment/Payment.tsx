@@ -7,6 +7,8 @@ import { PaymentMethod } from '@stripe/stripe-js';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import { CircularProgress } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { createNotificationData } from '../../../interface/Notification';
+import { useAuth } from '../../../context/useAuthContext';
 
 interface Props {
   userProfile: {
@@ -31,6 +33,7 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
   const { updateSnackBarMessage } = useSnackBar();
   const [paymentType, setPaymentType] = useState<string>('card');
   const history = useHistory();
+  const { loggedInUserDetails, createNotification } = useAuth();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -133,6 +136,12 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
       }
     } else {
       updateSnackBarMessage('Payment success, redirecting to booking page');
+      const newNotificationData: createNotificationData = {
+        types: 'system',
+        description: `You have successfully received payment from ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName}`,
+        targetProfileId: userProfile._id,
+      };
+      createNotification(newNotificationData);
       resetForm();
       setTimeout(() => {
         history.push('/bookings');
