@@ -80,8 +80,8 @@
 
 ### Profile Settings
 <p>
-  <img src="https://user-images.githubusercontent.com/75184965/121705225-49a7dc00-ca89-11eb-99c7-3e8b19113ba5.PNG" width="437" height="525" />
-  <img src="https://user-images.githubusercontent.com/75184965/121705241-4c0a3600-ca89-11eb-9d4c-1c8b291d7872.PNG" width="437" height="525" />
+  <img src="https://user-images.githubusercontent.com/75184965/121705225-49a7dc00-ca89-11eb-99c7-3e8b19113ba5.PNG" width="437"/>
+  <img src="https://user-images.githubusercontent.com/75184965/121705241-4c0a3600-ca89-11eb-9d4c-1c8b291d7872.PNG" width="437"/>
 </p>
 
 ---
