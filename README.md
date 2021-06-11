@@ -1,9 +1,11 @@
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="350" />
 </p>
-<h2 align="center"> Presents </h2>
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="350" />
+
+<p align="rigth">
+  <p>Developed By </p>
+  <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="150" />
 </p>
 
 
@@ -39,16 +41,12 @@
 
 1. Clone or download repository
 
----
-
 ### Server
 
 1. Go into the server director `cd server`
 2. Run `npm install` to install packages
 3. Create your environment variable [.env](./server/sample.env) file
 4. Run `npm run dev` to start the server
-
----
 
 ### Client
 
