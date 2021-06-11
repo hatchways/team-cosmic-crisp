@@ -6,7 +6,7 @@ This is a little description about your project.
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
-**Contributors**: [Hatchways](https://github.com/hatchways) (replace)
+**Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
 ---
 
