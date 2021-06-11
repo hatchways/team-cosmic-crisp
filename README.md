@@ -18,7 +18,7 @@
 
 
 # Contents
-* [Overview](Overview)
+* [Overview](#Overview)
 * Features
   * User
   * Sitter
@@ -46,7 +46,7 @@
 
 ---
 
-## Project Setup
+### Project Setup
 
 1. Clone or download repository
 
