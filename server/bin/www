@@ -80,6 +80,12 @@ io.use((socket, next) => {
     }
   });
 
+  socket.on('send-notification', (data) => {
+    if (onlineUsers?.[data.recipient]) {
+      io.to(onlineUsers[data.recipient]).emit('update-notifications');
+    }
+  });
+
   socket.on('logout', (id) => {
     delete onlineUsers[id];
     socket.broadcast.emit('remove-offline-user', id);
