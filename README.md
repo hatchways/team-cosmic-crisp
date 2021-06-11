@@ -1,10 +1,27 @@
-![alt text](https://i1.wp.com/southeastproduceweekly.com/wp-content/uploads/2019/08/cosmic-crisp.jpg?fit=1148%2C563&quality=90&strip=all&ssl=1)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="350" />
+  <p>Presents</p>
+</p>
 
 # Loving Sitter
----
+
 * A reliable two-way marketplace for dog owners and sitters
 * Individuals who own dogs can request for a dog sitter in real-time 
 * Individuals who are passionate about furry ones can partake in their care while earning extra cash
+
+## Features - User
+* Browse listings and filter based on city, availability and price
+* Request for service 
+* Make secure payments
+* Review and rate dog sitters
+* Instant messaging
+* Notifications
+
+## Features - Sitter
+* Enter additional profile information - photos, description, price, availability etc
+* Accept or decline requests
+* Instant messaging
+* Notifications
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
