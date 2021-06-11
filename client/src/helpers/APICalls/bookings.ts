@@ -57,7 +57,7 @@ export const declineRequest = async (request: string): Promise<RequestAPIData> =
     credentials: 'include',
     body: JSON.stringify({
       request,
-      rejected: false,
+      accepted: false,
       declined: true,
     }),
   };

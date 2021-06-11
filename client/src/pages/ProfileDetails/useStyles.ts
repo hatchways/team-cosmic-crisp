@@ -1,13 +1,31 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   mainContainer: {
     minHeight: '90vh',
     background: '#f5f5f5',
   },
-  mainGrid: {
+  secondaryContainer: {
     width: '100%',
-    padding: '3.5rem 7rem',
+    gap: '4.25rem',
+    padding: '4.25rem 5.25rem',
+    [theme.breakpoints.down(1675)]: {
+      padding: '4.25rem',
+    },
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      padding: '4.25rem 6.75rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '4.25rem 3.5rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: '4.25rem 0.75rem',
+    },
+  },
+  formContainer: {
+    maxWidth: 375,
+    margin: '0 auto',
   },
 }));
 

@@ -6,27 +6,18 @@ import Moment from 'react-moment';
 import { Button, Paper, Typography } from '@material-ui/core';
 import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { acceptRequest, declineRequest } from '../../../helpers/APICalls/bookings';
+import { Link } from 'react-router-dom';
+import React from 'react';
 
 interface Props {
   bookingDetails: Request | undefined;
-  changeBooking: (bookingDetails: Request, newBooking: Request) => void;
 }
 
-export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.Element {
+export default function Bookings({ bookingDetails }: Props): JSX.Element {
   const classes = useStyles();
+
   if (!bookingDetails) return <></>;
-  const { _id, start, accepted, declined, sitter, user } = bookingDetails;
-  const handleClick = (type: string) => {
-    if (type === 'accept')
-      acceptRequest(_id).then((data) => {
-        if (data.request) changeBooking(bookingDetails, data.request);
-      });
-    else if (type === 'reject')
-      declineRequest(_id).then((data) => {
-        if (data.request) changeBooking(bookingDetails, data.request);
-      });
-  };
+  const { start, accepted, declined, sitter, paid } = bookingDetails;
 
   return (
     <>
@@ -52,22 +43,37 @@ export default function Bookings({ bookingDetails, changeBooking }: Props): JSX.
               {`${sitter?.firstName} ${sitter?.lastName}`}
             </Typography>
           </Grid>
-          <Button size="large" disabled className={classes.button}>
-            {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
-          </Button>
-          {user === undefined && (
-            <>
-              {!accepted && (
-                <Button className={`${classes.button} ${classes.accept}`} onClick={() => handleClick('accept')}>
-                  accept
-                </Button>
-              )}
-
-              <Button className={`${classes.button} ${classes.decline}`} onClick={() => handleClick('reject')}>
-                decline
-              </Button>
-            </>
+          {!paid ? (
+            <Typography color="secondary" className={classes.paidText}>
+              {accepted ? 'accepted' : declined ? 'declined' : 'pending'}
+            </Typography>
+          ) : (
+            <Typography color="primary" className={classes.paidText}>
+              Paid
+            </Typography>
           )}
+
+          {!paid ? (
+            <Link
+              to={{
+                pathname: '/checkout',
+                state: {
+                  bookingDetails: bookingDetails,
+                },
+              }}
+              style={{ textDecoration: 'none' }}
+              className={declined || !accepted ? classes.checkoutLink : ''}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.btnDisplay}
+                disabled={declined || !accepted}
+              >
+                Checkout
+              </Button>
+            </Link>
+          ) : null}
         </Grid>
       </Paper>
     </>

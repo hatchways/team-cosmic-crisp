@@ -6,10 +6,13 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { PaymentMethod } from '@stripe/stripe-js';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import { CircularProgress } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { createNotificationData } from '../../../interface/Notification';
+import { useAuth } from '../../../context/useAuthContext';
 
 interface Props {
   userProfile: {
-    id: string;
+    _id: string;
   };
   hours: number;
   requestId: string;
@@ -29,6 +32,8 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
   const classes = useStyles();
   const { updateSnackBarMessage } = useSnackBar();
   const [paymentType, setPaymentType] = useState<string>('card');
+  const history = useHistory();
+  const { loggedInUserDetails, createNotification } = useAuth();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -95,7 +100,7 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         payment_method_id: paymentMethod.id,
-        sitter: userProfile.id,
+        sitter: userProfile._id,
         hours,
         start,
         end,
@@ -130,8 +135,17 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
         handleServerResponse(await serverResponse.json());
       }
     } else {
-      updateSnackBarMessage('Payment success');
+      updateSnackBarMessage('Payment success, redirecting to booking page');
+      const newNotificationData: createNotificationData = {
+        types: 'system',
+        description: `You have successfully received payment from ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName}`,
+        targetProfileId: userProfile._id,
+      };
+      createNotification(newNotificationData);
       resetForm();
+      setTimeout(() => {
+        history.push('/bookings');
+      }, 3000);
     }
   };
 
