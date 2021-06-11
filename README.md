@@ -47,6 +47,19 @@
 
 ## Screenshots
 
+### Landing Page
+![1](https://user-images.githubusercontent.com/75184965/121703601-de113f00-ca87-11eb-940b-f871cd2ac8f0.PNG)
+
+### Dashboard
+
+### Profile Details
+
+### Bookings
+
+### Messaging
+
+### Profile Settings
+
 ---
 
 ### Project Setup
