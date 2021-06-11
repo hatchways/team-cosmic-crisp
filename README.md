@@ -1,13 +1,12 @@
-
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="350" />
+  <img src="https://w7.pngwing.com/pngs/924/504/png-transparent-dog-paw-computer-icons-paw-print.png" width="350" />
 </p>
+<h1 align="center">Loving Sitter</h1>
 
-<p align="rigth">
-  <p>Developed By </p>
+<p align="right">
+  <p>Developed By Cosmic Crisp Studios</p>
   <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="150" />
 </p>
-
 
 # Loving Sitter
 
@@ -33,7 +32,7 @@
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
-**[View Live]**(https://lovingsitter.gursharansingh.ca)
+[View Live](https://lovingsitter.gursharansingh.ca)
 
 ---
 
