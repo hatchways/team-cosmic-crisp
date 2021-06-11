@@ -4,9 +4,12 @@
 </h1>
 
 <p align="right">
-  Developed By
+  Developed By Cosmic Crisp Studios
+</p>
+<p align="right">
   <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="150" />
 </p>
+
 
 # Overview
 
