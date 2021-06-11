@@ -1,4 +1,4 @@
-## Loving Sitter
+## ![image](https://user-images.githubusercontent.com/75184965/121637247-f3617b80-ca3d-11eb-9b0a-92f1d702b671.png) Loving Sitter
 
 This is a little description about your project.
 
