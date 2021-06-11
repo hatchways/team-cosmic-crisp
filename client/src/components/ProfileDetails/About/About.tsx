@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Avatar, Box, Fade, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
+import { Avatar, Box, Fade, Grid, Paper, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { Profile } from '../../../interface/Profile';
+import Gallery from '../../Gallery/Gallery';
 import { useAuth } from '../../../context/useAuthContext';
 import useStyles from './useStyles';
 import SitterReview from '../Review/Review';
@@ -56,13 +57,14 @@ export default function About({ sitter }: Props): JSX.Element {
               {sitter.description}
             </Typography>
           </Box>
-          <GridList cellHeight={115} cols={5}>
-            {sitter.gallery.map((photo, index) => (
-              <GridListTile cols={1} className={classes.galleryTile} key={index}>
-                <img src={photo} alt="Profile" />
-              </GridListTile>
-            ))}
-          </GridList>
+          {sitter.gallery.length > 0 && (
+            <>
+              <Typography component="div" variant="h5" align="left" className={classes.aboutTitle}>
+                Gallery
+              </Typography>
+              <Gallery gallery={sitter.gallery} />
+            </>
+          )}
         </Box>
         <Box className={classes.reviewsContainer}>
           <Box>

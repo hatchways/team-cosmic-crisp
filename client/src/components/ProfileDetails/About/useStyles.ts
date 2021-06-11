@@ -55,6 +55,9 @@ const useStyles = makeStyles(() => ({
     textTransform: 'capitalize',
     margin: '0 0.25rem',
   },
+  galleryHeader: {
+    margin: '1rem 0',
+  },
   reviewsContainer: {
     padding: '0.5rem 2.5rem 2.5rem 2.5rem',
   },
