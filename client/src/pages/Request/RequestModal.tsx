@@ -53,7 +53,6 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
             targetProfileId: '',
             targetUserId: data.request.user,
           };
-          console.log(receiverNotification);
           createNotification(receiverNotification);
         }
         handleClose();
@@ -71,7 +70,6 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
             targetProfileId: '',
             targetUserId: data.request.user,
           };
-          console.log(receiverNotification);
           createNotification(receiverNotification);
         }
         handleClose();
