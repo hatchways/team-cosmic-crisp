@@ -47,6 +47,11 @@
 
 ## Screenshots
 
+<h3 align="center">
+  Landing Page
+  <img src="https://user-images.githubusercontent.com/75184965/121703601-de113f00-ca87-11eb-940b-f871cd2ac8f0.PNG" />
+</h3>
+
 ### Landing Page
 ![1](https://user-images.githubusercontent.com/75184965/121703601-de113f00-ca87-11eb-940b-f871cd2ac8f0.PNG)
 
