@@ -60,28 +60,28 @@
 
 ### Dashboard
 <p>
-  <img src="https://user-images.githubusercontent.com/75184965/121704245-6bed2a00-ca88-11eb-875d-9acf30799148.PNG" width="750" />
+  <img src="https://user-images.githubusercontent.com/75184965/121704245-6bed2a00-ca88-11eb-875d-9acf30799148.PNG" width="875" />
 </p>
 
 ### Profile Details
 <p>
-  <img src="https://user-images.githubusercontent.com/75184965/121704396-9808ab00-ca88-11eb-8a63-c7bc75b8ed75.PNG" width="750" />
+  <img src="https://user-images.githubusercontent.com/75184965/121704396-9808ab00-ca88-11eb-8a63-c7bc75b8ed75.PNG" width="875" />
 </p>
 
 ### Bookings
 <p>
-  <img src="https://user-images.githubusercontent.com/75184965/121704667-cedec100-ca88-11eb-8f6c-9d82214b27d4.PNG" width="750" />
+  <img src="https://user-images.githubusercontent.com/75184965/121704667-cedec100-ca88-11eb-8f6c-9d82214b27d4.PNG" width="875" />
 </p>
 
 ### Messaging
 <p>
-  <img src="https://user-images.githubusercontent.com/75184965/121704900-077e9a80-ca89-11eb-9f1e-d053b5e53d85.PNG" width="750" />
+  <img src="https://user-images.githubusercontent.com/75184965/121704900-077e9a80-ca89-11eb-9f1e-d053b5e53d85.PNG" width="875" />
 </p>
 
 ### Profile Settings
 <p>
-  <img src="https://user-images.githubusercontent.com/75184965/121705225-49a7dc00-ca89-11eb-99c7-3e8b19113ba5.PNG" width="375" height="425" />
-  <img src="https://user-images.githubusercontent.com/75184965/121705241-4c0a3600-ca89-11eb-9d4c-1c8b291d7872.PNG" width="375" height="425" />
+  <img src="https://user-images.githubusercontent.com/75184965/121705225-49a7dc00-ca89-11eb-99c7-3e8b19113ba5.PNG" width="437" height="525" />
+  <img src="https://user-images.githubusercontent.com/75184965/121705241-4c0a3600-ca89-11eb-9d4c-1c8b291d7872.PNG" width="437" height="525" />
 </p>
 
 ---
