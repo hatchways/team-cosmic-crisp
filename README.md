@@ -10,6 +10,11 @@
   <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="150" />
 </p>
 
+### Tech Stack: MongoDB, Express.js, React.js, Node.js, Typescript
+
+**Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
+
+[## View Live](https://lovingsitter.gursharansingh.ca)
 
 # Overview
 
@@ -30,12 +35,6 @@
 * Accept or decline requests
 * Instant messaging
 * Notifications
-
-### Tech Stack: MongoDB, Express.js, React.js, Node.js, Typescript
-
-**Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
-
-[View Live](https://lovingsitter.gursharansingh.ca)
 
 ---
 
