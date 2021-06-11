@@ -1,6 +1,6 @@
 ![alt text](https://i1.wp.com/southeastproduceweekly.com/wp-content/uploads/2019/08/cosmic-crisp.jpg?fit=1148%2C563&quality=90&strip=all&ssl=1)
 
-## ![image](https://user-images.githubusercontent.com/75184965/121637247-f3617b80-ca3d-11eb-9b0a-92f1d702b671.png) Loving Sitter
+## Loving Sitter
 
 This is a little description about your project.
 
