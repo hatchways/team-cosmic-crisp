@@ -47,7 +47,9 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 80,
   },
   notiAvatar: {
-    margin: theme.spacing(1),
+    width: '3rem',
+    height: '3rem',
+    marginLeft: '-0.3rem',
   },
   notificationText: {
     fontWeight: 600,

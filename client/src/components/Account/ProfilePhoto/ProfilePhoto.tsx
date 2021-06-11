@@ -1,5 +1,4 @@
-import { Box, Typography, Avatar, Grid, Button, FormControl } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Box, Typography, Avatar, Grid, Menu, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
 
 import React, { useRef, useState, useEffect } from 'react';
 import { uploadPhoto, deletePhotos } from '../../../helpers/APICalls/updatePhotos';
@@ -10,10 +9,8 @@ import { useSnackBar } from '../../../context/useSnackbarContext';
 
 import useStyles from './useStyles';
 
-interface Image {
-  preview: string;
-  raw: File;
-}
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
@@ -21,13 +18,9 @@ export default function UploadPhoto(): JSX.Element {
   const { loggedInUserDetails, updateLoggedInUserDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
 
-  const onButtonClick = () => {
-    if (inputFile.current !== null) {
-      inputFile.current.click();
-    }
-  };
-  const [image, setImage] = useState<Image>({ preview: '', raw: '' as unknown as File });
-  const [s3Url, setS3Url] = useState<string | undefined>(undefined);
+  const [raw, setRaw] = useState<File | undefined>(undefined);
+  const [url, setURL] = useState<string | undefined>(undefined);
+  const [type, setType] = useState<string>('');
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
@@ -39,64 +32,108 @@ export default function UploadPhoto(): JSX.Element {
     reader.onloadend = () => {
       if (reader.result) {
         if (!(e.target.files instanceof FileList)) return;
-        setImage({ preview: reader.result as string, raw: e.target.files[0] });
+        setRaw(e.target.files[0]);
       }
     };
   };
-  useEffect(() => {
-    if (loggedInUserDetails !== undefined && loggedInUserDetails?.profilePhoto !== undefined) {
-      setImage({ ...image, preview: loggedInUserDetails.profilePhoto });
-    }
-  }, [loggedInUserDetails]);
 
   //handleUpdateImage function will only re-run if image changes
   useEffect(() => {
     async function handleUpdateImage() {
       const formData = new FormData();
-      formData.append('photos', image.raw);
+      if (raw) formData.append('photos', raw);
+
       try {
         const result = await uploadPhoto(formData);
-        const profileUrl = result?.success?.urlArray[0];
-        profileUrl && setS3Url(profileUrl);
+        const photoURL = result?.success?.urlArray[0];
+        if (photoURL) {
+          setURL(photoURL);
+        }
       } catch (error) {
         updateSnackBarMessage(`Error uploading images, ${error}`);
       }
     }
-    handleUpdateImage();
-  }, [image]);
+    if (raw) {
+      handleUpdateImage();
+    }
+  }, [raw]);
 
   //handleUpdateUserProfile function will only re-run if s3Url changes
   useEffect(() => {
     async function handleUpdateUserprofile() {
       const id = loggedInUserDetails ? loggedInUserDetails._id : '';
       try {
-        if (s3Url !== undefined) {
-          const res = await updateProfile(id, { profilePhoto: s3Url });
+        if (type === 'profile') {
+          const res = await updateProfile(id, { profilePhoto: url });
           updateLoggedInUserDetails(res);
-          updateSnackBarMessage('Image updated');
+          updateSnackBarMessage('Profile Image updated');
+        } else if (type === 'cover') {
+          const res = await updateProfile(id, { coverPhoto: url });
+          updateLoggedInUserDetails(res);
+          updateSnackBarMessage('Cover Image updated');
         }
+        setType('');
+        setURL(undefined);
+        if (inputFile?.current) inputFile.current.value = '';
       } catch (error) {
         updateSnackBarMessage(`Error updating user profile ${error}`);
       }
     }
-    handleUpdateUserprofile();
-  }, [s3Url]);
+    if (type) {
+      handleUpdateUserprofile();
+    }
+  }, [url]);
 
-  const handleDeletePhoto = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-    e.preventDefault();
+  const handleDeletePhoto = async (type: string): Promise<void> => {
+    const confirmDelete = confirm(`Are you sure you want to delete ${type} photo?`);
+    if (!confirmDelete) return;
     try {
-      const imageUrl: string =
-        loggedInUserDetails && loggedInUserDetails.profilePhoto ? loggedInUserDetails.profilePhoto : '';
-      await deletePhotos([imageUrl]);
-      setS3Url('');
-      setImage({ preview: '', raw: '' as unknown as File });
-      const id = loggedInUserDetails ? loggedInUserDetails._id : '';
-      const res = await updateProfile(id, { profilePhoto: undefined });
-      updateLoggedInUserDetails(res);
-      updateSnackBarMessage('Image deleted');
+      if (type === 'profile') {
+        const imageUrl: string =
+          loggedInUserDetails && loggedInUserDetails.profilePhoto ? loggedInUserDetails.profilePhoto : '';
+        await deletePhotos([imageUrl]);
+        const id = loggedInUserDetails ? loggedInUserDetails._id : '';
+        const res = await updateProfile(id, { profilePhoto: '' });
+        updateLoggedInUserDetails(res);
+        updateSnackBarMessage('Profile Image deleted');
+      } else if (type === 'cover') {
+        const imageUrl: string =
+          loggedInUserDetails && loggedInUserDetails.coverPhoto ? loggedInUserDetails.coverPhoto : '';
+        await deletePhotos([imageUrl]);
+        const id = loggedInUserDetails ? loggedInUserDetails._id : '';
+        const res = await updateProfile(id, { coverPhoto: '' });
+        updateLoggedInUserDetails(res);
+        updateSnackBarMessage('Cover Image deleted');
+      }
     } catch (error) {
       updateSnackBarMessage(`Error deleting profile photo ${error}`);
     }
+  };
+
+  const handleNewImageButtonClick = (type: string) => {
+    if (inputFile.current !== null) {
+      setType(type);
+      inputFile.current.click();
+    }
+    setCoverPhotoMenu(null);
+    setProfilePhotoMenu(null);
+  };
+
+  // menu functions
+  const [coverPhotoMenu, setCoverPhotoMenu] = useState<null | HTMLElement>(null);
+  const [profilePhotoMenu, setProfilePhotoMenu] = useState<null | HTMLElement>(null);
+  const handleCloseCoverMenu = () => {
+    setCoverPhotoMenu(null);
+  };
+  const handleCloseProfileMenu = () => {
+    setProfilePhotoMenu(null);
+  };
+
+  const handleClickCoverMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setCoverPhotoMenu(event.currentTarget);
+  };
+  const handleClickProfileMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setProfilePhotoMenu(event.currentTarget);
   };
 
   return (
@@ -104,44 +141,95 @@ export default function UploadPhoto(): JSX.Element {
       <Typography variant="h4" align="center" className={classes.formTitle}>
         Profile Photo
       </Typography>
+      <input
+        type="file"
+        id="file"
+        ref={inputFile}
+        style={{ display: 'none' }}
+        required
+        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleImageChange(e)}
+      />
       <Grid container direction="column" alignItems="center" spacing={4}>
-        <Grid item>
-          <Avatar alt="Profile picture" src={image.preview} className={classes.large} />
+        <Grid item className={classes.imagesContainer}>
+          <Grid item className={classes.imageContainer}>
+            <Grid onClick={handleClickCoverMenu}>
+              <AddAPhotoIcon className={`${classes.addPhotoIcon} addPhotoIcon`} />
+            </Grid>
+            {loggedInUserDetails?.coverPhoto && (
+              <img
+                src={loggedInUserDetails?.coverPhoto}
+                alt="cover pic"
+                className={classes.coverPhoto}
+                onClick={handleClickCoverMenu}
+              />
+            )}
+
+            <Menu
+              id="user-menu"
+              anchorEl={coverPhotoMenu}
+              keepMounted
+              open={Boolean(coverPhotoMenu)}
+              onClose={handleCloseCoverMenu}
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+              <MenuItem className={classes.menuItem} onClick={() => handleNewImageButtonClick('cover')}>
+                <ListItemIcon>
+                  <AddAPhotoIcon />
+                </ListItemIcon>
+                <ListItemText primary="New Cover Image" />
+              </MenuItem>
+              {loggedInUserDetails?.coverPhoto && (
+                <MenuItem className={classes.menuItem} onClick={() => handleDeletePhoto('cover')}>
+                  <ListItemIcon>
+                    <DeleteForeverIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Delete Cover Image" />
+                </MenuItem>
+              )}
+            </Menu>
+          </Grid>
+          <Grid className={classes.avatarContainer}>
+            <Grid onClick={handleClickProfileMenu}>
+              <AddAPhotoIcon className={`${classes.addPhotoIcon} addPhotoIcon`} />
+            </Grid>
+            <Avatar
+              alt="Profile picture"
+              src={loggedInUserDetails?.profilePhoto}
+              className={classes.avatar}
+              onClick={handleClickProfileMenu}
+            />
+
+            <Menu
+              id="user-menu"
+              anchorEl={profilePhotoMenu}
+              keepMounted
+              open={Boolean(profilePhotoMenu)}
+              onClose={handleCloseProfileMenu}
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+              <MenuItem className={classes.menuItem} onClick={() => handleNewImageButtonClick('profile')}>
+                <ListItemIcon>
+                  <AddAPhotoIcon />
+                </ListItemIcon>
+                <ListItemText primary="New Profile Photo" />
+              </MenuItem>
+              {loggedInUserDetails?.profilePhoto && (
+                <MenuItem className={classes.menuItem} onClick={() => handleDeletePhoto('profile')}>
+                  <ListItemIcon>
+                    <DeleteForeverIcon />
+                  </ListItemIcon>
+                  <ListItemText primary=" Delete Profile Photo" />
+                </MenuItem>
+              )}
+            </Menu>
+          </Grid>
         </Grid>
         <Grid item>
           <Typography align="center" color="secondary" className={classes.uploadMessage}>
             Be sure to use a photo that clearly shows your face
           </Typography>
-        </Grid>
-        <Grid item>
-          <FormControl>
-            <Grid container direction="column" spacing={3} alignItems="center">
-              <Grid item>
-                <Button color="primary" variant="outlined" size="large" onClick={onButtonClick}>
-                  <Box px={2} py={1}>
-                    <input
-                      type="file"
-                      id="file"
-                      ref={inputFile}
-                      style={{ display: 'none' }}
-                      required
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleImageChange(e)}
-                    />
-                    Upload a file from your device
-                  </Box>
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  color="secondary"
-                  onClick={handleDeletePhoto}
-                  startIcon={<DeleteIcon style={{ color: 'black' }} />}
-                >
-                  Delete Photo
-                </Button>
-              </Grid>
-            </Grid>
-          </FormControl>
         </Grid>
       </Grid>
     </Box>

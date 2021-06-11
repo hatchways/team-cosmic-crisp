@@ -22,10 +22,12 @@ const MockUseAuthProvider: FunctionComponent = ({ children }) => {
         updateLoggedInUserDetails: jest.fn(),
         logout: jest.fn(),
         notifications: mockNotification,
+        createNotification: jest.fn(),
         updateNotificationsContext: jest.fn(),
         getUserProfileDetails: jest.fn(),
         calculateAvgRating: jest.fn(),
         fetchSitterProfiles: jest.fn(),
+        sortByPrice: jest.fn(),
       }}
     >
       {children}

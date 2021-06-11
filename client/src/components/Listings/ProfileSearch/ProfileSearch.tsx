@@ -33,7 +33,7 @@ export default function ProfileSearch({ city, startDate, endDate, setFilters }: 
   }, [dateFilters]);
 
   return (
-    <Box maxWidth={675} display="flex" margin="auto">
+    <Box maxWidth={675} display="flex" margin="auto" className={classes.mainContainer}>
       <Box flex={2}>
         <TextField
           variant="outlined"
@@ -87,6 +87,7 @@ export default function ProfileSearch({ city, startDate, endDate, setFilters }: 
       <Button
         variant="text"
         color="primary"
+        className={classes.resetBtn}
         disabled={city === undefined && startDate === undefined && endDate === undefined}
         onClick={() => {
           setFilters({});

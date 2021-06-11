@@ -33,7 +33,13 @@ const profileSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'review',
     },
-],
+  ],
+  notifications: [
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref: 'notification'
+    }
+  ]
 });
 
 module.exports = Profile = mongoose.model('profile', profileSchema);

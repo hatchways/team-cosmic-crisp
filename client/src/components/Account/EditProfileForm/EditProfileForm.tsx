@@ -26,11 +26,13 @@ export default function EditProfileForm(): JSX.Element {
     description: '',
     isAvailable: false,
     availability: [],
+    gallery: [],
   });
   useEffect(() => {
     if (loggedInUserDetails !== undefined) {
       setProfile({
         ...profile,
+        _id: loggedInUserDetails?._id,
         firstName: loggedInUserDetails?.firstName,
         lastName: loggedInUserDetails?.lastName,
         email: loggedInUserDetails?.email,
@@ -42,6 +44,7 @@ export default function EditProfileForm(): JSX.Element {
         isAvailable: loggedInUserDetails?.isAvailable,
         availability: loggedInUserDetails?.availability,
         isDogSitter: loggedInUserDetails?.isDogSitter,
+        gallery: loggedInUserDetails?.gallery,
       });
     }
   }, [loggedInUserDetails]);
@@ -188,11 +191,12 @@ export default function EditProfileForm(): JSX.Element {
             }
             value={profile.description ? profile.description : ''}
             multiline={true}
-            rows={5}
+            rows={10}
             label="describe yourself"
             placeholder="About you"
           />
         </Grid>
+
         <Box textAlign="center">
           <Button
             color="primary"
