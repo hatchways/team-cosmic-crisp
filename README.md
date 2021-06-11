@@ -12,9 +12,9 @@
 
 ### Tech Stack
 
-| Image1 | Image1 | Image1 | Image1 | Image1 |
+| Image1 | ![react](https://user-images.githubusercontent.com/75184965/121707541-8379e200-ca8b-11eb-97f5-de7912ab5024.png) | Image1 | Image1 | Image1 |
 | :---: | :---: | :---: | :---: | :---: |
-| Typescript | React | Express | Node | MongoDB
+| Typescript | React | Express.js | Node.js | MongoDB
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
