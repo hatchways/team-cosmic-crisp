@@ -19,9 +19,9 @@
 
 # Contents
 * [Overview](#Overview)
-* [Features](#Features-User)
-  * [User](#Features-User)
-  * [Sitter](#Features-Sitter)
+* [Features](#User-Features)
+  * [User](#User-Features)
+  * [Sitter](#Sitter-Features)
 * [Screenshots](#Screenshots)
 * [Project Setup](#Project-Setup)
 
@@ -31,7 +31,7 @@
 * Individuals who own dogs can request for a dog sitter in real-time 
 * Individuals who are passionate about furry ones can partake in their care while earning extra cash
 
-## Features - User
+## User Features 
 * Browse listings and filter based on city, availability and price
 * Request for service 
 * Make secure payments
@@ -39,7 +39,7 @@
 * Instant messaging
 * Notifications
 
-## Features - Sitter
+## Sitter Features 
 * Enter additional profile information - photos, description, price, availability etc
 * Accept or decline requests
 * Instant messaging
