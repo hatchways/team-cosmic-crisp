@@ -9,6 +9,7 @@ import moment from 'moment';
 import { useState, useEffect } from 'react';
 
 import useStyles from './useStyles';
+import { useAuth } from '../../context/useAuthContext';
 
 interface Props {
   profile: Profile | undefined;
@@ -16,6 +17,7 @@ interface Props {
 
 function OwnerInfo({ profile }: Props): JSX.Element {
   const classes = useStyles();
+
   return (
     <Grid container alignItems="center">
       <Avatar alt="avatar" src={profile?.profilePhoto} className={classes.userAvatar} />
@@ -25,6 +27,7 @@ function OwnerInfo({ profile }: Props): JSX.Element {
 }
 
 export default function RequestTableBody(): JSX.Element {
+  const { notifications } = useAuth();
   const [requests, setRequests] = useState<Request[]>([]);
   useEffect(() => {
     async function fetchRequests() {
@@ -36,7 +39,7 @@ export default function RequestTableBody(): JSX.Element {
       }
     }
     fetchRequests();
-  }, []);
+  }, [notifications]);
 
   function checkLabel(accepted: boolean, declined: boolean): JSX.Element {
     return accepted ? (
