@@ -1,3 +1,4 @@
+
 <h1 align="center">
   <img src="https://w7.pngwing.com/pngs/924/504/png-transparent-dog-paw-computer-icons-paw-print.png" width="25" />
   Loving Sitter
@@ -12,9 +13,9 @@
 
 ### Tech Stack
 
-| Image1 | ![react](https://user-images.githubusercontent.com/75184965/121707541-8379e200-ca8b-11eb-97f5-de7912ab5024.png) | Image1 | Image1 | Image1 |
 | :---: | :---: | :---: | :---: | :---: |
-| Typescript | React | Express.js | Node.js | MongoDB
+| Typescript | React | Express.js | Node.js | MongoDB |
+
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
