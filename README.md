@@ -12,12 +12,13 @@
 
 ### Tech Stack: MongoDB, Express.js, React.js, Node.js, Typescript
 
+[View Live Rpoject](https://lovingsitter.gursharansingh.ca)
+
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
-### View Live[https://lovingsitter.gursharansingh.ca]
 
-### Contents
-* Overview(# Overview)
+# Contents
+* [Overview](# Overview)
 * Features
   * User
   * Sitter
