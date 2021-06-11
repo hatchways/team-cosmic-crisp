@@ -12,11 +12,9 @@
 
 ### Tech Stack
 
-| Attempt | #1 | #2 |
-| :---: | :---: | :---: |
-| Seconds | 301 | 283 |
-
-MongoDB, Express.js, React.js, Node.js, Typescript
+| Image1 | Image1 | Image1 | Image1 | Image1 |
+| :---: | :---: | :---: | :---: | :---: |
+| Typescript | React | Express | Node | MongoDB
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
