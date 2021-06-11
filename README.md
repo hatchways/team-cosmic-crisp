@@ -6,7 +6,7 @@ This is a little description about your project.
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
-**Contributors**: [Hatchways](https://github.com/hatchways) (replace)
+**Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
 ---
 
@@ -20,7 +20,7 @@ This is a little description about your project.
 
 1. Go into the server director `cd server`
 2. Run `npm install` to install packages
-3. Create your environment variable (.env) file
+3. Create your environment variable [.env](./server/sample.env) file
 4. Run `npm run dev` to start the server
 
 ---
