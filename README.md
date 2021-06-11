@@ -1,7 +1,7 @@
 
 <h1 align="center">
-  <img src="https://user-images.githubusercontent.com/75184965/121710600-9fcb4e00-ca8e-11eb-8958-9895259398a7.png" width="35" />
-  Loving Sitter
+  <img src="https://user-images.githubusercontent.com/75184965/121710600-9fcb4e00-ca8e-11eb-8958-9895259398a7.png" width="30" />
+   Loving Sitter
 </h1>
 
 <p align="right">
