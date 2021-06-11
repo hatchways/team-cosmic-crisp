@@ -12,8 +12,9 @@
 </p>
 
 ### Tech Stack
+
 | Typescript | React | Express.js | Node.js |
-| :---: | :---: | :---: | :---: | :---: |
+| :---: | :---: | :---: | :---: |
 | Material UI | Amazon S3 | Socket IO | MongoDB |
 
 
