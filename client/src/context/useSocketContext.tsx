@@ -3,6 +3,7 @@ import { io, Socket } from 'socket.io-client';
 
 import { useAuth } from '../context/useAuthContext';
 import { useMessages } from './useMessageContext';
+import { getUnreadNotifications, createNewNotification } from '../helpers/APICalls/notifications';
 
 const ENDPOINT = 'wss://lovingsitter.gursharansingh.ca';
 
@@ -21,7 +22,7 @@ export const SocketContext = createContext<ISocketContext>({
 });
 
 export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => {
-  const { loggedInUser, loggedInUserDetails } = useAuth();
+  const { loggedInUser, loggedInUserDetails, updateNotificationsContext, notifications } = useAuth();
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
   const { addNewMessage, removeOfflineUser, addOnlineUser } = useMessages();
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
@@ -65,6 +66,18 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
 
       socket.on('user-stop-typing', (conversationId) => {
         setUsersTyping((usersTyping) => usersTyping.filter((convo) => convo !== conversationId));
+      });
+
+      socket.on('update-notifications', () => {
+        async function fetchNotification() {
+          try {
+            const res = await getUnreadNotifications();
+            res.notifications && updateNotificationsContext(res.notifications);
+          } catch (error) {
+            console.log('error occurred getting notifications', error);
+          }
+        }
+        fetchNotification();
       });
     });
   }, [socket, loggedInUserDetails, loggedInUser]);
