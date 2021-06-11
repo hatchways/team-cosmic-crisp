@@ -15,6 +15,7 @@ import moment from 'moment';
 import { acceptRequest, declineRequest } from '../../helpers/APICalls/bookings';
 import { useAuth } from '../../context/useAuthContext';
 import { createNotificationData } from '../../interface/Notification';
+import { useSocket } from '../../context/useSocketContext';
 
 interface Props {
   request: Request;
@@ -36,6 +37,8 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
     setOpen(false);
   };
 
+  const { socket } = useSocket();
+
   const calcHours = (start: Date, end: Date): number => {
     const startDate = moment(start);
     const endDate = moment(end);
@@ -46,6 +49,7 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
     declineRequest(_id).then((data) => {
       if (data.request) {
         updateRequest(data.request);
+        console.log(data);
         if (request && request.user) {
           const receiverNotification: createNotificationData = {
             types: 'default',
@@ -54,6 +58,8 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
             targetUserId: data.request.user,
           };
           createNotification(receiverNotification);
+          //send notification to user
+          socket?.emit('send-notification', { ...receiverNotification, recipient: data?.request.sitter?._id });
         }
         handleClose();
       }
@@ -71,6 +77,8 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
             targetUserId: data.request.user,
           };
           createNotification(receiverNotification);
+          //send notification to user
+          socket?.emit('send-notification', { ...receiverNotification, recipient: data?.request.sitter?._id });
         }
         handleClose();
       }

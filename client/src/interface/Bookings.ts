@@ -5,6 +5,7 @@ export interface Request {
   _id: string;
   user?: User;
   sitter?: Profile;
+  otherUser?: Profile;
   start: Date;
   end: Date;
   accepted: boolean;

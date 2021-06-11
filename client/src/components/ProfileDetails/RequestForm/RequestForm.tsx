@@ -12,6 +12,7 @@ import { useMessages } from '../../../context/useMessageContext';
 import { createConversation } from '../../../helpers/APICalls/messages';
 import { useHistory, Link } from 'react-router-dom';
 import { createNotificationData } from '../../../interface/Notification';
+import { useSocket } from '../../../context/useSocketContext';
 
 export interface Props {
   sitter: Profile;
@@ -33,6 +34,8 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
   const { addConversation } = useMessages();
   const history = useHistory();
 
+  const { socket } = useSocket();
+
   const handleSubmit = async () => {
     setLoading(true);
     if (sitter) {
@@ -48,8 +51,9 @@ export default function RequestForm({ sitter }: Props): JSX.Element {
         description: `You received a new sitting request from ${loggedInUserDetails?.firstName} ${loggedInUserDetails?.lastName}`,
         targetProfileId: sitter._id,
       };
-
       createNotification(newSitterNotification);
+      //send notification to sitter
+      socket?.emit('send-notification', { ...newSitterNotification, recipient: sitter._id });
     }
     setLoading(false);
   };

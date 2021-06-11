@@ -9,6 +9,7 @@ import { CircularProgress } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { createNotificationData } from '../../../interface/Notification';
 import { useAuth } from '../../../context/useAuthContext';
+import { useSocket } from '../../../context/useSocketContext';
 
 interface Props {
   userProfile: {
@@ -43,6 +44,8 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
     phone: '',
     name: '',
   });
+
+  const { socket } = useSocket();
 
   const CARD_OPTIONS = {
     iconStyle: 'solid' as const,
@@ -142,6 +145,8 @@ export default function Payment({ userProfile, hours, requestId, start, end }: P
         targetProfileId: userProfile._id,
       };
       createNotification(newNotificationData);
+      //send notification to sitter
+      socket?.emit('send-notification', { ...newNotificationData, recipient: userProfile._id });
       resetForm();
       setTimeout(() => {
         history.push('/bookings');

@@ -94,7 +94,7 @@ exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
     await request.save();
     const otherUser = await User.findById(request.user).populate('profile');
     request.sitter = otherUser.profile;
-    
+
     res.status(200).json({ request });
   } catch (error) {
     res.status(500);
