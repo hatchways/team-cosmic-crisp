@@ -12,9 +12,9 @@
 </p>
 
 ### Tech Stack
-
+| Typescript | React | Express.js | Node.js |
 | :---: | :---: | :---: | :---: | :---: |
-| Typescript | React | Express.js | Node.js | MongoDB |
+| Material UI | Amazon S3 | Socket IO | MongoDB |
 
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
