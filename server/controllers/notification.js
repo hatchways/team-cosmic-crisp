@@ -35,10 +35,11 @@ exports.postNotification = asyncHandler(async (req, res, next) => {
     const currentProfile = targetId==='' ? 
       await Profile.findById(currentUser.profile):
       await Profile.findById(targetId);
-    currentProfile.notifications.push(newNotification._id);
+    currentProfile.notifications.unshift(newNotification._id);
     await currentProfile.save();
     await newNotification.save();
-    const result = await Profile.findById(currentProfile._id).populate('notifications');
+    const result = await Profile.findById(currentProfile._id)
+                    .populate('notifications');
     const newNotifications = result.notifications.filter(
       notification=>(
         notification.read === false

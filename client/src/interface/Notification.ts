@@ -19,7 +19,7 @@ export interface ReadNotificationApiData {
 }
 
 export interface createNotificationData {
-  types: string;
+  types: 'message' | 'system' | 'request' | 'payment' | 'default';
   description: string;
   targetId: string;
 }

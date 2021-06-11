@@ -148,8 +148,12 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const createNotification = useCallback(
     async ({ types, description, targetId }: createNotificationData) => {
       try {
-        const res = await createNewNotification(types, description, targetId);
-        res && res.notifications && updateNotificationsContext(res?.notifications);
+        if (targetId === '') {
+          const res = await createNewNotification(types, description, targetId);
+          res && res.notifications && updateNotificationsContext(res?.notifications);
+        } else {
+          await createNewNotification(types, description, targetId);
+        }
       } catch (error) {
         throw new Error(`error updating notifications, ${error}`);
       }
