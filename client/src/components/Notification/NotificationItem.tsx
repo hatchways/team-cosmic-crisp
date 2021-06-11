@@ -6,7 +6,20 @@ import { markSingleNotification } from '../../helpers/APICalls/notifications';
 import { useAuth } from '../../context/useAuthContext';
 import { useHistory } from 'react-router-dom';
 
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import { Chat, Settings, EventAvailable, Payment } from '@material-ui/icons';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+
+interface NotificationTypesIcons {
+  [key: string]: JSX.Element;
+}
+
+const icons: NotificationTypesIcons = {
+  message: <Chat />,
+  system: <Settings />,
+  request: <EventAvailable />,
+  payment: <Payment />,
+  default: <NotificationsNoneIcon />,
+};
 
 export default function NotificationItem(): JSX.Element {
   const classes = useStyles();
@@ -28,13 +41,7 @@ export default function NotificationItem(): JSX.Element {
         <ListItem className={classes.listItem} key={notification._id} onClick={() => handleClick(notification._id)}>
           <Grid container direction="row" alignItems="center" className={classes.listContainer}>
             <Grid item xs={2}>
-              {notification.thumbnail ? (
-                <Avatar alt="notification icon" src={notification.thumbnail} className={classes.notiAvatar} />
-              ) : (
-                <Avatar className={classes.notiAvatar}>
-                  <NotificationsIcon />
-                </Avatar>
-              )}
+              <Avatar className={classes.notiAvatar}>{icons[notification.types]}</Avatar>
             </Grid>
             <Grid item xs={9}>
               <Grid container direction="column" justify="space-around" alignItems="flex-start" spacing={1}>
