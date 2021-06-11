@@ -11,18 +11,16 @@
 </p>
 
 ### Tech Stack: MongoDB, Express.js, React.js, Node.js, Typescript
-
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
-
 [View Live Project](https://lovingsitter.gursharansingh.ca)
 
 
 # Contents
 * [Overview](#Overview)
-* Features
-  * User
-  * Sitter
-* Project Setup
+* [Features](#Features)
+  * [User](#User)
+  * [Sitter](#Sitter)
+* [Project Setup](#Project-Setup)
 
 # Overview
 
