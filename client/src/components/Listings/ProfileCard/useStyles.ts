@@ -5,22 +5,24 @@ const useStyles = makeStyles(() => ({
     textDecoration: 'none',
   },
   profileCard: {
+    maxWidth: 325,
     textAlign: 'center',
+    margin: 'auto',
   },
   cardHeader: {
-    paddingTop: '1rem',
-    paddingBottom: '0.5rem',
+    paddingTop: '1.5rem',
+    paddingBottom: '0.75rem',
   },
   avatar: {
-    width: '6.5rem',
-    height: '6.5rem',
-    margin: '0.5rem auto',
+    width: '7.5rem',
+    height: '7.5rem',
+    margin: '0.75rem auto',
   },
   boldFont: {
     fontWeight: 600,
   },
   description: {
-    padding: '0.5rem 2.5rem 2rem 2.5rem',
+    padding: '1rem 2.5rem 2rem 2.5rem',
   },
   cardFooter: {
     padding: '1rem',

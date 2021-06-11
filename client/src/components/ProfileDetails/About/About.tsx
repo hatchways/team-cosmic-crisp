@@ -97,7 +97,7 @@ export default function About({ sitter }: Props): JSX.Element {
               page={page}
               onChange={(event, value) => setPage(value)}
               defaultPage={1}
-              siblingCount={0}
+              siblingCount={1}
               shape="rounded"
               size="large"
               color="primary"

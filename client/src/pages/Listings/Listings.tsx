@@ -12,7 +12,7 @@ export default function Listings(): JSX.Element {
   return (
     <Box display="flex" justifyContent="center" className={classes.mainContainer}>
       <CssBaseline />
-      <Box flex={1} maxWidth={1500}>
+      <Box flex={1} maxWidth={1175} className={classes.secondaryContainer}>
         <Typography variant="h3" align="center" className={classes.title}>
           Your search results
         </Typography>
