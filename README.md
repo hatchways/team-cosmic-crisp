@@ -20,7 +20,7 @@ This is a little description about your project.
 
 1. Go into the server director `cd server`
 2. Run `npm install` to install packages
-3. Create your environment variable (.env) file
+3. Create your environment variable [.env](./server/sample.env) file
 4. Run `npm run dev` to start the server
 
 ---
