@@ -1,7 +1,11 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="350" />
-  <p>Presents</p>
 </p>
+<h2 align="center"> Presents </h2>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/75184965/121698563-fa5ead00-ca82-11eb-91b1-83e288909139.jpg" width="350" />
+</p>
+
 
 # Loving Sitter
 
@@ -23,21 +27,21 @@
 * Instant messaging
 * Notifications
 
-**Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
+### Tech Stack: MongoDB, Express.js, React.js, Node.js, Typescript
 
 **Contributors**: [Gursharan Singh](https://github.com/gursharan4312), [Rajiv Titus](https://github.com/rajivtitus), [Zemin Ma](https://github.com/xia0m)
 
-[Live Demo](https://lovingsitter.gursharansingh.ca)
+**[View Live]**(https://lovingsitter.gursharansingh.ca)
 
 ---
 
-### Getting Started
+## Project Setup
 
 1. Clone or download repository
 
 ---
 
-## Server
+### Server
 
 1. Go into the server director `cd server`
 2. Run `npm install` to install packages
@@ -46,10 +50,8 @@
 
 ---
 
-## Client
+### Client
 
 1. Go into the client directory `cd client`
 2. Run `npm install` to install packages
 3. Run `npm start` to start the client side
-
----
