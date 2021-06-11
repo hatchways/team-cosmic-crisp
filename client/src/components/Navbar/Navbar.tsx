@@ -159,18 +159,18 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
 
   const UserNav = () => (
     <Grid>
-      {!isDogSitter && (
-        <>
-          <Button className={`${classes.userNavItem}  ${classes.sitterBtn}`} onClick={handleBecomeSitter}>
-            Become a Sitter
-          </Button>
-          <BecomeSitterModal profile={profile} />
-        </>
-      )}
       <NotificationComponent />
-      <Button variant="text" component={Link} to="/bookings" className={classes.userNavItem}>
-        {profile?.isDogSitter ? 'My Jobs' : 'My Sitters'}
-      </Button>
+      {profile?.isDogSitter ? (
+        <Button component={Link} to="/requests" variant="text" className={classes.userNavItem}>
+          Request
+        </Button>
+      ) : null}
+      {!profile?.isDogSitter ? (
+        <Button component={Link} to="/bookings" variant="text" className={classes.userNavItem}>
+          My Bookings
+        </Button>
+      ) : null}
+
       <Button component={Link} to="/messages" variant="text" className={classes.userNavItem}>
         Messages <span className={classes.active} />
       </Button>

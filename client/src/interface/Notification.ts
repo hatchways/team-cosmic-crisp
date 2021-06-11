@@ -1,3 +1,4 @@
+import { User } from './User';
 export interface Notification {
   _id: string;
   user: string;
@@ -16,4 +17,11 @@ export interface NotificationApiData {
 export interface ReadNotificationApiData {
   error?: { message: string };
   message?: string;
+}
+
+export interface createNotificationData {
+  types: 'message' | 'system' | 'request' | 'payment' | 'default';
+  description: string;
+  targetProfileId: string;
+  targetUserId?: User;
 }

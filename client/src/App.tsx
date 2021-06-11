@@ -20,6 +20,7 @@ import Bookings from './pages/Bookings/Bookings';
 import Checkout from './pages/Checkout/Checkout';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import Request from './pages/Request/Request';
 import { MessageContextProvider } from './context/useMessageContext';
 
 const stripePromise = loadStripe(
@@ -52,6 +53,7 @@ function App(): JSX.Element {
                     <ProtectedRoute exact path="/messages/:conversationId" component={Messages} />
                     <ProtectedRoute exact path="/user/:path" component={ProfileSettings} />
                     <Route exact path="/notifications" component={NotificationPage} />
+                    <ProtectedRoute exact path="/requests" component={Request} />
                   </Switch>
                 </Layout>
               </SocketProvider>

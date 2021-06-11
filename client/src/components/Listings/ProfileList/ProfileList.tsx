@@ -1,20 +1,30 @@
-import { useState } from 'react';
-import { Box, Grid, Grow, Typography } from '@material-ui/core';
+import { useState, useEffect } from 'react';
+import { Box, Button, Grid, Grow, Typography } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 import useStyles from './useStyles';
 import { useAuth } from '../../../context/useAuthContext';
 import { useSnackBar } from '../../../context/useSnackbarContext';
+import { Profile } from '../../../interface/Profile';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
-import Pagination from '@material-ui/lab/Pagination';
 
 export default function ProfileList(): JSX.Element {
   const { updateSnackBarMessage } = useSnackBar();
-  const { sitterProfiles, loading, errorMsg } = useAuth();
+  const { sortByPrice, loading, errorMsg } = useAuth();
   const [page, setPage] = useState<number>(1);
+  const [sortAscPrice, setSortAscPrice] = useState<boolean>(true);
+  const [sortedProfiles, setSortedProfiles] = useState<Profile[]>([]);
   const itemsPerPage = 9;
-  const noOfPages = Math.ceil(sitterProfiles.length / itemsPerPage);
+  const noOfPages = Math.ceil(sortedProfiles.length / itemsPerPage);
   const classes = useStyles();
+
+  useEffect(() => {
+    const profiles = sortByPrice(sortAscPrice);
+    setSortedProfiles(profiles);
+  }, [sortAscPrice, sortByPrice]);
 
   if (loading) return <LoadingSpinner />;
 
@@ -22,14 +32,24 @@ export default function ProfileList(): JSX.Element {
 
   return (
     <Box>
+      <Box display="flex" justifyContent="flex-end" className={classes.sortContainer}>
+        <Button
+          variant="text"
+          size="large"
+          className={classes.sortBtn}
+          onClick={() => setSortAscPrice((prevState) => !prevState)}
+        >
+          Price &nbsp; {sortAscPrice ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+        </Button>
+      </Box>
       <Grow in={true}>
-        <Grid container spacing={8} justify="space-around" className={classes.profilesGrid}>
-          {sitterProfiles.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((sitterProfile) => (
-            <Grid item xs={12} sm={4} key={sitterProfile._id}>
+        <Grid container spacing={4} justify="center" alignItems="center" className={classes.profilesGrid}>
+          {sortedProfiles.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((sitterProfile) => (
+            <Grid item xs={12} sm={6} md={4} xl={3} key={sitterProfile._id}>
               <ProfileCard sitter={sitterProfile} />
             </Grid>
           ))}
-          {sitterProfiles.length === 0 && (
+          {sortedProfiles.length === 0 && (
             <Grid item>
               <Typography component="div" variant="h3">
                 No Sitters Found

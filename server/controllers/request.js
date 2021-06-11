@@ -20,7 +20,6 @@ exports.getRequests = asyncHandler(async (req, res, next) => {
       if (request.sitter._id.toString() === userProfile.profile._id.toString()) {
         const otherUser = await User.findById(request.user).populate('profile');
         request.sitter = otherUser.profile;
-        request.user = undefined;
       }
       return request;
     });
@@ -95,7 +94,7 @@ exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
     await request.save();
     const otherUser = await User.findById(request.user).populate('profile');
     request.sitter = otherUser.profile;
-    request.user = undefined;
+    
     res.status(200).json({ request });
   } catch (error) {
     res.status(500);

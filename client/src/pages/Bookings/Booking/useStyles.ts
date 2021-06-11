@@ -37,6 +37,15 @@ const useStyles = makeStyles(() => ({
   decline: {
     color: 'red',
   },
+  btnDisplay: {
+    marginLeft: '1rem',
+  },
+  checkoutLink: {
+    pointerEvents: 'none',
+  },
+  paidText: {
+    fontWeight: 600,
+  },
 }));
 
 export default useStyles;
