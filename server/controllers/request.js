@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
-const stripe = require('stripe')(process.env.STRPIE_PRIVATE_KEY);
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
 const Request = require('../models/Request');
 const User = require('../models/User');
