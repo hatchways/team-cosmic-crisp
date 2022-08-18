@@ -24,7 +24,7 @@ import Request from './pages/Request/Request';
 import { MessageContextProvider } from './context/useMessageContext';
 
 const stripePromise = loadStripe(
-  'pk_test_51Ite41ETXh1tPNGoqqdONIoPnTfqTTKF7AXARKRrMqmqDzL6jP0dpaD2jQgCVf1NpnId9ZHTC5cTiQZiTlLSHUU100Md0Rj9EK',
+  'pk_test_51IVRB6CdI42AEkrXDes5BDsK6tR03Ihth9P5Hw4D4txwuJdym1uTQ6SW50VgZ8ZuoiZ4FO1b7tUQLdcmoGwK7sTB00goG0DVvu',
 );
 const CheckoutContainer = () => (
   <Elements stripe={stripePromise}>

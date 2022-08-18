@@ -3,8 +3,8 @@ const asyncHandler = require('express-async-handler');
 
 aws.config.setPromisesDependency();
 aws.config.update({
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.REGION,
 });
 
