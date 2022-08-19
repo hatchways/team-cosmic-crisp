@@ -1,11 +1,9 @@
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
+import { Box, Button, CircularProgress, Typography, TextField } from '@material-ui/core';
 import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import Typography from '@material-ui/core/Typography';
+
 import useStyles from './useStyles';
-import { CircularProgress } from '@material-ui/core';
+import DemoButton from '../../../components/DemoButton/DemoButton';
 
 interface Props {
   handleSubmit: (
@@ -54,7 +52,7 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
       })}
       onSubmit={handleSubmit}
     >
-      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
+      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting, setFieldValue }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <Typography className={classes.label}>First Name</Typography>
           <TextField
@@ -143,6 +141,8 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
               {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Create'}
             </Button>
+
+            <DemoButton classes={classes} />
           </Box>
         </form>
       )}

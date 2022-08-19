@@ -1,11 +1,9 @@
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
+import { Box, Button, CircularProgress, Typography, TextField } from '@material-ui/core';
 import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import Typography from '@material-ui/core/Typography';
+
 import useStyles from './useStyles';
-import { CircularProgress } from '@material-ui/core';
+import DemoButton from '../../../components/DemoButton/DemoButton';
 
 interface Props {
   handleSubmit: (
@@ -29,16 +27,6 @@ interface Props {
 export default function Login({ handleSubmit }: Props): JSX.Element {
   const classes = useStyles();
 
-  const loginDemoUser = async (
-    setFeildValue: (field: string, value: string, shouldValidate?: boolean | undefined) => void,
-    // eslint-disable-next-line
-    submitForm: (() => Promise<void>) & (() => Promise<any>),
-  ) => {
-    setFeildValue('email', 'johnwick@gmail.com');
-    setFeildValue('password', '123456');
-    submitForm();
-  };
-
   return (
     <Formik
       initialValues={{
@@ -54,7 +42,7 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
       })}
       onSubmit={handleSubmit}
     >
-      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting, setFieldValue, submitForm }) => (
+      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting, setFieldValue }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <Typography className={classes.label}>E-mail address</Typography>
           <TextField
@@ -102,15 +90,8 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
               {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
             </Button>
-            <Button
-              size="large"
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() => loginDemoUser(setFieldValue, submitForm)}
-            >
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Demo Login'}
-            </Button>
+
+            <DemoButton setFeildValue={setFieldValue} classes={classes} />
           </Box>
           {/* <div style={{ height: 95 }} /> */}
         </form>

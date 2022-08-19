@@ -83,23 +83,25 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
 exports.updateRequestAccepted = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const { accepted, declined } = req.body;
-  try {
-    const request = await Request.findById(id);
-    const user = await User.findById(req.user.id).populate('profile');
-    // only sitter can accept or decline
-    if (request.sitter.toString() === user.profile._id.toString()) {
-      request.accepted = accepted;
-      request.declined = declined;
-    }
-    await request.save();
-    const otherUser = await User.findById(request.user).populate('profile');
-    request.sitter = otherUser.profile;
-
-    res.status(200).json({ request });
-  } catch (error) {
-    res.status(500);
-    throw new Error(error.message);
+  
+  const request = await Request.findById(id);
+  const user = await User.findById(req.user.id).populate('profile');
+    
+  // only the sitter who owns a request can accept or decline
+  if (request.sitter.toString() !== user.profile._id.toString()) {
+    res.status(403);
+    throw new Error('You are not authorized to perform this action');
   }
+    
+  request.accepted = accepted;
+  request.declined = declined;
+  await request.save();
+
+  const otherUser = await User.findById(request.user).populate('profile');
+  request.sitter = otherUser.profile;
+  
+  res.status(200).json({ request }); 
+
 });
 
 // @route POST /requests/:id/pay

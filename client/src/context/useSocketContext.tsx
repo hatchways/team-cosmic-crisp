@@ -29,7 +29,6 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
   const [usersTyping, setUsersTyping] = useState<string[]>([]);
 
   const initSocket = useCallback(() => {
-    console.log('Trying to connect');
     setSocket(
       io(ENDPOINT, {
         withCredentials: true,

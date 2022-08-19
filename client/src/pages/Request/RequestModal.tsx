@@ -87,7 +87,7 @@ export default function RequestModal({ request, updateRequest }: Props): JSX.Ele
 
   return (
     <TableCell align="center">
-      <Button onClick={handleClickOpen}>
+      <Button onClick={handleClickOpen} disabled={request.paid}>
         <MoreVertIcon />
       </Button>
       <Dialog
