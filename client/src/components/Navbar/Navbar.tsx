@@ -176,7 +176,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
           id="product_tour_sitter_button"
           className={classes.userNavItem}
         >
-          Request
+          Requests
         </Button>
       ) : null}
       {!profile?.isDogSitter ? (

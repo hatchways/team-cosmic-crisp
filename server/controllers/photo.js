@@ -40,7 +40,7 @@ exports.uploadPhotos = asyncHandler((req, res, next) => {
         }
       } catch (err) {
         res.status(400);
-        throw new Error('Error occured during uploading');
+        throw new Error('Error occured during upload');
       }
     });
   }
@@ -71,6 +71,6 @@ exports.deletePhotos = asyncHandler(async (req, res, next) => {
     });
   } catch (error) {
     res.status(400);
-    throw new Error('Error when delete images');
+    throw new Error('Error when deleting images');
   }
 });
