@@ -16,6 +16,7 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { useSocket } from '../../context/useSocketContext';
 import NotificationComponent from '../Notification/Notification';
+import { useMessages } from '../../context/useMessageContext';
 
 interface Props {
   user: User | null | undefined;
@@ -28,9 +29,11 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
   const history = useHistory();
   const { updateLoggedInUserDetails } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
+  const { conversations } = useMessages();
   const { pathname } = useLocation();
   const [profile, setProfile] = useState<Profile | null | undefined>(userProfile);
   const [isDogSitter, setIsDogSitter] = useState<boolean>(false);
+  const isRead = conversations.some((convo) => convo.seen === true);
 
   useEffect(() => {
     if (userProfile) {
@@ -161,7 +164,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
     <Grid>
       {profile && !profile?.isDogSitter && (
         <>
-          <Button onClick={handleBecomeSitter} className={classes.userNavItem}>
+          <Button variant="outlined" onClick={handleBecomeSitter} className={classes.userNavItem}>
             Become a sitter
           </Button>
           <BecomeSitterModal profile={profile} />
@@ -198,7 +201,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
         variant="text"
         className={classes.userNavItem}
       >
-        Messages <span className={classes.active} />
+        Messages {!isRead ? <span className={classes.active} /> : null}
       </Button>
     </Grid>
   );
@@ -223,7 +226,7 @@ export default function Navbar({ user, userProfile, logout }: Props): JSX.Elemen
                 aria-haspopup="true"
                 id="product_tour_profile_button"
               >
-                {user !== null && user !== undefined && <AvatarDisplay loggedIn={true} profile={profile} />}
+                {user !== null && user !== undefined && <AvatarDisplay loggedIn={true} profile={profile} online />}
               </IconButton>
               <Menu
                 id="user-menu"

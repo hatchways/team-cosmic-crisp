@@ -13,9 +13,6 @@ export default function SideBar(): JSX.Element {
         <CustomListItem label="Edit Profile" actualPath={pathname} targetPath="/user/edit-profile" />
         <CustomListItem label="Profile Photo" actualPath={pathname} targetPath="/user/profile-photo" />
         <CustomListItem label="Image Gallery" actualPath={pathname} targetPath="/user/gallery" />
-        <CustomListItem label="Payment" actualPath={pathname} targetPath="/user/payment" />
-        <CustomListItem label="Security" actualPath={pathname} targetPath="/user/security" />
-        <CustomListItem label="Settings" actualPath={pathname} targetPath="/user/settings" />
       </List>
     </Box>
   );
