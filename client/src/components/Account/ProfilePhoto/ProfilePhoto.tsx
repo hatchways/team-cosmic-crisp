@@ -66,11 +66,11 @@ export default function UploadPhoto(): JSX.Element {
         if (type === 'profile') {
           const res = await updateProfile(id, { profilePhoto: url });
           updateLoggedInUserDetails(res);
-          updateSnackBarMessage('Profile Image updated');
+          updateSnackBarMessage('Profile image updated');
         } else if (type === 'cover') {
           const res = await updateProfile(id, { coverPhoto: url });
           updateLoggedInUserDetails(res);
-          updateSnackBarMessage('Cover Image updated');
+          updateSnackBarMessage('Cover image updated');
         }
         setType('');
         setURL(undefined);
@@ -95,7 +95,7 @@ export default function UploadPhoto(): JSX.Element {
         const id = loggedInUserDetails ? loggedInUserDetails._id : '';
         const res = await updateProfile(id, { profilePhoto: '' });
         updateLoggedInUserDetails(res);
-        updateSnackBarMessage('Profile Image deleted');
+        updateSnackBarMessage('Profile image deleted');
       } else if (type === 'cover') {
         const imageUrl: string =
           loggedInUserDetails && loggedInUserDetails.coverPhoto ? loggedInUserDetails.coverPhoto : '';
@@ -103,7 +103,7 @@ export default function UploadPhoto(): JSX.Element {
         const id = loggedInUserDetails ? loggedInUserDetails._id : '';
         const res = await updateProfile(id, { coverPhoto: '' });
         updateLoggedInUserDetails(res);
-        updateSnackBarMessage('Cover Image deleted');
+        updateSnackBarMessage('Cover image deleted');
       }
     } catch (error) {
       updateSnackBarMessage(`Error deleting profile photo ${error}`);
