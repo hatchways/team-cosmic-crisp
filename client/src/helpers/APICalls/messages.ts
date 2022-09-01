@@ -5,6 +5,7 @@ import {
   PostMessageAPIDataSuccess,
   GetMessagesAPIDataSuccess,
 } from '../../interface/Messages';
+import { baseURL } from '../api';
 
 export const createConversation = async (
   senderId: string,
@@ -16,7 +17,7 @@ export const createConversation = async (
     body: JSON.stringify({ senderId, receiverId }),
     credentials: 'include',
   };
-  return await fetch(`/conversations`, fetchOptions)
+  return await fetch(`${baseURL}/conversations`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
@@ -29,7 +30,7 @@ export const getConversations = async (): Promise<GetConversationAPIDataSuccess>
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   };
-  return await fetch(`/conversations`, fetchOptions)
+  return await fetch(`${baseURL}/conversations`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
@@ -43,7 +44,7 @@ export const sendMessage = async (conversationId: string, content: string): Prom
     body: JSON.stringify({ conversationId, content }),
     credentials: 'include',
   };
-  return await fetch(`/messages`, fetchOptions)
+  return await fetch(`${baseURL}/messages`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
@@ -56,7 +57,7 @@ export const getMessages = async (conversationId: string): Promise<GetMessagesAP
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   };
-  return await fetch(`/messages/${conversationId}`, fetchOptions)
+  return await fetch(`${baseURL}/messages/${conversationId}`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
@@ -70,7 +71,7 @@ export const setMessageSeen = async (conversationId: string): Promise<GetMessage
     credentials: 'include',
     body: JSON.stringify({ conversationId }),
   };
-  return await fetch(`/messages/${conversationId}`, fetchOptions)
+  return await fetch(`${baseURL}/messages/${conversationId}`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },

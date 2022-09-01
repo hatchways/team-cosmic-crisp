@@ -32,7 +32,7 @@ var server = require('../app').server;
 
 const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://loving-sitter.netlify.app',
     credentials: true,
   },
 });

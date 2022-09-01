@@ -1,5 +1,6 @@
 import { AuthApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
+import { baseURL } from '../api';
 
 const register = async (firstName: string, lastName: string, email: string, password: string): Promise<AuthApiData> => {
   const fetchOptions: FetchOptions = {
@@ -8,7 +9,7 @@ const register = async (firstName: string, lastName: string, email: string, pass
     body: JSON.stringify({ firstName, lastName, email, password }),
     credentials: 'include',
   };
-  return await fetch(`/auth/register`, fetchOptions)
+  return await fetch(`${baseURL}/auth/register`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },

@@ -1,6 +1,7 @@
 import { ReviewsApiData } from '../../interface/ReviewApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
 import { ReviewForm } from '../../interface/Review';
+import { baseURL } from '../api';
 
 export const createReview = async (id: string, review: ReviewForm): Promise<ReviewsApiData> => {
   const fetchOptions: FetchOptions = {
@@ -9,7 +10,7 @@ export const createReview = async (id: string, review: ReviewForm): Promise<Revi
     body: JSON.stringify(review),
     credentials: 'include',
   };
-  return await fetch(`/reviews/${id}`, fetchOptions)
+  return await fetch(`${baseURL}/reviews/${id}`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
