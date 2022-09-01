@@ -1,5 +1,6 @@
 import { SitterProfilesApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
+import { baseURL } from '../api';
 
 type filters = {
   city?: string;
@@ -13,7 +14,7 @@ const searchProfiles = async ({ city, startDate, endDate }: filters = {}): Promi
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   };
-  return await fetch(`/profiles?city=${city}&startDate=${startDate}&endDate=${endDate}`, fetchOptions)
+  return await fetch(`${baseURL}/profiles?city=${city}&startDate=${startDate}&endDate=${endDate}`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
