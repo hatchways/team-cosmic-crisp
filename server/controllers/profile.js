@@ -8,6 +8,7 @@ const Profile = require('../models/Profile');
 //Search for all profiles
 exports.searchProfiles = asyncHandler(async (req, res, next) => {
   const { city, startDate, endDate } = req.query;
+  console.log(typeof city);
   let sitterProfiles;  
   let profiles;
 
@@ -40,7 +41,7 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
   
   try {
     //if no filter is provided i.e city and date is undefined
-    if (city === 'undefined' && startDate === 'undefined' && endDate === 'undefined') {
+    if (city === undefined && startDate === undefined && endDate === undefined) {
       profiles = await Profile.aggregate([
         {
           $match: { isDogSitter: true, isAvailable: true, price: { $exists: true }, city: { $exists: true } },
@@ -51,7 +52,7 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
       ]);
     } else {
       // if either or one filter is provided
-      if (city !== 'undefined' && startDate !== 'undefined' && endDate !== 'undefined') {
+      if (city !== undefined && startDate !== undefined && endDate !== undefined) {
         const dateDiff = daysBetween(startDate, endDate);
         const serviceDays = daysServiceRequested(startDate, dateDiff)
         profiles = await Profile.aggregate([
@@ -68,7 +69,7 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
             $lookup: {from: 'reviews', localField:'reviews', foreignField: '_id', as: 'reviews'}
           }
         ]);
-      } else if (city !== 'undefined' && startDate === 'undefined' && endDate === 'undefined')
+      } else if (city !== undefined && startDate === undefined && endDate === undefined)
         profiles = await Profile.aggregate([
           {
             $match: {
@@ -82,7 +83,7 @@ exports.searchProfiles = asyncHandler(async (req, res, next) => {
             $lookup: {from: 'reviews', localField:'reviews', foreignField: '_id', as: 'reviews'}
           }
         ]);
-      else if (startDate !== 'undefined' && endDate !== 'undefined' && city === 'undefined') {
+      else if (startDate !== undefined && endDate !== undefined && city === undefined) {
         const dateDiff = daysBetween(startDate, endDate);
         const serviceDays = daysServiceRequested(startDate, dateDiff)
         profiles = await Profile.aggregate([

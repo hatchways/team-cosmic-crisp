@@ -1,3 +1,4 @@
+const colors = require("colors");
 const path = require("path");
 const http = require("http");
 const express = require("express");
@@ -28,7 +29,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(logger("dev"));
 }
 
-app.use(cors())
+app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
