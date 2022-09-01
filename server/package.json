@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Loving Sitter API",
   "directories": {
     "test": "test"
   },
@@ -32,6 +32,6 @@
     "chai-http": "^4.3.0",
     "mocha": "^8.2.1"
   },
-  "author": "",
+  "author": "Rajiv Titus",
   "license": "ISC"
 }
